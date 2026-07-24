@@ -1,0 +1,21 @@
+# 무료판 정합성 게이트 — push/PR마다 자동 실행. 실패 시 빨간 X로 표시.
+# 핵심: 유료(Pro) 스킬이 무료 레포에 섞이는 실수 자동 차단.
+name: check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: 정합성 게이트 (유료 유출·면책·금지문구·junk)
+        run: node scripts/check.mjs
