@@ -28,6 +28,19 @@
 
 ## 설치 (1분)
 
+### Claude Code — 마켓플레이스 (권장)
+
+Claude Code에서는 마켓플레이스로 한 번에 설치하고 자동 업데이트를 받을 수 있습니다:
+
+```
+/plugin marketplace add lbiz-partners/hometax-doum
+/plugin install hometax-doum@lbiz-partners
+```
+
+설치하면 6종 스킬이 함께 들어옵니다. 저장소가 갱신되면 `/plugin marketplace update lbiz-partners`로 새로 고칩니다.
+
+### 그 외 도구 — 수동 복사
+
 이 저장소를 다운로드(`Code → Download ZIP` 또는 `git clone`)한 뒤, 쓰는 도구의 스킬 폴더에 복사:
 
 ```bash
