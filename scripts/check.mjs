@@ -4,6 +4,7 @@
 // 위반 시 exit 1 → GitHub이 빨간 X로 표시.
 import fs from 'node:fs';
 import path from 'node:path';
+import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -85,6 +86,29 @@ for (const f of ['.claude/hooks/skill-gate.sh', '.claude/hooks/review-gate.sh', 
 const cfgPath = path.join(ROOT, '.claude', 'harness.config.sh');
 if (fs.existsSync(cfgPath))
   check(/REVIEW_GATE="block"/.test(fs.readFileSync(cfgPath, 'utf8')), '하네스: REVIEW_GATE가 block이 아님 — 무장해제 의심 (의도적 변경이면 이 검사와 CLAUDE.md를 함께 갱신할 것)');
+
+// 11. 도구 중립 계층 — pre-push 훅·AGENTS.md 동기화 (Codex·Aside·직접 편집 경로 방어)
+check(fs.existsSync(path.join(ROOT, '.githooks', 'pre-push')), '도구 중립 게이트 누락: .githooks/pre-push');
+check(fs.existsSync(path.join(ROOT, '.gitattributes')), '.gitattributes 누락 — Windows에서 훅 줄끝(CRLF) 깨짐 방지용');
+const norm = (s) => s.replace(/^﻿/, '').replace(/\r\n/g, '\n').trimEnd();
+const agentsP = path.join(ROOT, 'AGENTS.md'), claudeMdP = path.join(ROOT, 'CLAUDE.md');
+check(fs.existsSync(agentsP), 'AGENTS.md 누락 (Codex 등 타 도구용 규칙 문서 — CLAUDE.md 복제본)');
+if (fs.existsSync(agentsP) && fs.existsSync(claudeMdP))
+  check(norm(fs.readFileSync(agentsP, 'utf8')) === norm(fs.readFileSync(claudeMdP, 'utf8')),
+    'AGENTS.md ↔ CLAUDE.md 불일치(drift) — 한쪽만 고치지 말고 cp CLAUDE.md AGENTS.md 로 동기화할 것');
+// hooksPath — 개발 클론(로컬 git 워크트리)에서 미설정이면 push 게이트가 통째로 꺼진
+// "조용한 비활성" 상태이므로 경고가 아니라 **실격**으로 처리한다 (리뷰 M-1: 경고는
+// 이미 게이트 안에 있는 경로에서만 보인다). CI와 pre-push의 커밋 추출 검사(CI=1,
+// .git 없음)에서는 건너뛴다.
+if (!process.env.CI) {
+  let inRepo = false, hp = '';
+  try { inRepo = execFileSync('git', ['rev-parse', '--is-inside-work-tree'], { cwd: ROOT, stdio: ['ignore', 'pipe', 'ignore'] }).toString().trim() === 'true'; } catch {}
+  if (inRepo) {
+    try { hp = execFileSync('git', ['config', 'core.hooksPath'], { cwd: ROOT, stdio: ['ignore', 'pipe', 'ignore'] }).toString().trim(); } catch {}
+    const ok = hp === '.githooks' || hp.replace(/\\/g, '/').endsWith('/.githooks');
+    check(ok, 'push 게이트 비활성: core.hooksPath 미설정 — 클론당 1회 실행: git config core.hooksPath .githooks');
+  }
+}
 
 if (errors.length) {
   console.error(`\n✗ 무료판 게이트 실패 — ${errors.length}건 (검사 ${n}종)\n`);

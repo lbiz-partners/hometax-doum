@@ -1,0 +1,43 @@
+#!/bin/sh
+# 도구 중립 게이트 — 어떤 도구·사람이 push하든 git 계층에서 결정론 게이트를 강제한다.
+# 검증 대상은 워킹트리가 아니라 **push되는 커밋**이다: git이 stdin으로 주는 refs를
+# 읽어 각 커밋을 임시 디렉토리에 추출해 검사한다 (워킹트리 WIP와 무관 — 2026-08-09
+# 리뷰 H-1: 워킹트리 검사는 "깨진 커밋+복구된 워킹트리" 우회와 "정상 커밋+WIP" 오차단
+# 을 모두 만든다).
+#
+# 활성화(클론당 1회): git config core.hooksPath .githooks
+# 한계(정직하게): 미활성 클론·git push --no-verify(금지)·GitHub 웹 편집은 CI 사후 검증만.
+# fail-open은 node 부재 시에만 — 그 외 이상(리포 확인·추출 실패)은 fail-closed.
+
+cd "$(git rev-parse --show-toplevel)" || { echo "[pre-push] 리포 루트 확인 실패 — push 거부" >&2; exit 1; }
+
+if ! command -v node >/dev/null 2>&1; then
+  echo "[pre-push] node가 없어 게이트를 건너뜁니다 — push 후 CI 결과를 반드시 확인하세요." >&2
+  exit 0
+fi
+
+ZERO=0000000000000000000000000000000000000000
+fail=0
+while read -r local_ref local_sha remote_ref remote_sha; do
+  [ -n "$local_sha" ] || continue
+  [ "$local_sha" = "$ZERO" ] && continue   # 브랜치·태그 삭제 push — 내용 검증 대상 없음
+
+  tmp="$(mktemp -d)" || { echo "[pre-push] 임시 디렉토리 생성 실패 — push 거부" >&2; exit 1; }
+  if ! git archive "$local_sha" | tar -x -C "$tmp"; then
+    echo "[pre-push] $local_sha 추출 실패 — 검증 불가, push 거부" >&2
+    rm -rf "$tmp"; exit 1
+  fi
+
+  short="$(printf %.8s "$local_sha")"
+  echo "[pre-push] ${local_ref} (커밋 ${short}) 게이트 실행 중..." >&2
+  if ! (cd "$tmp" && CI=1 node scripts/check.mjs >&2 && CI=1 node scripts/test-receivables.mjs >&2); then
+    echo "" >&2
+    echo "[pre-push] 게이트 실패 — push가 거부되었습니다." >&2
+    echo "  검사 기준은 워킹트리가 아니라 **push되는 커밋(${short})** 입니다." >&2
+    echo "  커밋을 수정(amend 또는 새 커밋)한 뒤 다시 push하세요. 해소가 불분명하면 사용자와 상의하세요." >&2
+    echo "  git push --no-verify 우회는 금지 — 고의 우회는 CI가 사후 적발합니다." >&2
+    fail=1
+  fi
+  rm -rf "$tmp"
+done
+exit $fail

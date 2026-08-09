@@ -1,0 +1,9 @@
+# 기본: git이 텍스트 파일을 자동 판별해 리포에는 LF로 저장
+* text=auto
+
+# 훅·스크립트는 어떤 OS에서 체크아웃해도 LF 유지 — Windows에서 CRLF로 변환되면
+# 셔뱅(#!/bin/sh)이 깨져 훅이 무발화 상태가 된다 (조용한 비활성 방지)
+.githooks/** text eol=lf
+*.sh text eol=lf
+*.mjs text eol=lf
+*.json text eol=lf
