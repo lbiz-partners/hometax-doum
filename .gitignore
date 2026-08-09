@@ -1,2 +1,5 @@
 .DS_Store
 __pycache__/
+
+# 하네스 로컬 상태 (캐시·리뷰 영수증·발화 기록) — 커밋 금지
+.claude/state/

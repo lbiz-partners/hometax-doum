@@ -56,6 +56,36 @@ n++;
 const junk = files.filter((f) => /(\.pyc$|__pycache__|\.omc|\.DS_Store)/.test(f));
 check(junk.length === 0, `junk 파일 ${junk.length}건`);
 
+// 9. 안전규칙 lint — 문구↔규칙 대조표(scripts/skill-rules.json) 기반.
+// 마크다운 스킬의 회귀는 코드가 아니라 안전 문구 삭제로 일어난다 (2026-08-09 적대적 리뷰 13건의 회귀 방지).
+const rulesPath = path.join(ROOT, 'scripts', 'skill-rules.json');
+check(fs.existsSync(rulesPath), '안전규칙 대조표 누락: scripts/skill-rules.json');
+if (fs.existsSync(rulesPath)) {
+  for (const r of JSON.parse(fs.readFileSync(rulesPath, 'utf8')).rules) {
+    const fp = path.join(ROOT, r.file);
+    if (!fs.existsSync(fp)) { check(false, `안전규칙 [${r.id}] 대상 파일 없음: ${r.file}`); continue; }
+    const t = fs.readFileSync(fp, 'utf8');
+    for (const p of r.must_contain ?? [])
+      check(t.includes(p), `안전규칙 회귀 [${r.id}]: "${p}" 문구가 ${r.file}에서 사라짐 — ${r.why}`);
+    for (const p of r.must_not_contain ?? [])
+      check(!t.includes(p), `금지문구 재유입 [${r.id}]: "${p}" 이(가) ${r.file}에 다시 들어옴 — ${r.why}`);
+  }
+}
+
+// 10. 하네스 무결성 — 훅 등록·설정이 무장해제되지 않았는지.
+// 주의: CI는 push 후에 도는 사후 감지라 배포를 막지 못한다. 로컬 skill-gate가 1차 방어선.
+const settingsPath = path.join(ROOT, '.claude', 'settings.json');
+check(fs.existsSync(settingsPath), '하네스: .claude/settings.json 누락');
+if (fs.existsSync(settingsPath)) {
+  const s = fs.readFileSync(settingsPath, 'utf8');
+  check(s.includes('skill-gate.sh') && s.includes('review-gate.sh'), '하네스: Stop 훅 등록이 빠짐 (skill-gate/review-gate)');
+}
+for (const f of ['.claude/hooks/skill-gate.sh', '.claude/hooks/review-gate.sh', '.claude/hooks/_lib.sh', '.claude/harness.config.sh', '.claude/agents/adversarial-reviewer.md'])
+  check(fs.existsSync(path.join(ROOT, f)), `하네스 파일 누락: ${f}`);
+const cfgPath = path.join(ROOT, '.claude', 'harness.config.sh');
+if (fs.existsSync(cfgPath))
+  check(/REVIEW_GATE="block"/.test(fs.readFileSync(cfgPath, 'utf8')), '하네스: REVIEW_GATE가 block이 아님 — 무장해제 의심 (의도적 변경이면 이 검사와 CLAUDE.md를 함께 갱신할 것)');
+
 if (errors.length) {
   console.error(`\n✗ 무료판 게이트 실패 — ${errors.length}건 (검사 ${n}종)\n`);
   for (const e of errors) console.error(`  ✗ ${e}`);

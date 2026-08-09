@@ -17,5 +17,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - name: 정합성 게이트 (유료 유출·면책·금지문구·junk)
+      - name: 정합성 게이트 (유료 유출·면책·금지문구·junk·안전규칙 lint)
         run: node scripts/check.mjs
+      - name: 미수금 회귀 테스트 (소진·선금·순액·취소·경계·역점검)
+        run: node scripts/test-receivables.mjs

@@ -1,0 +1,22 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PROJECT_DIR:-$PWD}/.claude/hooks/skill-gate.sh\"",
+            "timeout": 120,
+            "statusMessage": "스킬 게이트 검증 중 (check + 회귀 테스트)..."
+          },
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PROJECT_DIR:-$PWD}/.claude/hooks/review-gate.sh\"",
+            "timeout": 30,
+            "statusMessage": "적대적 리뷰 영수증 확인 중..."
+          }
+        ]
+      }
+    ]
+  }
+}

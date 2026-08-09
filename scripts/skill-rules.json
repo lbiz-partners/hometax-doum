@@ -1,0 +1,96 @@
+{
+  "$schema_version": "1.0",
+  "note": "안전규칙 ↔ 문구 대조표. 마크다운 스킬의 회귀는 코드가 아니라 문구 삭제로 일어나므로, 2026-08-09 적대적 리뷰(CRITICAL 1·HIGH 4 등 13건)로 확정된 핵심 안전 문구가 스킬 문서에 존재하는지 check.mjs가 매 push마다 대조한다. 문구를 의도적으로 바꿀 때는 이 파일을 함께 갱신하고 적대적 리뷰를 다시 받는다 (docs/reviews/ 참조).",
+  "rules": [
+    {
+      "id": "deposit-exhaustion",
+      "file": "skills/tax-invoice-hometax/references/receivables-check.md",
+      "must_contain": ["입금 소진 규칙", "세금계산서 1건에만 배정"],
+      "why": "입금 1건이 동일액 청구 여러 건에 중복 매칭되면 실미수금이 조용히 소멸 (리뷰 C-1, CRITICAL)"
+    },
+    {
+      "id": "advance-payment",
+      "file": "skills/tax-invoice-hometax/references/receivables-check.md",
+      "must_contain": ["선금·계약금 (발행일 이전 입금)"],
+      "why": "선금 건을 미입금으로 오분류하면 이미 지불한 거래처를 독촉하게 됨 (리뷰 H-1)"
+    },
+    {
+      "id": "last-resort-classification",
+      "file": "skills/tax-invoice-hometax/references/receivables-check.md",
+      "must_contain": ["미입금은 최후의 분류"],
+      "why": "분류 공백이 생기면 애매한 건이 미입금으로 흘러 부당 독촉으로 이어짐 (리뷰 H-1)"
+    },
+    {
+      "id": "net-amount-matching",
+      "file": "skills/tax-invoice-hometax/references/receivables-check.md",
+      "must_contain": ["순액을 그 건의 대조 금액"],
+      "why": "감액 수정 건을 원본액으로 대조하면 완납 건이 부분입금으로 오분류 (리뷰 M-1)"
+    },
+    {
+      "id": "split-query",
+      "file": "skills/tax-invoice-hometax/references/receivables-check.md",
+      "must_contain": ["분할 조회", "기간 공백"],
+      "why": "조회 상한 3개월 초과 시 분할 다운로드 없으면 한 구간이 통째로 누락돼도 게이트가 못 잡음 (리뷰 H-3)"
+    },
+    {
+      "id": "accrual-basis-warning",
+      "file": "skills/tax-invoice-hometax/references/receivables-check.md",
+      "must_contain": ["발생주의", "매출 누락"],
+      "why": "미입금을 이유로 신고 매출에서 빼면 매출 누락·가산세 — 세무 무지 사용자의 가장 위험한 직관 차단"
+    },
+    {
+      "id": "payment-due-basis",
+      "file": "skills/tax-invoice-hometax/references/receivables-check.md",
+      "must_contain": ["결제기일"],
+      "why": "발행일 기준 고정이면 지급기일 전 정상 거래처에 독촉 유도 (리뷰 M-4)"
+    },
+    {
+      "id": "refund-check-on-cancel",
+      "file": "skills/tax-invoice-hometax/references/receivables-check.md",
+      "must_contain": ["환불 필요"],
+      "why": "취소 쌍인데 기수령이면 환불 필요 상태 — 제외만 하면 아무도 표시 안 함"
+    },
+    {
+      "id": "tax-class-question",
+      "file": "skills/tax-invoice-hometax/SKILL.md",
+      "must_contain": ["과세구분"],
+      "why": "패스트트랙에서 과세/영세율/면세 확인이 빠지면 영세율 수출 건에 10% 세액 오발행 (리뷰 H-2)"
+    },
+    {
+      "id": "date-always-fresh",
+      "file": "skills/tax-invoice-hometax/SKILL.md",
+      "must_contain": ["매번 새로 받는다"],
+      "why": "반복 거래 단축이 일자 추측 통로가 되면 지연발급 가산세 위험 (리뷰 M-2)"
+    },
+    {
+      "id": "no-auto-issue",
+      "file": "skills/tax-invoice-hometax/SKILL.md",
+      "must_contain": ["자동 발급 금지"],
+      "why": "발급 버튼은 사용자 본인 — 이 리포 전체의 1번 안전선"
+    },
+    {
+      "id": "pii-masking-first",
+      "file": "skills/tax-invoice-hometax/references/receivables-check.md",
+      "must_contain": ["민감정보는 지우거나 가린"],
+      "why": "통장 파일을 받기 전 마스킹 선안내 — 업로드 후에는 통제 불가 (리뷰 M-3)"
+    },
+    {
+      "id": "no-arbitrary-confirm",
+      "file": "skills/tax-invoice-hometax/references/receivables-check.md",
+      "must_contain": ["임의 확정 금지"],
+      "why": "자동 매칭은 항상 후보 — 확정은 사용자. 이 원칙이 빠지면 AI가 입금 여부를 단정"
+    },
+    {
+      "id": "no-silent-drop",
+      "file": "skills/tax-invoice-hometax/references/receivables-check.md",
+      "must_contain": ["조용히 누락"],
+      "why": "판단불가 건 은폐 금지 — 합계 검증식과 쌍을 이루는 금지 사항"
+    },
+    {
+      "id": "readme-no-overclaim",
+      "file": "README.md",
+      "must_not_contain": ["빠짐없이", "한 건도 새지 않게"],
+      "why": "면책 구조와 상충하는 과장 표현 재유입 방지 (리뷰 H-4) — 구조적으로 못 찾는 범주(현금·상계·목록 밖 계산서)가 존재"
+    }
+  ]
+}
