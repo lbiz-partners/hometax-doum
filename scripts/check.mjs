@@ -15,7 +15,9 @@ let n = 0;
 const check = (cond, m) => { n++; if (!cond) fail(m); };
 
 const FREE = ['hometax-tax-hub', 'income-tax-hometax', 'receipt-classify-kr', 'tax-invoice-hometax', 'tax-prep-kr', 'vat-hometax'];
-const PRO = ['jongsose-prep-kr', 'withholding-tax-hometax'];
+// Pro 전용 = vault(hometax-doum-vault) 9종 − 무료 6종. 여기 빠지면 유출을 못 잡는다.
+// 2026-08-13 적대적 리뷰 Medium: biz-reg-hometax(v3.6.5 Pro 편입)가 누락돼 있었다.
+const PRO = ['jongsose-prep-kr', 'withholding-tax-hometax', 'biz-reg-hometax'];
 
 const skills = fs.readdirSync(SKILL_DIR).filter((d) => fs.existsSync(path.join(SKILL_DIR, d, 'SKILL.md')));
 
@@ -37,6 +39,16 @@ check(engines.length === 0, `⛔ 무료 레포에 계산 엔진 파일 유출: $
 
 // 3. 무료 6종이 모두 있는가
 for (const s of FREE) check(skills.includes(s), `무료 스킬 누락: ${s}`);
+
+// 3-1. FREE 밖의 스킬은 무엇이든 실격 (차단목록 → 허용목록)
+//   PRO 목록만으로는 "앞으로 추가될 Pro 스킬"을 못 막는다. 실제로 biz-reg-hometax 가
+//   PRO 목록에 빠진 채 v3.6.5 에 편입돼 있었다(2026-08-13 적대적 리뷰 Medium).
+//   무료판 구성은 FREE 6종과 정확히 같아야 한다.
+const extra = skills.filter((s) => !FREE.includes(s));
+check(
+  extra.length === 0,
+  `⛔ 무료 레포에 허용되지 않은 스킬: ${extra.join(', ')} — 무료판은 FREE ${FREE.length}종만 허용`,
+);
 
 // 4~6. 각 스킬 검사
 for (const s of skills) {
