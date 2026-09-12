@@ -1,0 +1,11 @@
+name: hometax-doum
+version: 3.8.0
+built_at: 2026-09-12 KST
+edition: free
+skills:
+  - hometax-tax-hub
+  - tax-prep-kr
+  - receipt-classify-kr
+  - tax-invoice-hometax
+  - vat-hometax
+  - income-tax-hometax

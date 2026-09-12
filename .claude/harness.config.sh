@@ -5,7 +5,7 @@
 
 # 게이트를 발동시키는 파일 패턴 (git status --porcelain 줄 대상 — 앞 경계 주의)
 # 하네스 자신(.claude/·워크플로·CLAUDE.md)도 감시 대상 — 무장해제가 무감시로 일어나지 않게 (리뷰 M-6)
-CODE_FILE_REGEX='(^|[/[:space:]])(skills/.+\.md|scripts/.+\.(mjs|json|sh)|\.claude/(settings\.json|harness\.config\.sh|hooks/.+\.sh|agents/.+\.md)|\.githooks/.+|\.github/workflows/.+\.yml|\.gitattributes|CLAUDE\.md|AGENTS\.md)'
+CODE_FILE_REGEX='(^|[/[:space:]])(skills/.+|scripts/.+|docs/.+|데스크탑용-skill파일/.+|\.claude/(settings\.json|harness\.config\.sh|hooks/.+\.sh|agents/.+\.md)|\.githooks/.+|\.github/workflows/.+\.ya?ml|\.gitattributes|CLAUDE\.md|AGENTS\.md|VERSION|EULA\.md|NOTICE\.md|README\.md|안내문\.md|시작-가이드-처음이라면-이것부터\.md|install\.sh|LICENSE\.md|시작-가이드\.md|\.claude-plugin/.+\.json)'
 
 # 적대적 리뷰 게이트: 스킬·스크립트 변경 턴은 영수증 없이 종료 불가
 REVIEW_GATE="block"

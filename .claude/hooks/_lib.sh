@@ -51,7 +51,7 @@ harness_branch_base() {
 harness_state_key() {
   {
     git rev-parse HEAD 2>/dev/null || echo none
-    git diff HEAD 2>/dev/null
+    git diff --binary HEAD 2>/dev/null
     git ls-files --others --exclude-standard -z 2>/dev/null | tr '\0' '\n' | sort
     # GNU xargs는 빈 입력에도 명령을 1회 실행 → 인자 없는 cat이 훅 stdin(JSON)을 읽어
     # 키를 오염시킨다(Linux 데드락, 2026-08-09 하네스 리뷰 H-2). </dev/null로 차단.

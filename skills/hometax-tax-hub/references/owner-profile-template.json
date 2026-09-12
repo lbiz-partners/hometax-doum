@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "profile": {
+    "business_key": "shop-a",
+    "entity_type": "unknown",
+    "taxpayer_type": "unknown",
+    "sector": null,
+    "sales_channels": null,
+    "has_employees": null,
+    "has_outsourced_payments": null,
+    "as_of": null,
+    "confirmed": false
+  }
+}

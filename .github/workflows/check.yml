@@ -11,7 +11,7 @@ on:
 jobs:
   gate:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -21,3 +21,8 @@ jobs:
         run: node scripts/check.mjs
       - name: 미수금 회귀 테스트 (소진·선금·순액·취소·경계·역점검)
         run: node scripts/test-receivables.mjs
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: 무료판 설치·번들·ZIP 원본 대조
+        run: bash scripts/build.sh

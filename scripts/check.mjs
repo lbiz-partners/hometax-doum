@@ -34,8 +34,25 @@ const walk = (dir, acc = []) => {
   return acc;
 };
 const files = walk(SKILL_DIR);
-const engines = files.filter((f) => /\.(py|mjs|cjs)$/.test(f));
+const engines = files.filter((f) => !/\.(md|json)$/.test(f));
 check(engines.length === 0, `⛔ 무료 레포에 계산 엔진 파일 유출: ${engines.map((f) => path.relative(ROOT, f)).join(', ')}`);
+
+const vPath = path.join(ROOT, 'VERSION');
+check(fs.existsSync(vPath), 'VERSION 누락');
+const version = fs.existsSync(vPath) ? (fs.readFileSync(vPath, 'utf8').match(/^version:\s*(\d+\.\d+\.\d+)$/m) || [])[1] : null;
+check(!!version, 'VERSION 형식 오류');
+const plugin = JSON.parse(fs.readFileSync(path.join(ROOT, '.claude-plugin/plugin.json'), 'utf8'));
+const market = JSON.parse(fs.readFileSync(path.join(ROOT, '.claude-plugin/marketplace.json'), 'utf8'));
+check(plugin.version === version && market.plugins[0].version === version, '플러그인·마켓플레이스 버전 불일치');
+for (const file of ['README.md', '시작-가이드.md']) {
+  const value = (fs.readFileSync(path.join(ROOT, file), 'utf8').match(/\*\*버전:\*\*\s*([0-9.]+)/) || [])[1];
+  check(value === version, '안내 버전 불일치: ' + file);
+}
+for (const name of skills) {
+  const content = fs.readFileSync(path.join(SKILL_DIR, name, 'SKILL.md'), 'utf8');
+  const desc = (content.match(/^description:\s*([^\n]*)/m) || [])[1] || '';
+  check(desc.length > 0 && desc.length <= 1024, '스킬 설명 길이 오류: ' + name);
+}
 
 // 3. 무료 6종이 모두 있는가
 for (const s of FREE) check(skills.includes(s), `무료 스킬 누락: ${s}`);
