@@ -1,0 +1,23 @@
+{
+  "purpose": "무료 사업장현황신고 수동 준비표. Pro 엔진 입력이 아니며 미확인 항목을 임의로 채우지 않습니다.",
+  "business_alias": null,
+  "tax_year": null,
+  "industry": null,
+  "taxpayer_type": null,
+  "period_start": null,
+  "period_end": null,
+  "eligibility": "unknown",
+  "official_source_url": null,
+  "checked_on": null,
+  "annual_revenue_observed": null,
+  "revenue_coverage": "unknown",
+  "annual_purchases_observed": null,
+  "purchases_coverage": "unknown",
+  "industry_detail_status": "unknown",
+  "revenue_review_form_status": "unknown",
+  "sales_invoice_summary_status": "unknown",
+  "purchase_invoice_summary_status": "unknown",
+  "purchase_tax_invoice_summary_status": "unknown",
+  "unresolved_items": [],
+  "receipt_checked": false
+}
