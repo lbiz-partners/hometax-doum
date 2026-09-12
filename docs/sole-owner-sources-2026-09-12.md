@@ -1,6 +1,6 @@
 # 1인 개인사업자 업무 안내의 공식 근거
 
-확인일 **2026-09-12 (Asia/Seoul)**. 대상은 무료 6종·Pro 9종의 1인 소규모 개인사업자 안내다. 법인세는 별도 Ultra 향후 계획이며 이번 검증에 포함하지 않는다. 이미 검증된 세율·공제 변경 기록은 tax-policy-sources-2026-09-12.md를 유지한다.
+확인일 **2026-09-12 (Asia/Seoul)**. 대상은 무료 6종·Pro 9종의 1인 소규모 개인사업자 안내다. 법인세는 별도 Ultra 향후 계획이며 이번 검증에 포함하지 않는다. 두 버전의 CLI 스킬 폴더에 동봉한 `income-tax-hometax/references/tax-policy.md`(종소세)와 `vat-hometax/references/tax-policy.md`(부가세)의 정책 근거를 함께 확인한다. Pro에는 추가 검증 기록인 `docs/tax-policy-sources-2026-09-12.md`도 동봉한다.
 
 | ID | 확인한 내용 | 공식 원문 | 적용 주의 |
 | --- | --- | --- | --- |
