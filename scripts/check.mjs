@@ -102,6 +102,15 @@ if (fs.existsSync(rulesPath)) {
   }
 }
 
+// 9-1. 공통 문단 단일 소스 — shared/blocks 원본(Pro에서 내보냄)과 SKILL.md 인라인 본문 일치.
+// 무료판에서 문단 하나만 고치면 다음 내보내기에 덮여 사라진다 — 원본은 Pro 저장소의 shared/blocks 이다.
+try {
+  const out = execFileSync('python3', ['-B', 'scripts/sync-blocks.py', '--check'], { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
+  check(/공통 문단 일치/.test(out), '공통 문단 검사 결과 판정 불가');
+} catch (error) {
+  check(false, '공통 문단 드리프트: ' + (error.stderr?.toString() || error.message).split('\n').slice(0, 4).join(' '));
+}
+
 // 10. 하네스 무결성 — 훅 등록·설정이 무장해제되지 않았는지.
 // 주의: CI는 push 후에 도는 사후 감지라 배포를 막지 못한다. 로컬 skill-gate가 1차 방어선.
 const settingsPath = path.join(ROOT, '.claude', 'settings.json');

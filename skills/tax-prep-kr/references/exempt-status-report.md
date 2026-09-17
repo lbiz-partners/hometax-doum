@@ -43,7 +43,7 @@
 
 ## Pro 자료 집계 연결
 
-Pro `jongsose-prep-kr` 설치 시 해당 스킬의 `references/business-status.md`와 `scripts/business_status.py --help`를 읽는다. 학원·주택임대·인적용역·기타 면세 경로별로 정리한 JSON의 수입·매입을 집계하고 증빙 누락, 중복, 환불 연결, 신고 항목 차이를 출력한다. 이 공개판에는 코드가 없으며 위 확인 양식으로 안내를 계속한다.
+Pro `jongsose-prep-kr` 설치 시 해당 스킬의 `references/business-status.md`와 `scripts/business_status.py --help`를 읽는다. 학원·주택임대·인적용역·기타 면세 경로별로 정리한 JSON의 수입·매입을 집계하고 증빙 누락, 중복, 환불 연결, 신고 항목 차이를 출력한다. 이 코드가 없는 설치본(공개판)에서는 위 확인 양식으로 안내를 계속한다.
 
 Pro 출력도 공식 신고서·수입금액검토표 완성본이 아니다. 업종별 원본 세부 항목은 사람이 확인하며 면세 여부·신고 의무·수입 귀속·간주임대료·세액을 자동 판정하거나 계산하지 않는다.
 
