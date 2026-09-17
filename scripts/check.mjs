@@ -139,6 +139,15 @@ if (!process.env.CI) {
   }
 }
 
+try {
+  const result = execFileSync('python3', ['-B', 'scripts/check-service-catalog.py'], { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
+  check(result.includes('업무 목록 통과'), '24개 업무 목록 확인 실패');
+  execFileSync('python3', ['-B', 'scripts/test-service-catalog.py'], { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
+  check(true, '실화면 부분 검증·완료 상태 변조 회귀');
+} catch (error) {
+  check(false, '24개 업무 경로·문서·완료근거 검사 실패: ' + (error.stderr?.toString() || error.message));
+}
+
 if (errors.length) {
   console.error(`\n✗ 무료판 게이트 실패 — ${errors.length}건 (검사 ${n}종)\n`);
   for (const e of errors) console.error(`  ✗ ${e}`);

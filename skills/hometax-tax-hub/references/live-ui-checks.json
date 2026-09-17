@@ -1,0 +1,676 @@
+{
+  "schema_version": 1,
+  "version": "4.1.1",
+  "checked_at": "2026-09-17",
+  "method": "실제 hometax.go.kr 공개 UI: 메뉴 클릭·DOM 읽기·화면 캡처. 모의계산에는 가상 수치만 입력. 숨은 API·인증 우회·실제 제출 없음.",
+  "coverage": "24개 업무 묶음별 대표 경로 한 개 이상. 홈택스의 모든 메뉴·하위 기능·개별 신고서를 검증한 것은 아님.",
+  "evidence_location": "별도 검증 산출물 qa/browser/. 스킬 패키지는 파일명·SHA-256과 관찰 요약을 포함한다.",
+  "checks": [
+    {
+      "id": "H01",
+      "title": "처음 설정·사업장 전환",
+      "checked_at": "2026-09-16T23:24:23.568Z",
+      "representative_path": [
+        "로그인",
+        "전자계산서 업무 진입 후 로그인 안내"
+      ],
+      "observed_url": "https://hometax.go.kr/websquare/websquare.html?w2xPath=/ui/pp/index_pp.xml&tmIdx=46&tm2lIdx=4601010000&tm3lIdx=4601010100",
+      "stage": "public_form",
+      "authenticated": false,
+      "input_verified": false,
+      "result_verified": false,
+      "workflow_verified": false,
+      "submission_verified": false,
+      "payment_verified": false,
+      "observation": "인증 방법 화면을 확인했다. 인증 성공·사업장 전환은 미검증.",
+      "remaining_check": "사업장·기간·과세유형·자료 보유 확인",
+      "evidence": [
+        {
+          "file": "H01-entry.png",
+          "sha256": "6356fc7c3bf6d3cd6639b00a0447d4eaee81d55997d0b9e50eebb565d4596918"
+        },
+        {
+          "file": "H01-login-methods.yml",
+          "sha256": "4ff4a2aa51ddab5afa857f85823b0b5777d0f9020007a87be41c0ee21fdd5bc3"
+        }
+      ]
+    },
+    {
+      "id": "H02",
+      "title": "사업자등록 신청·정정",
+      "checked_at": "2026-09-16T23:12:11.091Z",
+      "representative_path": [
+        "증명･등록･신청･ 사업장현황",
+        "개인 사업자등록 신청"
+      ],
+      "observed_url": "https://hometax.go.kr/websquare/websquare.html?w2xPath=/ui/pp/index_pp.xml&tmIdx=43&tm2lIdx=4306010000&tm3lIdx=4306010100",
+      "stage": "login_required",
+      "authenticated": false,
+      "input_verified": false,
+      "result_verified": false,
+      "workflow_verified": false,
+      "submission_verified": false,
+      "payment_verified": false,
+      "observation": "대표 메뉴를 클릭하여 로그인 요구를 확인했다. 로그인 후 입력·조회 결과는 미검증.",
+      "remaining_check": "신청 접수·등록/정정 결과·등록증 내용 확인",
+      "evidence": [
+        {
+          "file": "H02-entry.png",
+          "sha256": "b66d1f35d50ec23df4ed2566fb7c16e43be87e4a0e726e67384f0bb83d16af3c"
+        }
+      ]
+    },
+    {
+      "id": "H03",
+      "title": "휴업·재개업·폐업",
+      "checked_at": "2026-09-16T23:12:12.603Z",
+      "representative_path": [
+        "증명･등록･신청･ 사업장현황",
+        "휴업·폐업 신고"
+      ],
+      "observed_url": "https://hometax.go.kr/websquare/websquare.html?w2xPath=/ui/pp/index_pp.xml&tmIdx=43&tm2lIdx=4306060000&tm3lIdx=4306060100",
+      "stage": "login_required",
+      "authenticated": false,
+      "input_verified": false,
+      "result_verified": false,
+      "workflow_verified": false,
+      "submission_verified": false,
+      "payment_verified": false,
+      "observation": "대표 메뉴를 클릭하여 로그인 요구를 확인했다. 로그인 후 입력·조회 결과는 미검증.",
+      "remaining_check": "처리결과와 마지막 신고·납부·인건비 후속 확인",
+      "evidence": [
+        {
+          "file": "H03-entry.png",
+          "sha256": "b66d1f35d50ec23df4ed2566fb7c16e43be87e4a0e726e67384f0bb83d16af3c"
+        }
+      ]
+    },
+    {
+      "id": "H04",
+      "title": "계좌·카드·전자송달",
+      "checked_at": "2026-09-16T23:11:07.330Z",
+      "representative_path": [
+        "계산서·영수증·카드",
+        "사업용 신용카드 등록 및 조회"
+      ],
+      "observed_url": "https://hometax.go.kr/websquare/websquare.html?w2xPath=/ui/pp/index_pp.xml&tmIdx=46&tm2lIdx=4608000000&tm3lIdx=4608010000",
+      "stage": "login_required",
+      "authenticated": false,
+      "input_verified": false,
+      "result_verified": false,
+      "workflow_verified": false,
+      "submission_verified": false,
+      "payment_verified": false,
+      "observation": "대표 메뉴를 클릭하여 로그인 요구를 확인했다. 로그인 후 입력·조회 결과는 미검증.",
+      "remaining_check": "등록/변경 결과·조회 공백·공제 확인",
+      "evidence": [
+        {
+          "file": "H04-entry.png",
+          "sha256": "3b28970fcbcd87de764bf7836ad0c592155d40eb6476b9285bc073374a06ecdb"
+        }
+      ]
+    },
+    {
+      "id": "H05",
+      "title": "전자세금계산서·전자계산서",
+      "checked_at": "2026-09-16T23:11:09.571Z",
+      "representative_path": [
+        "계산서·영수증·카드",
+        "전자(세금)계산서 건별발급"
+      ],
+      "observed_url": "https://hometax.go.kr/websquare/websquare.html?w2xPath=/ui/pp/index_pp.xml&tmIdx=46&tm2lIdx=4601010000&tm3lIdx=4601010100",
+      "stage": "login_required",
+      "authenticated": false,
+      "input_verified": false,
+      "result_verified": false,
+      "workflow_verified": false,
+      "submission_verified": false,
+      "payment_verified": false,
+      "observation": "대표 메뉴를 클릭하여 로그인 요구를 확인했다. 로그인 후 입력·조회 결과는 미검증.",
+      "remaining_check": "실제 승인·전송·수정 연결과 수금 상태 분리",
+      "evidence": [
+        {
+          "file": "H05-entry.png",
+          "sha256": "3a5bf571a5ae7cbb37b2de68189fa07ce7ae7daeee4bbd4066e5b9b1795438a3"
+        }
+      ]
+    },
+    {
+      "id": "H06",
+      "title": "현금영수증",
+      "checked_at": "2026-09-16T23:11:11.622Z",
+      "representative_path": [
+        "계산서·영수증·카드",
+        "현금영수증 건별 발급"
+      ],
+      "observed_url": "https://hometax.go.kr/websquare/websquare.html?w2xPath=/ui/pp/index_pp.xml&tmIdx=46&tm2lIdx=4606020000&tm3lIdx=4606020100",
+      "stage": "login_required",
+      "authenticated": false,
+      "input_verified": false,
+      "result_verified": false,
+      "workflow_verified": false,
+      "submission_verified": false,
+      "payment_verified": false,
+      "observation": "대표 메뉴를 클릭하여 로그인 요구를 확인했다. 로그인 후 입력·조회 결과는 미검증.",
+      "remaining_check": "승인·취소·실제 환불 확인",
+      "evidence": [
+        {
+          "file": "H06-entry.png",
+          "sha256": "b66d1f35d50ec23df4ed2566fb7c16e43be87e4a0e726e67384f0bb83d16af3c"
+        }
+      ]
+    },
+    {
+      "id": "H07",
+      "title": "지출·매입증빙",
+      "checked_at": "2026-09-16T23:11:13.204Z",
+      "representative_path": [
+        "계산서·영수증·카드",
+        "현금영수증 매입내역(지출증빙) 조회"
+      ],
+      "observed_url": "https://hometax.go.kr/websquare/websquare.html?w2xPath=/ui/pp/index_pp.xml&tmIdx=46&tm2lIdx=4605010000&tm3lIdx=4605010100",
+      "stage": "login_required",
+      "authenticated": false,
+      "input_verified": false,
+      "result_verified": false,
+      "workflow_verified": false,
+      "submission_verified": false,
+      "payment_verified": false,
+      "observation": "대표 메뉴를 클릭하여 로그인 요구를 확인했다. 로그인 후 입력·조회 결과는 미검증.",
+      "remaining_check": "분류 근거·중복·누락·검토결정 확인",
+      "evidence": [
+        {
+          "file": "H07-entry.png",
+          "sha256": "b66d1f35d50ec23df4ed2566fb7c16e43be87e4a0e726e67384f0bb83d16af3c"
+        }
+      ]
+    },
+    {
+      "id": "H08",
+      "title": "매출·정산·입금",
+      "checked_at": "2026-09-16T23:11:15.025Z",
+      "representative_path": [
+        "계산서·영수증·카드",
+        "신용카드·판매(결제)대행 매출자료 조회"
+      ],
+      "observed_url": "https://hometax.go.kr/websquare/websquare.html?w2xPath=/ui/pp/index_pp.xml&tmIdx=46&tm2lIdx=4607000000&tm3lIdx=4607010000",
+      "stage": "login_required",
+      "authenticated": false,
+      "input_verified": false,
+      "result_verified": false,
+      "workflow_verified": false,
+      "submission_verified": false,
+      "payment_verified": false,
+      "observation": "대표 메뉴를 클릭하여 로그인 요구를 확인했다. 로그인 후 입력·조회 결과는 미검증.",
+      "remaining_check": "자료 범위·매출/증빙/정산/입금의 차이 확인",
+      "evidence": [
+        {
+          "file": "H08-entry.png",
+          "sha256": "b66d1f35d50ec23df4ed2566fb7c16e43be87e4a0e726e67384f0bb83d16af3c"
+        }
+      ]
+    },
+    {
+      "id": "H09",
+      "title": "부가세 기본",
+      "checked_at": "2026-09-16T23:24:58.818Z",
+      "representative_path": [
+        "세금신고",
+        "부가가치세 과세신고(일반·간이·대리납부)"
+      ],
+      "observed_url": "https://hometax.go.kr/websquare/websquare.html?w2xPath=/ui/pp/index_pp.xml&tmIdx=41&tm2lIdx=4102000000&tm3lIdx=4102080000",
+      "stage": "public_entry",
+      "authenticated": false,
+      "input_verified": false,
+      "result_verified": false,
+      "workflow_verified": false,
+      "submission_verified": false,
+      "payment_verified": false,
+      "observation": "부가세 신고 유형 안내 화면을 확인했다. 신고서 미리보기는 로그인 요구. 신고서 입력·접수 미검증.",
+      "remaining_check": "신고 접수·국세 납부·환급 구별",
+      "evidence": [
+        {
+          "file": "H09-entry.png",
+          "sha256": "6f65d40f5cd5c5db54ac4ac9e262b8876627ca1629db0ad8ce5a07e882f1b635"
+        }
+      ]
+    },
+    {
+      "id": "H10",
+      "title": "부가세 심화",
+      "checked_at": "2026-09-16T23:25:00.476Z",
+      "representative_path": [
+        "세금신고",
+        "(모의계산)부가가치세 세액비교"
+      ],
+      "observed_url": "https://hometax.go.kr/websquare/websquare.html?w2xPath=/ui/pp/index_pp.xml&tmIdx=41&tm2lIdx=4102000000&tm3lIdx=4102070000",
+      "stage": "login_required",
+      "authenticated": false,
+      "input_verified": false,
+      "result_verified": false,
+      "workflow_verified": false,
+      "submission_verified": false,
+      "payment_verified": false,
+      "observation": "세액비교 메뉴에서 로그인 요구. 의제매입·공통매입 안분 신고서 화면은 미검증.",
+      "remaining_check": "자료·항목 대조와 전문가 확인사항",
+      "evidence": [
+        {
+          "file": "H10-entry.png",
+          "sha256": "ec9e5c1e37d2bf8b02e84d5442b73f36c7c15652819a34bdb171d8207e6fa103"
+        }
+      ]
+    },
+    {
+      "id": "H11",
+      "title": "종합소득세",
+      "checked_at": "2026-09-16T23:14:21.981Z",
+      "representative_path": [
+        "세금신고",
+        "일반신고(모든신고안내유형)",
+        "정기신고"
+      ],
+      "observed_url": "https://hometax.go.kr/websquare/websquare.html?w2xPath=/ui/pp/index_pp.xml&tmIdx=41&tm2lIdx=4103020000&tm3lIdx=4103020100",
+      "stage": "login_required",
+      "authenticated": false,
+      "input_verified": false,
+      "result_verified": false,
+      "workflow_verified": false,
+      "submission_verified": false,
+      "payment_verified": false,
+      "observation": "대표 메뉴를 클릭하여 로그인 요구를 확인했다. 로그인 후 입력·조회 결과는 미검증.",
+      "remaining_check": "소득·기납부·공제 확인과 국세/지방세 완료 분리",
+      "evidence": [
+        {
+          "file": "H11-entry.png",
+          "sha256": "b66d1f35d50ec23df4ed2566fb7c16e43be87e4a0e726e67384f0bb83d16af3c"
+        }
+      ]
+    },
+    {
+      "id": "H12",
+      "title": "장부·결산·공동사업",
+      "checked_at": "2026-09-16T23:20:25.650Z",
+      "representative_path": [
+        "세금신고",
+        "기준·단순경비율(업종코드) 조회"
+      ],
+      "observed_url": "https://hometax.go.kr/websquare/websquare.html?w2xPath=/ui/pp/index_pp.xml&tmIdx=41&tm2lIdx=4103090000&tm3lIdx=4103090400",
+      "stage": "public_query_result",
+      "authenticated": false,
+      "input_verified": true,
+      "result_verified": true,
+      "workflow_verified": false,
+      "submission_verified": false,
+      "payment_verified": false,
+      "observation": "2025년 업종코드 701102 조회: 기준경비율 일반율 20.2%, 단순경비율 일반율 42.6%. 적용범위를 함께 확인. 엔진에 경비율을 자동 적용하지 않음.",
+      "remaining_check": "본인 검토용 집계·원자료 차이·전문가 인계",
+      "evidence": [
+        {
+          "file": "H12-result.png",
+          "sha256": "4833538b5e551850de49d4c53d2d00edd2406a8d8f7bc3fa744fe37f05336e14"
+        },
+        {
+          "file": "H12-result.yml",
+          "sha256": "16a5b158a219d2ab1690a2d716e84f7668e973aeaa844a675fc770c78d4665dc"
+        }
+      ]
+    },
+    {
+      "id": "H13",
+      "title": "면세사업장현황",
+      "checked_at": "2026-09-16T23:12:14.468Z",
+      "representative_path": [
+        "증명･등록･신청･ 사업장현황",
+        "사업장현황 신고/내역조회"
+      ],
+      "observed_url": "https://hometax.go.kr/websquare/websquare.html?w2xPath=/ui/pp/index_pp.xml&tmIdx=43&tm2lIdx=4308000000&tm3lIdx=4308010000",
+      "stage": "login_required",
+      "authenticated": false,
+      "input_verified": false,
+      "result_verified": false,
+      "workflow_verified": false,
+      "submission_verified": false,
+      "payment_verified": false,
+      "observation": "대표 메뉴를 클릭하여 로그인 요구를 확인했다. 로그인 후 입력·조회 결과는 미검증.",
+      "remaining_check": "대상·예외·업종별 첨부·접수 확인",
+      "evidence": [
+        {
+          "file": "H13-entry.png",
+          "sha256": "b66d1f35d50ec23df4ed2566fb7c16e43be87e4a0e726e67384f0bb83d16af3c"
+        }
+      ]
+    },
+    {
+      "id": "H14",
+      "title": "원천세·외주비",
+      "checked_at": "2026-09-16T23:15:06.069Z",
+      "representative_path": [
+        "세금신고",
+        "원천세 신고",
+        "일반신고"
+      ],
+      "observed_url": "https://hometax.go.kr/websquare/websquare.html?w2xPath=/ui/pp/index_pp.xml&tmIdx=41&tm2lIdx=4106000000&tm3lIdx=4106010000",
+      "stage": "public_entry",
+      "authenticated": false,
+      "input_verified": false,
+      "result_verified": false,
+      "workflow_verified": false,
+      "submission_verified": false,
+      "payment_verified": false,
+      "observation": "원천세 일반신고 안내와 정기·기한후·수정 신고 진입 버튼 확인. 작성·접수 미검증.",
+      "remaining_check": "원천세 접수·국세·지방세·지급명세서 별도 확인",
+      "evidence": [
+        {
+          "file": "H14-entry.png",
+          "sha256": "4b616acfc252cd05a22d81fd5fe029d149939a1da7d33215b69e06629cce874f"
+        }
+      ]
+    },
+    {
+      "id": "H15",
+      "title": "지급명세서·소득자료",
+      "checked_at": "2026-09-16T23:17:32.237Z",
+      "representative_path": [
+        "지급명세·자료·공익법인",
+        "지급명세서 제출/내역조회"
+      ],
+      "observed_url": "https://hometax.go.kr/websquare/websquare.html?w2xPath=/ui/pp/index_pp.xml&tmIdx=44&tm2lIdx=4402000000&tm3lIdx=4402070000",
+      "stage": "login_required",
+      "authenticated": false,
+      "input_verified": false,
+      "result_verified": false,
+      "workflow_verified": false,
+      "submission_verified": false,
+      "payment_verified": false,
+      "observation": "대표 메뉴를 클릭하여 로그인 요구를 확인했다. 로그인 후 입력·조회 결과는 미검증.",
+      "remaining_check": "대상자·귀속/지급기간·수정/중복·접수 확인",
+      "evidence": [
+        {
+          "file": "H15-entry.png",
+          "sha256": "b66d1f35d50ec23df4ed2566fb7c16e43be87e4a0e726e67384f0bb83d16af3c"
+        }
+      ]
+    },
+    {
+      "id": "H16",
+      "title": "직원 연말정산·퇴직",
+      "checked_at": "2026-09-16T23:23:49.603Z",
+      "representative_path": [
+        "장려금·연말정산·기부금",
+        "편리한 연말정산 > (모의계산) 연말정산 자동계산",
+        "2025년"
+      ],
+      "observed_url": "https://hometax.go.kr/websquare/websquare.html?w2xPath=/ui/pp/index_pp.xml&tmIdx=45&tm2lIdx=4505100000&tm3lIdx=4505101100",
+      "stage": "public_form",
+      "authenticated": false,
+      "input_verified": false,
+      "result_verified": false,
+      "workflow_verified": false,
+      "submission_verified": false,
+      "payment_verified": false,
+      "observation": "2025년 연말정산 모의계산 입력 화면과 계산 버튼 확인. 입력·계산 실행·직원별 정산 미검증.",
+      "remaining_check": "연간 지급·공제자료·정산·지급명세서 준비",
+      "evidence": [
+        {
+          "file": "H16-entry.png",
+          "sha256": "328cbc32d13a2c52ce62e22faadf9ae7e34ca625a4c83ae3d72ffe4fd51f2d82"
+        },
+        {
+          "file": "H16-entry.yml",
+          "sha256": "65cebdc4e5d7185c6fe088d465c02f62ff777ae74b08765ef8e74395cf485949"
+        }
+      ]
+    },
+    {
+      "id": "H17",
+      "title": "국세증명",
+      "checked_at": "2026-09-16T23:12:16.419Z",
+      "representative_path": [
+        "증명･등록･신청･ 사업장현황",
+        "소득금액증명"
+      ],
+      "observed_url": "https://hometax.go.kr/websquare/websquare.html?w2xPath=/ui/pp/index_pp.xml&tmIdx=43&tm2lIdx=4315010000&tm3lIdx=4315011000",
+      "stage": "login_required",
+      "authenticated": false,
+      "input_verified": false,
+      "result_verified": false,
+      "workflow_verified": false,
+      "submission_verified": false,
+      "payment_verified": false,
+      "observation": "대표 메뉴를 클릭하여 로그인 요구를 확인했다. 로그인 후 입력·조회 결과는 미검증.",
+      "remaining_check": "요구문서·사업장·기간·발급일·원문 확인",
+      "evidence": [
+        {
+          "file": "H17-entry.png",
+          "sha256": "b66d1f35d50ec23df4ed2566fb7c16e43be87e4a0e726e67384f0bb83d16af3c"
+        }
+      ]
+    },
+    {
+      "id": "H18",
+      "title": "접수·고지·납부",
+      "checked_at": "2026-09-16T23:17:28.303Z",
+      "representative_path": [
+        "납부·고지·환급",
+        "납부할 세액 조회/납부"
+      ],
+      "observed_url": "https://hometax.go.kr/websquare/websquare.html?w2xPath=/ui/pp/index_pp.xml&tmIdx=42&tm2lIdx=4201000000&tm3lIdx=4201010000",
+      "stage": "login_required",
+      "authenticated": false,
+      "input_verified": false,
+      "result_verified": false,
+      "workflow_verified": false,
+      "submission_verified": false,
+      "payment_verified": false,
+      "observation": "대표 메뉴를 클릭하여 로그인 요구를 확인했다. 로그인 후 입력·조회 결과는 미검증.",
+      "remaining_check": "접수·국세납부·지방신고·지방납부 각각 확인",
+      "evidence": [
+        {
+          "file": "H18-entry.png",
+          "sha256": "b66d1f35d50ec23df4ed2566fb7c16e43be87e4a0e726e67384f0bb83d16af3c"
+        }
+      ]
+    },
+    {
+      "id": "H19",
+      "title": "환급",
+      "checked_at": "2026-09-16T23:17:30.572Z",
+      "representative_path": [
+        "납부·고지·환급",
+        "환급금 상세조회"
+      ],
+      "observed_url": "https://hometax.go.kr/websquare/websquare.html?w2xPath=/ui/pp/index_pp.xml&tmIdx=42&tm2lIdx=4203000000&tm3lIdx=4203020000",
+      "stage": "login_required",
+      "authenticated": false,
+      "input_verified": false,
+      "result_verified": false,
+      "workflow_verified": false,
+      "submission_verified": false,
+      "payment_verified": false,
+      "observation": "대표 메뉴를 클릭하여 로그인 요구를 확인했다. 로그인 후 입력·조회 결과는 미검증.",
+      "remaining_check": "예상·결정·충당·실입금 분리 확인",
+      "evidence": [
+        {
+          "file": "H19-entry.png",
+          "sha256": "b66d1f35d50ec23df4ed2566fb7c16e43be87e4a0e726e67384f0bb83d16af3c"
+        }
+      ]
+    },
+    {
+      "id": "H20",
+      "title": "기한후·수정·경정청구",
+      "checked_at": "2026-09-16T23:15:12.548Z",
+      "representative_path": [
+        "세금신고",
+        "일반신고(모든신고안내유형)",
+        "수정신고"
+      ],
+      "observed_url": "https://hometax.go.kr/websquare/websquare.html?w2xPath=/ui/pp/index_pp.xml&tmIdx=41&tm2lIdx=4103020000&tm3lIdx=4103020300",
+      "stage": "login_required",
+      "authenticated": false,
+      "input_verified": false,
+      "result_verified": false,
+      "workflow_verified": false,
+      "submission_verified": false,
+      "payment_verified": false,
+      "observation": "대표 메뉴를 클릭하여 로그인 요구를 확인했다. 로그인 후 입력·조회 결과는 미검증.",
+      "remaining_check": "원신고·변경근거·접수·결정·납부/환급 확인",
+      "evidence": [
+        {
+          "file": "H20-entry.png",
+          "sha256": "b66d1f35d50ec23df4ed2566fb7c16e43be87e4a0e726e67384f0bb83d16af3c"
+        }
+      ]
+    },
+    {
+      "id": "H21",
+      "title": "기한연장·유예",
+      "checked_at": "2026-09-16T23:12:18.501Z",
+      "representative_path": [
+        "증명･등록･신청･ 사업장현황",
+        "신고기한 연장신청"
+      ],
+      "observed_url": "https://hometax.go.kr/websquare/websquare.html?w2xPath=/ui/pp/index_pp.xml&tmIdx=43&tm2lIdx=4307020000&tm3lIdx=4307020100",
+      "stage": "login_required",
+      "authenticated": false,
+      "input_verified": false,
+      "result_verified": false,
+      "workflow_verified": false,
+      "submission_verified": false,
+      "payment_verified": false,
+      "observation": "대표 메뉴를 클릭하여 로그인 요구를 확인했다. 로그인 후 입력·조회 결과는 미검증.",
+      "remaining_check": "신청 접수와 승인·새 기한을 구별",
+      "evidence": [
+        {
+          "file": "H21-entry.png",
+          "sha256": "b66d1f35d50ec23df4ed2566fb7c16e43be87e4a0e726e67384f0bb83d16af3c"
+        }
+      ]
+    },
+    {
+      "id": "H22",
+      "title": "장려금·포인트·지원",
+      "checked_at": "2026-09-16T23:17:33.804Z",
+      "representative_path": [
+        "상담·불복·제보",
+        "세금포인트 조회"
+      ],
+      "observed_url": "https://hometax.go.kr/websquare/websquare.html?w2xPath=/ui/pp/index_pp.xml&tmIdx=47&tm2lIdx=4713000000&tm3lIdx=4713010000",
+      "stage": "login_required",
+      "authenticated": false,
+      "input_verified": false,
+      "result_verified": false,
+      "workflow_verified": false,
+      "submission_verified": false,
+      "payment_verified": false,
+      "observation": "대표 메뉴를 클릭하여 로그인 요구를 확인했다. 로그인 후 입력·조회 결과는 미검증.",
+      "remaining_check": "자격자료·신청·심사·결정·입금/혜택 구별",
+      "evidence": [
+        {
+          "file": "H22-entry.png",
+          "sha256": "b66d1f35d50ec23df4ed2566fb7c16e43be87e4a0e726e67384f0bb83d16af3c"
+        }
+      ]
+    },
+    {
+      "id": "H23",
+      "title": "상담·소명·대리인",
+      "checked_at": "2026-09-16T23:25:43.869Z",
+      "representative_path": [
+        "상담·불복·제보",
+        "인터넷 상담하기"
+      ],
+      "observed_url": "https://hometax.go.kr/websquare/websquare.html?w2xPath=/ui/pp/index_pp.xml&tmIdx=47&tm2lIdx=4702000000&tm3lIdx=4702010000",
+      "stage": "login_required",
+      "authenticated": false,
+      "input_verified": false,
+      "result_verified": false,
+      "workflow_verified": false,
+      "submission_verified": false,
+      "payment_verified": false,
+      "observation": "인터넷 상담하기 진입 시 로그인 안내 후 로그인 화면으로 이동. 상담 작성·발송 미실행.",
+      "remaining_check": "통지·기한·사실자료·전문가 인계·권한 결과",
+      "evidence": [
+        {
+          "file": "H23-entry.png",
+          "sha256": "a84a55ca9878f42dcf2786503240412762d1fc5dede30b2c587ff9eb9b4ca652"
+        }
+      ]
+    },
+    {
+      "id": "H24",
+      "title": "조건부 세목·외부 연계",
+      "checked_at": "2026-09-16T23:30:09.567Z",
+      "representative_path": [
+        "증명･등록･신청･ 사업장현황",
+        "해외금융계좌 신고"
+      ],
+      "observed_url": "https://hometax.go.kr/websquare/websquare.html?w2xPath=/ui/pp/index_pp.xml&tmIdx=43&tm2lIdx=4310000000&tm3lIdx=4310020000",
+      "stage": "login_required",
+      "authenticated": false,
+      "input_verified": false,
+      "result_verified": false,
+      "workflow_verified": false,
+      "submission_verified": false,
+      "payment_verified": false,
+      "observation": "해외금융계좌 신고 메뉴에서 로그인 요구 확인. 신고대상 판정·금액 입력·접수 미검증.",
+      "remaining_check": "기관별 공식 경로·필요자료·전문가 확인",
+      "evidence": [
+        {
+          "file": "H24-entry.png",
+          "sha256": "505fa2841b583db016543e24fde951a3c812650030f1238ee99b53b45681b285"
+        }
+      ]
+    }
+  ],
+  "simulations": [
+    {
+      "id": "S01",
+      "title": "주택임대 분리과세 공개 모의계산 대조",
+      "checked_at": "2026-09-16T23:09:22.711Z",
+      "representative_path": [
+        "세금신고",
+        "(모의계산) 주택임대 종합·분리과세비교",
+        "2025년"
+      ],
+      "observed_url": "https://hometax.go.kr/websquare/websquare.html?w2xPath=/ui/pp/index_pp.xml&tmIdx=41&tm2lIdx=4103120000&tm3lIdx=4103120700",
+      "stage": "public_simulation_compared",
+      "authenticated": false,
+      "input_verified": true,
+      "result_verified": true,
+      "workflow_verified": false,
+      "submission_verified": false,
+      "payment_verified": false,
+      "observation": "실제 공개 모의계산에 가상 미등록 주택 수입 1,200만원·다른 소득 0원을 입력. 필요경비 600만원·공제 200만원·과세표준 400만원·감면 전 산출국세 56만원과 엔진 5항목 일치. 실제 신고서·다른 주택·종합과세 추천은 엔진 검증 범위 밖.",
+      "evidence": [
+        {
+          "file": "S01-simulator-input.png",
+          "sha256": "c5dd6fe9b6dfd3ba7ab7a1bd6c473a4236c541509af0907b980602fe62ce5207"
+        },
+        {
+          "file": "S01-simulator-result.png",
+          "sha256": "fa63ab13c780e1908fcdacf0fdbbe47273af06a747b2b3f8832219d9a907d283"
+        },
+        {
+          "file": "S01-simulator-result.yml",
+          "sha256": "be9588d53cf163f8b21301e3fa83c2fe33947bc417ef0b51b2c8f26d09ff8b43"
+        },
+        {
+          "file": "S01-calculator-input.json",
+          "sha256": "d58b0e8f955c793f7d274da5b61d0718efcc8a1723ed8332bbfc8de2a5c661cb"
+        },
+        {
+          "file": "S01-calculator-result.json",
+          "sha256": "1861644710c78d6c8f57be39b543ecc5243bca0cc1cb189ce4dc7c2d5f777d4b"
+        }
+      ],
+      "related_services": [
+        "H11",
+        "H13"
+      ],
+      "comparison_status": "matched_selected_fields",
+      "comparison_count": 5,
+      "remaining_limit": "한 개 가상 사례의 5개 금액만 일치. 종합과세 계산·다른 조건·실제 신고서·제출 미검증."
+    }
+  ]
+}

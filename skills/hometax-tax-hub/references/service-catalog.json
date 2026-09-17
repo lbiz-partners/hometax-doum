@@ -1,0 +1,506 @@
+{
+  "schema_version": 1,
+  "version": "4.1.1",
+  "checked_at": "2026-09-17",
+  "scope": "개인사업자 업무 24개 묶음. 공식 전체 메뉴 수나 모든 세목의 자동 계산을 뜻하지 않음.",
+  "services": [
+    {
+      "id": "H01",
+      "title": "처음 설정·사업장 전환",
+      "keywords": [
+        "처음",
+        "로그인",
+        "사업장 전환",
+        "사업 프로필"
+      ],
+      "skill": "tax-prep-kr",
+      "guide": "../../tax-prep-kr/references/business-lifecycle.md",
+      "section": "H01",
+      "free": "안내·자료준비·수동 대조·결과 확인",
+      "pro": "owner_workspace.py",
+      "completion_evidence": "사업장·기간·과세유형·자료 보유 확인",
+      "level": "guided_workflow",
+      "live_ui_verified": false,
+      "pro_role": "가명 사업장 프로필·확인일 검증",
+      "live_ui_stage": "public_form"
+    },
+    {
+      "id": "H02",
+      "title": "사업자등록 신청·정정",
+      "keywords": [
+        "사업자등록",
+        "업종 추가",
+        "상호 변경",
+        "소재지 변경",
+        "재발급"
+      ],
+      "skill": "tax-prep-kr",
+      "guide": "../../tax-prep-kr/references/business-lifecycle.md",
+      "section": "H02",
+      "free": "안내·자료준비·수동 대조·결과 확인",
+      "pro": "biz-reg-hometax",
+      "completion_evidence": "신청 접수·등록/정정 결과·등록증 내용 확인",
+      "level": "guided_workflow",
+      "live_ui_verified": false,
+      "pro_role": "신청·정정의 상세 준비 안내",
+      "live_ui_stage": "login_required"
+    },
+    {
+      "id": "H03",
+      "title": "휴업·재개업·폐업",
+      "keywords": [
+        "휴업",
+        "재개업",
+        "폐업",
+        "가게를 닫"
+      ],
+      "skill": "tax-prep-kr",
+      "guide": "../../tax-prep-kr/references/business-lifecycle.md",
+      "section": "H03",
+      "free": "안내·자료준비·수동 대조·결과 확인",
+      "pro": "monthly_review.py",
+      "completion_evidence": "처리결과와 마지막 신고·납부·인건비 후속 확인",
+      "level": "guided_workflow",
+      "live_ui_verified": false,
+      "pro_role": "마지막 영업기간의 매출·정산·준비금 대조",
+      "live_ui_stage": "login_required"
+    },
+    {
+      "id": "H04",
+      "title": "계좌·카드·전자송달",
+      "keywords": [
+        "사업용계좌",
+        "사업용카드",
+        "전자송달",
+        "환급계좌"
+      ],
+      "skill": "tax-prep-kr",
+      "guide": "../../tax-prep-kr/references/business-lifecycle.md",
+      "section": "H04",
+      "free": "안내·자료준비·수동 대조·결과 확인",
+      "pro": "document_review.py",
+      "completion_evidence": "등록/변경 결과·조회 공백·공제 확인",
+      "level": "guided_workflow",
+      "live_ui_verified": false,
+      "pro_role": "등록 관련 제출서류 조건 대조",
+      "live_ui_stage": "login_required"
+    },
+    {
+      "id": "H05",
+      "title": "전자세금계산서·전자계산서",
+      "keywords": [
+        "세금계산서",
+        "계산서 발급",
+        "미수금",
+        "수금"
+      ],
+      "skill": "tax-invoice-hometax",
+      "guide": "../../tax-invoice-hometax/SKILL.md",
+      "section": null,
+      "free": "안내·자료준비·수동 대조·결과 확인",
+      "pro": "receivables-engine.mjs",
+      "completion_evidence": "실제 승인·전송·수정 연결과 수금 상태 분리",
+      "level": "guided_workflow",
+      "live_ui_verified": false,
+      "pro_role": "청구와 입금의 미수 후보 대조",
+      "live_ui_stage": "login_required"
+    },
+    {
+      "id": "H06",
+      "title": "현금영수증",
+      "keywords": [
+        "현금영수증",
+        "현금매출",
+        "지출증빙",
+        "발급거부"
+      ],
+      "skill": "tax-invoice-hometax",
+      "guide": "../../tax-invoice-hometax/references/cash-receipts.md",
+      "section": "H06",
+      "free": "안내·자료준비·수동 대조·결과 확인",
+      "pro": "monthly_review.py",
+      "completion_evidence": "승인·취소·실제 환불 확인",
+      "level": "guided_workflow",
+      "live_ui_verified": false,
+      "pro_role": "매출 원장과 현금영수증의 중복·금액 차이 대조",
+      "live_ui_stage": "login_required"
+    },
+    {
+      "id": "H07",
+      "title": "지출·매입증빙",
+      "keywords": [
+        "영수증 분류",
+        "카드 내역",
+        "공제 불공제",
+        "중복 지출"
+      ],
+      "skill": "receipt-classify-kr",
+      "guide": "../../receipt-classify-kr/SKILL.md",
+      "section": null,
+      "free": "안내·자료준비·수동 대조·결과 확인",
+      "pro": "control_review.py",
+      "completion_evidence": "분류 근거·중복·누락·검토결정 확인",
+      "level": "guided_workflow",
+      "live_ui_verified": false,
+      "pro_role": "사람이 분류한 지출 합계와 입력값 대조",
+      "live_ui_stage": "login_required"
+    },
+    {
+      "id": "H08",
+      "title": "매출·정산·입금",
+      "keywords": [
+        "월마감",
+        "정산",
+        "PG",
+        "매출 대조",
+        "수수료",
+        "플랫폼"
+      ],
+      "skill": "tax-invoice-hometax",
+      "guide": "../../tax-invoice-hometax/references/sales-settlement-review.md",
+      "section": null,
+      "free": "안내·자료준비·수동 대조·결과 확인",
+      "pro": "tabular_import.py + monthly_review.py",
+      "completion_evidence": "자료 범위·매출/증빙/정산/입금의 차이 확인",
+      "level": "guided_workflow",
+      "live_ui_verified": false,
+      "pro_role": "명시적 열 변환 후 매출·정산·입금 대조",
+      "live_ui_stage": "login_required"
+    },
+    {
+      "id": "H09",
+      "title": "부가세 기본",
+      "keywords": [
+        "부가세",
+        "일반과세",
+        "간이과세",
+        "무실적"
+      ],
+      "skill": "vat-hometax",
+      "guide": "../../vat-hometax/SKILL.md",
+      "section": null,
+      "free": "안내·자료준비·수동 대조·결과 확인",
+      "pro": "industry_review.py + control_review.py",
+      "completion_evidence": "신고 접수·국세 납부·환급 구별",
+      "level": "guided_workflow",
+      "live_ui_verified": false,
+      "pro_role": "일반·간이 부가세 계산 참고값과 같은 항목의 화면값 대조",
+      "live_ui_stage": "public_entry"
+    },
+    {
+      "id": "H10",
+      "title": "부가세 심화",
+      "keywords": [
+        "영세율",
+        "조기환급",
+        "공통매입",
+        "의제매입",
+        "매입자발행"
+      ],
+      "skill": "tax-prep-kr",
+      "guide": "../../tax-prep-kr/references/advanced-and-linked.md",
+      "section": "H10",
+      "free": "안내·자료준비·수동 대조·결과 확인",
+      "pro": "industry_review.py + control_review.py",
+      "completion_evidence": "자료·항목 대조와 전문가 확인사항",
+      "level": "preparation_and_review",
+      "live_ui_verified": false,
+      "pro_role": "음식점 의제매입·일반과세 공통매입 안분·상가 보증금 계산 참고값",
+      "live_ui_stage": "login_required"
+    },
+    {
+      "id": "H11",
+      "title": "종합소득세",
+      "keywords": [
+        "종합소득세",
+        "종소세",
+        "모두채움",
+        "중간예납",
+        "근로 겸업"
+      ],
+      "skill": "income-tax-hometax",
+      "guide": "../../income-tax-hometax/SKILL.md",
+      "section": null,
+      "free": "안내·자료준비·수동 대조·결과 확인",
+      "pro": "jongsose_engine.py",
+      "completion_evidence": "소득·기납부·공제 확인과 국세/지방세 완료 분리",
+      "level": "guided_workflow",
+      "live_ui_verified": false,
+      "pro_role": "지원 연도·유형의 개인 종소세 예상세액",
+      "live_ui_stage": "login_required"
+    },
+    {
+      "id": "H12",
+      "title": "장부·결산·공동사업",
+      "keywords": [
+        "간편장부",
+        "복식부기",
+        "감가상각",
+        "공동사업",
+        "이월손실"
+      ],
+      "skill": "tax-prep-kr",
+      "guide": "../../tax-prep-kr/references/advanced-and-linked.md",
+      "section": "H12",
+      "free": "안내·자료준비·수동 대조·결과 확인",
+      "pro": "industry_review.py + control_review.py",
+      "completion_evidence": "본인 검토용 집계·원자료 차이·전문가 인계",
+      "level": "preparation_and_review",
+      "live_ui_verified": false,
+      "pro_role": "재고·제조원가 연결과 본인 작성 장부의 확인된 합계 대조",
+      "live_ui_stage": "public_query_result"
+    },
+    {
+      "id": "H13",
+      "title": "면세사업장현황",
+      "keywords": [
+        "사업장현황",
+        "면세사업",
+        "학원",
+        "주택임대"
+      ],
+      "skill": "tax-prep-kr",
+      "guide": "../../tax-prep-kr/references/exempt-status-report.md",
+      "section": null,
+      "free": "안내·자료준비·수동 대조·결과 확인",
+      "pro": "industry_review.py + business_status.py",
+      "completion_evidence": "대상·예외·업종별 첨부·접수 확인",
+      "level": "guided_workflow",
+      "live_ui_verified": false,
+      "pro_role": "학원·인적용역 수입 연결·주택 분리과세 참고값과 면세 연간 집계",
+      "live_ui_stage": "login_required"
+    },
+    {
+      "id": "H14",
+      "title": "원천세·외주비",
+      "keywords": [
+        "원천세",
+        "외주비",
+        "강사료",
+        "원천징수",
+        "일용직"
+      ],
+      "skill": "tax-prep-kr",
+      "guide": "../../tax-prep-kr/references/payroll-basic.md",
+      "section": "H14",
+      "free": "안내·자료준비·수동 대조·결과 확인",
+      "pro": "withholding-engine.mjs",
+      "completion_evidence": "원천세 접수·국세·지방세·지급명세서 별도 확인",
+      "level": "guided_workflow",
+      "live_ui_verified": false,
+      "pro_role": "지원 소득유형의 예상 원천징수액",
+      "live_ui_stage": "public_entry"
+    },
+    {
+      "id": "H15",
+      "title": "지급명세서·소득자료",
+      "keywords": [
+        "지급명세서",
+        "간이지급명세서",
+        "일용근로",
+        "소득자료"
+      ],
+      "skill": "tax-prep-kr",
+      "guide": "../../tax-prep-kr/references/payroll-basic.md",
+      "section": "H15",
+      "free": "안내·자료준비·수동 대조·결과 확인",
+      "pro": "control_review.py",
+      "completion_evidence": "대상자·귀속/지급기간·수정/중복·접수 확인",
+      "level": "guided_workflow",
+      "live_ui_verified": false,
+      "pro_role": "지급총액과 명세서의 같은 항목 대조",
+      "live_ui_stage": "login_required"
+    },
+    {
+      "id": "H16",
+      "title": "직원 연말정산·퇴직",
+      "keywords": [
+        "직원 연말정산",
+        "중도퇴사",
+        "퇴직소득"
+      ],
+      "skill": "tax-prep-kr",
+      "guide": "../../tax-prep-kr/references/payroll-basic.md",
+      "section": "H16",
+      "free": "안내·자료준비·수동 대조·결과 확인",
+      "pro": "control_review.py",
+      "completion_evidence": "연간 지급·공제자료·정산·지급명세서 준비",
+      "level": "preparation_and_review",
+      "live_ui_verified": false,
+      "pro_role": "확인된 연간 지급·정산 입력값의 합계 대조",
+      "live_ui_stage": "public_form"
+    },
+    {
+      "id": "H17",
+      "title": "국세증명",
+      "keywords": [
+        "소득금액증명",
+        "납세증명",
+        "과세표준증명",
+        "대출 서류",
+        "사실증명"
+      ],
+      "skill": "tax-prep-kr",
+      "guide": "../../tax-prep-kr/references/documents-and-payments.md",
+      "section": "H17",
+      "free": "안내·자료준비·수동 대조·결과 확인",
+      "pro": "document_review.py",
+      "completion_evidence": "요구문서·사업장·기간·발급일·원문 확인",
+      "level": "guided_workflow",
+      "live_ui_verified": false,
+      "pro_role": "원문 확인된 증명서와 제출처 요구조건 비교",
+      "live_ui_stage": "login_required"
+    },
+    {
+      "id": "H18",
+      "title": "접수·고지·납부",
+      "keywords": [
+        "접수증",
+        "납부",
+        "고지",
+        "체납",
+        "분납"
+      ],
+      "skill": "tax-prep-kr",
+      "guide": "../../tax-prep-kr/references/documents-and-payments.md",
+      "section": "H18",
+      "free": "안내·자료준비·수동 대조·결과 확인",
+      "pro": "owner_workspace.py",
+      "completion_evidence": "접수·국세납부·지방신고·지방납부 각각 확인",
+      "level": "guided_workflow",
+      "live_ui_verified": false,
+      "pro_role": "증빙에 따른 신고·국세/지방세 납부 상태 분리",
+      "live_ui_stage": "login_required"
+    },
+    {
+      "id": "H19",
+      "title": "환급",
+      "keywords": [
+        "환급금",
+        "환급 입금",
+        "충당"
+      ],
+      "skill": "tax-prep-kr",
+      "guide": "../../tax-prep-kr/references/documents-and-payments.md",
+      "section": "H19",
+      "free": "안내·자료준비·수동 대조·결과 확인",
+      "pro": "control_review.py",
+      "completion_evidence": "예상·결정·충당·실입금 분리 확인",
+      "level": "guided_workflow",
+      "live_ui_verified": false,
+      "pro_role": "예상·결정·충당·입금에서 비교 가능한 금액 대조",
+      "live_ui_stage": "login_required"
+    },
+    {
+      "id": "H20",
+      "title": "기한후·수정·경정청구",
+      "keywords": [
+        "기한후",
+        "수정신고",
+        "경정청구",
+        "신고 정정"
+      ],
+      "skill": "tax-prep-kr",
+      "guide": "../../tax-prep-kr/references/corrections-and-relief.md",
+      "section": "H20",
+      "free": "안내·자료준비·수동 대조·결과 확인",
+      "pro": "control_review.py",
+      "completion_evidence": "원신고·변경근거·접수·결정·납부/환급 확인",
+      "level": "preparation_and_review",
+      "live_ui_verified": false,
+      "pro_role": "원신고와 정정 근거의 같은 항목 대조",
+      "live_ui_stage": "login_required"
+    },
+    {
+      "id": "H21",
+      "title": "기한연장·유예",
+      "keywords": [
+        "기한연장",
+        "징수유예",
+        "납부유예",
+        "압류",
+        "매각 유예"
+      ],
+      "skill": "tax-prep-kr",
+      "guide": "../../tax-prep-kr/references/corrections-and-relief.md",
+      "section": "H21",
+      "free": "안내·자료준비·수동 대조·결과 확인",
+      "pro": "monthly_review.py",
+      "completion_evidence": "신청 접수와 승인·새 기한을 구별",
+      "level": "preparation_and_review",
+      "live_ui_verified": false,
+      "pro_role": "승인된 기한·확정금액을 사용한 준비금 집계",
+      "live_ui_stage": "login_required"
+    },
+    {
+      "id": "H22",
+      "title": "장려금·포인트·지원",
+      "keywords": [
+        "장려금",
+        "세금포인트",
+        "세정지원",
+        "공제감면"
+      ],
+      "skill": "tax-prep-kr",
+      "guide": "../../tax-prep-kr/references/documents-and-payments.md",
+      "section": "H22",
+      "free": "안내·자료준비·수동 대조·결과 확인",
+      "pro": "document_review.py",
+      "completion_evidence": "자격자료·신청·심사·결정·입금/혜택 구별",
+      "level": "guided_workflow",
+      "live_ui_verified": false,
+      "pro_role": "신청에 필요한 서류의 누락·기간 조건 점검",
+      "live_ui_stage": "login_required"
+    },
+    {
+      "id": "H23",
+      "title": "상담·소명·대리인",
+      "keywords": [
+        "소명",
+        "불복",
+        "세무대리인",
+        "수임동의",
+        "고충",
+        "세무조사"
+      ],
+      "skill": "tax-prep-kr",
+      "guide": "../../tax-prep-kr/references/corrections-and-relief.md",
+      "section": "H23",
+      "free": "안내·자료준비·수동 대조·결과 확인",
+      "pro": "document_review.py",
+      "completion_evidence": "통지·기한·사실자료·전문가 인계·권한 결과",
+      "level": "preparation_and_review",
+      "live_ui_verified": false,
+      "pro_role": "전문가에게 전달할 서류 조건 점검",
+      "live_ui_stage": "login_required"
+    },
+    {
+      "id": "H24",
+      "title": "조건부 세목·외부 연계",
+      "keywords": [
+        "양도",
+        "상속",
+        "증여",
+        "종부세",
+        "해외금융",
+        "주세",
+        "개별소비세",
+        "인지세",
+        "4대보험",
+        "통신판매",
+        "법인전환"
+      ],
+      "skill": "tax-prep-kr",
+      "guide": "../../tax-prep-kr/references/advanced-and-linked.md",
+      "section": "H24",
+      "free": "안내·자료준비·수동 대조·결과 확인",
+      "pro": "industry_review.py + document_review.py",
+      "completion_evidence": "기관별 공식 경로·필요자료·전문가 확인",
+      "level": "preparation_and_review",
+      "live_ui_verified": false,
+      "pro_role": "확인된 수출 영세율의 기본 부가세 참고값·조건부 업무 인계자료 점검",
+      "live_ui_stage": "login_required"
+    }
+  ],
+  "live_ui_report": "live-ui-checks.json"
+}
