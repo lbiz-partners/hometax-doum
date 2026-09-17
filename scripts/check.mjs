@@ -24,7 +24,7 @@ const skills = fs.readdirSync(SKILL_DIR).filter((d) => fs.existsSync(path.join(S
 // 1. 유료 스킬 유출 방지 (제일 중요)
 for (const pro of PRO) check(!skills.includes(pro), `⛔ 유료(Pro) 스킬이 무료 레포에 섞임: ${pro} — 삭제 필요`);
 
-// 2. 엔진 파일 유출 방지 (무료는 마크다운만)
+// 2. 엔진 파일 유출 방지 (무료는 마크다운·JSON·CSV 템플릿만)
 const walk = (dir, acc = []) => {
   for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
     const fp = path.join(dir, e.name);
@@ -34,7 +34,7 @@ const walk = (dir, acc = []) => {
   return acc;
 };
 const files = walk(SKILL_DIR);
-const engines = files.filter((f) => !/\.(md|json)$/.test(f));
+const engines = files.filter((f) => !/\.(md|json|csv)$/.test(f));
 check(engines.length === 0, `⛔ 무료 레포에 계산 엔진 파일 유출: ${engines.map((f) => path.relative(ROOT, f)).join(', ')}`);
 
 const vPath = path.join(ROOT, 'VERSION');
@@ -121,6 +121,14 @@ try {
   check(/공통 문단 일치/.test(out), '공통 문단 검사 결과 판정 불가');
 } catch (error) {
   check(false, '공통 문단 드리프트: ' + (error.stderr?.toString() || error.message).split('\n').slice(0, 4).join(' '));
+}
+
+// 9-2. 업무 목록 md = JSON 생성 결과 (F-02) — 행은 JSON, 산문은 scripts/service-catalog.template.md (Pro에서 내보냄)
+try {
+  const out = execFileSync('python3', ['-B', 'scripts/render-service-catalog.py', '--check'], { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
+  check(/생성 결과 일치/.test(out), '업무 목록 md 생성 검사 판정 불가');
+} catch (error) {
+  check(false, '업무 목록 md가 JSON 생성 결과와 다름: ' + (error.stderr?.toString() || error.message).split('\n').slice(0, 2).join(' '));
 }
 
 // 10. 하네스 무결성 — 훅 등록·설정이 무장해제되지 않았는지.

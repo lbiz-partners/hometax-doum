@@ -245,6 +245,21 @@ def validate_authenticated_ui(catalog, report):
     _check_simulations(report, set(expected_ids), catalog_date, authenticated=True)
 
 
+VERIFICATION_DIR = 'docs/verification/'
+
+
+def _report_path(root, base, name, label):
+    """실화면 기록 JSON의 위치. 스킬 패키지 용량을 줄이기 위해 저장소 docs/verification/ 아래에 둔다
+    (2026-09-17 F-02). 예전 위치(references/ 안 파일명만)도 허용한다. 그 외 경로·상위 이동은 거부."""
+    if type(name) is not str or not name.strip() or Path(name).is_absolute() or '..' in Path(name).parts:
+        raise ValueError(f'{label} 파일명 형식 오류')
+    if name.startswith(VERIFICATION_DIR) and Path(name).name == name[len(VERIFICATION_DIR):]:
+        return root / name
+    if Path(name).name == name:
+        return base / name
+    raise ValueError(f'{label} 파일명 형식 오류')
+
+
 def check(root=ROOT):
     base = root / 'skills/hometax-tax-hub/references'
     catalog = json.loads((base / 'service-catalog.json').read_text(encoding='utf-8'))
@@ -285,25 +300,18 @@ def check(root=ROOT):
                     raise ValueError(f'{item["id"]}: Pro 도구 실체 없음')
     live_report_name = catalog.get('live_ui_report')
     if live_report_name is not None:
-        if (type(live_report_name) is not str or not live_report_name.strip()
-                or Path(live_report_name).name != live_report_name):
-            raise ValueError('실화면 보고서 파일명 형식 오류')
-        live_report_path = base / live_report_name
+        live_report_path = _report_path(root, base, live_report_name, '실화면 보고서')
         if not live_report_path.is_file():
             raise ValueError('실화면 보고서 파일 누락')
         validate_live_ui(catalog, json.loads(live_report_path.read_text(encoding='utf-8')))
         print(f'실화면 보고서 통과: 24개 업무 부분 단계·공식 URL·증거 형식')
     elif any('live_ui_stage' in item for item in items):
         raise ValueError('catalog live_ui_stage가 있으나 실화면 보고서가 없습니다')
-    if not pro and (catalog.get('authenticated_ui_report') is not None or list(base.glob('authenticated-ui-*'))):
+    if not pro and (catalog.get('authenticated_ui_report') is not None or list(base.glob('authenticated-ui-*')) or list((root / 'docs/verification').glob('authenticated-ui-*'))):
         raise ValueError('Free 공개판에 개인 계정 인증 후 관찰 기록을 포함할 수 없습니다')
     authenticated_report_name = catalog.get('authenticated_ui_report')
     if authenticated_report_name is not None:
-        if (type(authenticated_report_name) is not str
-                or not authenticated_report_name.strip()
-                or Path(authenticated_report_name).name != authenticated_report_name):
-            raise ValueError('인증 후 실화면 보고서 파일명 형식 오류')
-        authenticated_report_path = base / authenticated_report_name
+        authenticated_report_path = _report_path(root, base, authenticated_report_name, '인증 후 실화면 보고서')
         if not authenticated_report_path.is_file():
             raise ValueError('인증 후 실화면 보고서 파일 누락')
         validate_authenticated_ui(

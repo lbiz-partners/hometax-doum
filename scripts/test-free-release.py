@@ -70,7 +70,7 @@ class FreeReleaseTests(unittest.TestCase):
     def test_free_source_has_exact_six_skills_and_no_code(self):
         files = package.skill_files()
         self.assertEqual({name.split('/')[0] for name in files}, package.FREE)
-        self.assertTrue(all(p.suffix in {'.md', '.json'} for p in files.values()))
+        self.assertTrue(all(p.suffix in {'.md', '.json', '.csv'} for p in files.values()))
 
     def test_current_desktop_bundles_match_sources(self):
         version = package.version()

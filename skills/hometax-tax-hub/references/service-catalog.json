@@ -502,5 +502,5 @@
       "live_ui_stage": "login_required"
     }
   ],
-  "live_ui_report": "live-ui-checks.json"
+  "live_ui_report": "docs/verification/live-ui-checks.json"
 }

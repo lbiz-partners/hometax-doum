@@ -32,7 +32,7 @@ description: "개인사업자의 영수증·카드 내역을 부가세와 종소
 ## 입력
 
 다음 중 하나 이상:
-- 엑셀/CSV 카드 내역
+- 엑셀/CSV 카드 내역 · 홈택스 다운로드 파일 — 파일을 열기 전에 [입력 자료 실측 포맷](references/source-formats.md)에서 헤더 행·컬럼 구조를 확인한다. 미실측 포맷은 사용자 파일의 실제 구조를 먼저 기록하고 추정 컬럼으로 파싱하지 않는다
 - 지출 목록 텍스트
 - 영수증 이미지(가능하면 OCR/읽기 후 표로)
 - 폴더 경로 (사용자가 지정)
@@ -67,7 +67,8 @@ description: "개인사업자의 영수증·카드 내역을 부가세와 종소
 | 사용자확인 | Y/N |
 
 상세 규칙: `references/rules.md`  
-계정 예시: `references/accounts.md`
+계정 예시: `references/accounts.md`  
+출력 템플릿: [`assets/classification-template.csv`](assets/classification-template.csv) — 위 14열 헤더와 예시 1행. 최종 분류표는 이 열 순서로 저장하고 Pro 대조 도구 인계에도 같은 열을 쓴다
 
 ## 월말 카드·증빙 검토
 

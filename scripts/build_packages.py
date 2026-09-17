@@ -33,8 +33,8 @@ def skill_files():
         if p.is_symlink():
             raise ValueError('심볼릭링크 원본은 배포할 수 없습니다')
         if p.is_file():
-            if p.suffix not in {'.md', '.json'}:
-                raise ValueError('무료판에는 안내 Markdown과 입력 JSON만 포함할 수 있습니다')
+            if p.suffix not in {'.md', '.json', '.csv'}:
+                raise ValueError('무료판에는 안내 Markdown과 입력 JSON·CSV 템플릿만 포함할 수 있습니다')
             files[p.relative_to(skills).as_posix()] = p
     return files
 
