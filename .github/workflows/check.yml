@@ -39,8 +39,10 @@ jobs:
         shell: powershell
         run: |
           .\install.ps1 --check
-          $target = Join-Path $env:RUNNER_TEMP 'hometax-doum-skills'
+          if ($LASTEXITCODE -ne 0) { throw "Installer check failed with exit code $LASTEXITCODE." }
+          $target = Join-Path $env:RUNNER_TEMP '홈택스 도움 skills'
           .\install.ps1 --target-dir $target
+          if ($LASTEXITCODE -ne 0) { throw "Installer failed with exit code $LASTEXITCODE." }
           $installed = @(Get-ChildItem -LiteralPath $target -Directory)
           if ($installed.Count -ne 6) {
             throw "Expected 6 installed skills, found $($installed.Count)."

@@ -32,6 +32,13 @@ Claude Code 플러그인 설치와 .skill 업로드는 Python이 없어도 됩�
 '''
 
 
+def ensure_unicode_output() -> None:
+    for stream in (sys.stdout, sys.stderr):
+        reconfigure = getattr(stream, 'reconfigure', None)
+        if reconfigure:
+            reconfigure(encoding='utf-8', errors='replace')
+
+
 @dataclass
 class Change:
     skill: str
@@ -155,6 +162,7 @@ def rollback_operation(operation: Operation) -> None:
 
 
 def main(argv: list[str] | None = None) -> int:
+    ensure_unicode_output()
     parser = argparse.ArgumentParser(
         description='홈택스 도움 무료판 CLI 설치',
         add_help=False,

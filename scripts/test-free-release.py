@@ -117,6 +117,24 @@ class FreeReleaseTests(unittest.TestCase):
                     self.assertIn('install.py', result.stdout)
                     self.assertIn('Windows', result.stdout)
 
+    def test_installer_reconfigures_non_utf8_stdout_and_stderr(self):
+        for encoding in ('cp1252', 'cp949'):
+            with self.subTest(encoding=encoding):
+                env = os.environ.copy()
+                env['PYTHONIOENCODING'] = encoding
+                command = [sys.executable, '-B', str(ROOT / 'install.py')]
+                checked = subprocess.run([*command, '--check'], capture_output=True, env=env)
+                detail = (checked.stderr + checked.stdout).decode('utf-8', errors='replace')
+                self.assertEqual(checked.returncode, 0, detail)
+                self.assertIn('검사 완료 —'.encode(), checked.stdout)
+                rejected = subprocess.run(
+                    [*command, '--target-dir', str(ROOT / 'skills')],
+                    capture_output=True,
+                    env=env,
+                )
+                self.assertNotEqual(rejected.returncode, 0)
+                self.assertIn('설치 대상은'.encode(), rejected.stderr)
+
     def test_install_and_upgrade_keep_old_skills_and_unrelated_files(self):
         with tempfile.TemporaryDirectory() as tmp:
             folder = Path(tmp)
