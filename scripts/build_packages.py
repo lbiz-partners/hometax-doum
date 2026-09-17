@@ -46,7 +46,10 @@ def verify(archive, expected):
         if len(names) != len(set(names)) or set(names) != set(expected):
             raise ValueError('ZIP 파일 목록 불일치 또는 중복')
         for entry, name in zip(entries, names):
-            if Path(name).is_absolute() or '..' in Path(name).parts or stat.S_ISLNK(entry.external_attr >> 16):
+            mode = entry.external_attr >> 16
+            expected_mode = 0o755 if expected[name].name in {'install.sh', 'install.py'} else 0o644
+            if (Path(name).is_absolute() or '..' in Path(name).parts
+                    or not stat.S_ISREG(mode) or stat.S_IMODE(mode) != expected_mode):
                 raise ValueError('ZIP 경로 또는 링크 오류')
             if any(ord(c) > 127 for c in name) and not entry.flag_bits & 0x800:
                 raise ValueError('한글 ZIP 경로 UTF-8 누락')
@@ -72,7 +75,9 @@ def write_zip(output, expected):
                 entry = zipfile.ZipInfo(name)
                 entry.flag_bits |= 0x800
                 entry.compress_type = zipfile.ZIP_DEFLATED
-                entry.external_attr = (0o755 if source.name == 'install.sh' else 0o644) << 16
+                entry.create_system = 3
+                mode = 0o755 if source.name in {'install.sh', 'install.py'} else 0o644
+                entry.external_attr = (stat.S_IFREG | mode) << 16
                 z.writestr(entry, source.read_bytes())
         count = verify(temporary, normalized)
         os.replace(temporary, output)
@@ -111,6 +116,8 @@ def build(directory):
         expected = {f'{top}/{name}': ROOT / name for name in DOCS}
         prefix = '2_CLI용_폴더스킬/' if delivery else ''
         expected[f'{top}/{prefix}install.sh'] = ROOT / 'install.sh'
+        expected[f'{top}/{prefix}install.py'] = ROOT / 'install.py'
+        expected[f'{top}/{prefix}install.ps1'] = ROOT / 'install.ps1'
         expected.update({f'{top}/{prefix}skills/{name}': source for name, source in originals.items()})
         desktop = '1_데스크탑용_skill파일' if delivery else '데스크탑용-skill파일'
         expected.update({f'{top}/{desktop}/{p.name}': p for p in current})

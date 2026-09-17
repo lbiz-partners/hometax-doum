@@ -5,5 +5,7 @@
 # 셔뱅(#!/bin/sh)이 깨져 훅이 무발화 상태가 된다 (조용한 비활성 방지)
 .githooks/** text eol=lf
 *.sh text eol=lf
+*.py text eol=lf
+*.ps1 text eol=lf
 *.mjs text eol=lf
 *.json text eol=lf

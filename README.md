@@ -8,7 +8,7 @@
 
 **혼자 챙기기 어려운 홈택스 업무를 AI와 함께 준비하세요.** 소상공인·개인사업자·프리랜서를 위한 스킬 모음입니다. 사용하는 AI 앱에 설치하면, 평소 말하듯 요청해 필요한 자료와 다음 할 일을 안내받을 수 있습니다.
 
-**버전:** 4.1.1 · **무료 스킬 6종** · [처음 시작 가이드](시작-가이드.md)
+**버전:** 4.1.2 · **무료 스킬 6종** · [처음 시작 가이드](시작-가이드.md)
 
 ## 이런 일을 도와드려요
 
@@ -69,11 +69,18 @@ Pro는 Free 6종에 **종소세 준비·계산, 원천세, 사업자등록 전�
 
 ## 설치하고 시작하기
 
-이 저장소는 **Free 공개판**입니다. 사용하는 AI 앱의 이용조건과 브라우저 연결 환경은 별도로 확인하세요.
+이 저장소는 **Free 공개판**입니다. 윈도우·맥·리눅스에서 사용할 수 있습니다. 지금 쓰는 방법을 고르세요. 사용하는 AI 앱의 이용조건과 브라우저 연결 환경은 별도로 확인하세요.
+
+| 지금 쓰는 것 | 설치 | Python | 운영체제 |
+|---|---|---|---|
+| Claude Code | 아래 플러그인 두 줄 | 필요 없음 | 윈도우·맥·리눅스 같음 |
+| `.skill` 업로드 앱 | 데스크탑용 `.skill` 6개 추가 | 필요 없음 | 윈도우·맥 같음 |
+| Codex 등 폴더 스킬 (Windows) | `py -3 install.py` | 3.10 이상 | Windows |
+| Codex 등 폴더 스킬 (Mac/Linux) | `bash install.sh` | 3.10 이상 | macOS·Linux·Git Bash |
 
 ### Claude Code를 사용한다면
 
-Claude Code 대화창에서 다음 두 줄을 차례로 입력하세요.
+Claude Code 대화창에서 다음 두 줄을 차례로 입력하세요. 윈도우와 맥이 같습니다.
 
 ```text
 /plugin marketplace add lbiz-partners/hometax-doum
@@ -82,22 +89,41 @@ Claude Code 대화창에서 다음 두 줄을 차례로 입력하세요.
 
 무료 스킬 6종이 함께 설치됩니다. 업데이트할 때는 `/plugin marketplace update lbiz-partners`로 마켓플레이스를 갱신하고 설치된 플러그인의 버전을 확인하세요.
 
-### Codex 등 폴더 스킬을 사용한다면
+### `.skill` 업로드를 지원하는 앱이라면
+
+전달받은 ZIP의 데스크탑용 `.skill` 파일 **6개**를 앱의 스킬 설정에 추가하세요. 터미널과 Python이 없어도 됩니다. 설치 방식은 [처음 시작 가이드](시작-가이드.md)에 정리했습니다.
+
+### 폴더 스킬을 사용한다면 (Windows · Mac · Linux)
 
 1. 이 페이지의 **Code → Download ZIP**으로 내려받아 압축을 풉니다.
-2. 터미널에서 압축을 푼 폴더로 이동합니다. 전달용 ZIP은 `2_CLI용_폴더스킬` 폴더를 사용합니다.
-3. Codex 기준으로 아래 명령을 실행합니다.
+2. 압축을 푼 폴더로 이동합니다. 전달용 ZIP은 `2_CLI용_폴더스킬` 폴더를 사용합니다.
+3. 아래 중 환경에 맞는 명령을 실행합니다.
+
+**Windows (PowerShell)** — Python 3.10 이상. `py` 실행기가 없으면 `python install.py ...`처럼 `-3`도 빼고 실행하세요.
+
+```powershell
+py -3 install.py --check
+py -3 install.py --target-dir $env:USERPROFILE\.codex\skills
+```
+
+실행 정책 때문에 `install.ps1`이 막히면 위 `py -3` 명령을 쓰세요. `install.ps1`은 같은 설치기를 실행합니다.
+
+**Mac / Linux / Git Bash**
 
 ```bash
 bash install.sh --check
 bash install.sh --target-dir ~/.codex/skills
 ```
 
-설치 스크립트는 **Python 3.10 이상**이 필요하며 기존 스킬을 백업한 뒤 교체합니다. Claude Code 폴더 설치는 `~/.claude/skills`를 지정하고, Aside 등은 실제 스킬 폴더를 확인해 지정하세요.
+설치기는 기존 스킬을 백업한 뒤 교체합니다. 앱별 폴더는 아래와 같습니다.
 
-### `.skill` 업로드를 지원하는 앱이라면
+| 앱 | Windows | Mac / Linux |
+|---|---|---|
+| Codex | `%USERPROFILE%\.codex\skills` | `~/.codex/skills` |
+| Claude Code 폴더 설치 | `%USERPROFILE%\.claude\skills` | `~/.claude/skills` |
+| Aside | `%USERPROFILE%\.aside\u\0\skills\user` | `~/.aside/u/0/skills/user` |
 
-전달받은 ZIP의 데스크탑용 `.skill` 파일 **6개**를 앱의 스킬 설정에 추가하세요. 설치 방식은 [처음 시작 가이드](시작-가이드.md)에 정리했습니다.
+인자 없이 실행하면 설치된 앱 폴더를 찾아 넣습니다. 앱을 못 찾으면 `--target-dir`로 지정하세요.
 
 설치 후 새 대화에서 “**홈택스 도움 스킬로 이번 달 할 일을 정리해줘**”라고 요청하고, 해당 스킬이 선택되는지 확인하세요.
 
@@ -114,6 +140,12 @@ bash install.sh --target-dir ~/.codex/skills
 본 도구는 신고 준비를 돕는 소프트웨어입니다. 이용 조건은 [LICENSE](LICENSE.md)를 확인하세요.
 
 ## 업데이트 내역
+
+### v4.1.2 (2026-09-17) — 윈도우·맥에서 설치 방법 고르기
+
+- 지금 쓰는 앱에 맞춰 Claude Code 플러그인, `.skill` 업로드, 폴더 설치를 표로 구분했습니다.
+- 폴더 설치는 Windows용 `install.py` / `install.ps1`과 Mac·Linux용 `install.sh`를 함께 제공합니다. Python 3.10이면 운영체제가 달라도 같습니다.
+- Aside 기본 설치 위치를 실제 스킬 폴더(`~/.aside/u/0/skills/user`)로 맞췄습니다.
 
 ### v4.1.1 (2026-09-17) — 더 쉬운 사용 안내와 공개 범위 정리
 

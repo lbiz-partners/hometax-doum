@@ -26,3 +26,22 @@ jobs:
           python-version: '3.12'
       - name: 무료판 설치·번들·ZIP 원본 대조
         run: bash scripts/build.sh
+
+  windows-installer:
+    runs-on: windows-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Windows PowerShell 설치기 실행
+        shell: powershell
+        run: |
+          .\install.ps1 --check
+          $target = Join-Path $env:RUNNER_TEMP 'hometax-doum-skills'
+          .\install.ps1 --target-dir $target
+          $installed = @(Get-ChildItem -LiteralPath $target -Directory)
+          if ($installed.Count -ne 6) {
+            throw "Expected 6 installed skills, found $($installed.Count)."
+          }

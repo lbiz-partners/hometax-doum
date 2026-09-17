@@ -15,6 +15,10 @@ if ! command -v node >/dev/null 2>&1; then
   echo "[pre-push] node가 없어 게이트를 건너뜁니다 — push 후 CI 결과를 반드시 확인하세요." >&2
   exit 0
 fi
+if ! command -v python3 >/dev/null 2>&1; then
+  echo "[pre-push] python3가 없어 설치·패키지 회귀 검사를 할 수 없습니다 — push 거부" >&2
+  exit 1
+fi
 
 ZERO=0000000000000000000000000000000000000000
 fail=0
@@ -30,7 +34,9 @@ while read -r local_ref local_sha remote_ref remote_sha; do
 
   short="$(printf %.8s "$local_sha")"
   echo "[pre-push] ${local_ref} (커밋 ${short}) 게이트 실행 중..." >&2
-  if ! (cd "$tmp" && CI=1 node scripts/check.mjs >&2 && CI=1 node scripts/test-receivables.mjs >&2); then
+  if ! (cd "$tmp" && CI=1 node scripts/check.mjs >&2 \
+        && CI=1 node scripts/test-receivables.mjs >&2 \
+        && CI=1 python3 -B scripts/test-free-release.py >&2); then
     echo "" >&2
     echo "[pre-push] 게이트 실패 — push가 거부되었습니다." >&2
     echo "  검사 기준은 워킹트리가 아니라 **push되는 커밋(${short})** 입니다." >&2
