@@ -86,6 +86,16 @@ n++;
 const junk = files.filter((f) => /(\.pyc$|__pycache__|\.omc|\.DS_Store)/.test(f));
 check(junk.length === 0, `junk 파일 ${junk.length}건`);
 
+// 안전규칙 under_heading — 제목(접두 일치) 아래 절(같거나 상위 레벨 제목 전까지) 안에서만 must_contain을 찾는다 (C-10).
+const sectionUnder = (text, heading) => {
+  const lines = text.split('\n');
+  const start = lines.findIndex((l) => { const m = l.match(/^(#{1,6})\s+(.*)$/); return m && m[2].startsWith(heading); });
+  if (start < 0) return null;
+  const level = lines[start].match(/^(#+)/)[1].length;
+  let end = lines.length;
+  for (let i = start + 1; i < lines.length; i++) { const m = lines[i].match(/^(#{1,6})\s/); if (m && m[1].length <= level) { end = i; break; } }
+  return lines.slice(start, end).join('\n');
+};
 // 9. 안전규칙 lint — 문구↔규칙 대조표(scripts/skill-rules.json) 기반.
 // 마크다운 스킬의 회귀는 코드가 아니라 안전 문구 삭제로 일어난다 (2026-08-09 적대적 리뷰 13건의 회귀 방지).
 const rulesPath = path.join(ROOT, 'scripts', 'skill-rules.json');
@@ -95,8 +105,10 @@ if (fs.existsSync(rulesPath)) {
     const fp = path.join(ROOT, r.file);
     if (!fs.existsSync(fp)) { check(false, `안전규칙 [${r.id}] 대상 파일 없음: ${r.file}`); continue; }
     const t = fs.readFileSync(fp, 'utf8');
+    const scope = r.under_heading ? sectionUnder(t, r.under_heading) : t;
+    if (r.under_heading && scope === null) { check(false, `안전규칙 [${r.id}] 기준 제목 없음: "${r.under_heading}" (${r.file})`); continue; }
     for (const p of r.must_contain ?? [])
-      check(t.includes(p), `안전규칙 회귀 [${r.id}]: "${p}" 문구가 ${r.file}에서 사라짐 — ${r.why}`);
+      check(scope.includes(p), `안전규칙 회귀 [${r.id}]: "${p}" 문구가 ${r.file}${r.under_heading ? `의 "${r.under_heading}" 절` : ''}에서 사라짐 — ${r.why}`);
     for (const p of r.must_not_contain ?? [])
       check(!t.includes(p), `금지문구 재유입 [${r.id}]: "${p}" 이(가) ${r.file}에 다시 들어옴 — ${r.why}`);
   }
