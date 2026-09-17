@@ -237,12 +237,14 @@ class PublicPrivacyBoundaryTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory) / 'free'
             shutil.copytree(ROOT / 'skills', root / 'skills')
+            shutil.copytree(ROOT / 'docs/verification', root / 'docs/verification')
             shutil.copy2(ROOT / 'VERSION', root / 'VERSION')
             base = root / 'skills/hometax-tax-hub/references'
-            (base / 'authenticated-ui-checks.json').write_text('{}')
-            with self.assertRaisesRegex(ValueError, 'Free 공개판'):
-                CHECKER.check(root)
-            (base / 'authenticated-ui-checks.json').unlink()
+            for leaked in (base / 'authenticated-ui-checks.json', root / 'docs/verification/authenticated-ui-checks.json'):
+                leaked.write_text('{}')
+                with self.assertRaisesRegex(ValueError, 'Free 공개판'):
+                    CHECKER.check(root)
+                leaked.unlink()
             path = base / 'service-catalog.json'
             catalog = json.loads(path.read_text())
             catalog['authenticated_ui_report'] = 'other.json'
