@@ -24,7 +24,10 @@ BLOCKS = ROOT / 'shared' / 'blocks'
 DISCLAIMER_HEAD = '본 도구는 신고 준비를 돕는'
 # 줄 안에서 면책이 시작하는 지점부터, 줄 끝의 닫는 따옴표/백틱 직전까지.
 # 표준 장문 면책(「세무사법」 제2조의 세무대리( … )만 대상. 스크립트 출력에 들어가는 한 줄 요약 고지는 건드리지 않는다.
-DISCLAIMER_RE = re.compile(r'본 도구는 신고 준비를 돕는(?=[^\n]*제2조의 세무대리\()[^\n]*?(?=["`]?$)', re.M)
+# 1차: 표준 종결("… .md 참조.")까지만 매치 — 그 뒤 따옴표·괄호·꼬리 텍스트는 보존한다 (리뷰 M-2).
+DISCLAIMER_RE = re.compile(r'본 도구는 신고 준비를 돕는(?=[^\n]*제2조의 세무대리\()[^\n]*?(?:EULA|LICENSE)\.md 참조\.')
+# 2차: 종결 문장이 없는 옛 변형(줄 끝까지 면책만 있는 줄)에만 적용
+DISCLAIMER_LEGACY_RE = re.compile(r'본 도구는 신고 준비를 돕는(?=[^\n]*제2조의 세무대리\()[^\n]*?(?=["`]?$)', re.M)
 MARKER_RE = re.compile(r'(<!-- block:([a-z0-9-]+) -->\n)(.*?)(\n<!-- /block -->)', re.S)
 
 
@@ -45,6 +48,11 @@ def targets() -> list[Path]:
 def sync_text(text: str, disclaimer: str) -> tuple[str, list[str]]:
     problems: list[str] = []
     new = DISCLAIMER_RE.sub(lambda m: disclaimer, text)
+    # 1차에 안 잡힌 면책 문두(종결 문장 없는 변형)만 2차로 정리
+    def legacy(m: re.Match) -> str:
+        return disclaimer
+    new = re.sub(r'(?m)^(?P<pre>[^\n]*?)(?P<body>' + DISCLAIMER_LEGACY_RE.pattern + r')',
+                 lambda m: m.group('pre') + (m.group('body') if disclaimer in m.group(0) else disclaimer), new)
     if new != text:
         problems.append('disclaimer')
     text = new
@@ -81,6 +89,10 @@ def main() -> int:
             drift.append(f'{path.relative_to(ROOT)}: {", ".join(problems)}')
             if args.apply:
                 path.write_text(updated, encoding='utf-8')
+    # 리뷰 M-3: SKILL.md마다 표준 면책 전문이 최소 1회 있어야 한다 (축약·개작 면책은 동기화 대상에 안 잡힐 수 있으므로 총량으로 막는다)
+    for path in sorted((ROOT / 'skills').glob('*/SKILL.md')):
+        if path.read_text(encoding='utf-8').count(disclaimer) == 0:
+            drift.append(f'{path.relative_to(ROOT)}: 표준 면책 전문 없음')
     if seen_disclaimer == 0:
         print('✗ 면책 문구를 가진 파일이 하나도 없습니다 — 검사 대상 오류', file=sys.stderr)
         return 1

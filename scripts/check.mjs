@@ -89,12 +89,17 @@ check(junk.length === 0, `junk 파일 ${junk.length}건`);
 // 안전규칙 under_heading — 제목(접두 일치) 아래 절(같거나 상위 레벨 제목 전까지) 안에서만 must_contain을 찾는다 (C-10).
 const sectionUnder = (text, heading) => {
   const lines = text.split('\n');
-  const start = lines.findIndex((l) => { const m = l.match(/^(#{1,6})\s+(.*)$/); return m && m[2].startsWith(heading); });
-  if (start < 0) return null;
-  const level = lines[start].match(/^(#+)/)[1].length;
-  let end = lines.length;
-  for (let i = start + 1; i < lines.length; i++) { const m = lines[i].match(/^(#{1,6})\s/); if (m && m[1].length <= level) { end = i; break; } }
-  return lines.slice(start, end).join('\n');
+  // 코드 펜스 안의 '#'은 제목이 아니다. 정확 일치 제목을 우선하고 없으면 접두 일치 (리뷰 L-5).
+  const heads = []; let fence = false;
+  lines.forEach((l, i) => {
+    if (/^\s*```/.test(l)) { fence = !fence; return; }
+    if (fence) return;
+    const m = l.match(/^(#{1,6})\s+(.*?)\s*$/); if (m) heads.push({ i, level: m[1].length, title: m[2] });
+  });
+  const hit = heads.find((h) => h.title === heading) || heads.find((h) => h.title.startsWith(heading));
+  if (!hit) return null;
+  const next = heads.find((h) => h.i > hit.i && h.level <= hit.level);
+  return lines.slice(hit.i, next ? next.i : lines.length).join('\n');
 };
 // 9. 안전규칙 lint — 문구↔규칙 대조표(scripts/skill-rules.json) 기반.
 // 마크다운 스킬의 회귀는 코드가 아니라 안전 문구 삭제로 일어난다 (2026-08-09 적대적 리뷰 13건의 회귀 방지).

@@ -110,6 +110,8 @@ class FreeReleaseTests(unittest.TestCase):
         for command in self._installers('--help') + self._installers('--check'):
             with tempfile.TemporaryDirectory() as tmp:
                 target = Path(tmp) / 'skills'
+                if '--check' in command:
+                    command = [*command, '--target-dir', str(target)]
                 result = subprocess.run(command, capture_output=True, text=True)
                 self.assertEqual(result.returncode, 0, result.stderr + result.stdout)
                 self.assertFalse(target.exists())

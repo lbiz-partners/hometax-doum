@@ -20,14 +20,14 @@
 |---|---|
 | Claude Code 폴더 설치 | `~/.claude/skills/` |
 | Codex | `~/.codex/skills/` |
-| Aside | `~/.aside/u/0/skills/user/` |
-| Claude Desktop `.skill` 업로드 | 파일 시스템을 볼 수 없으면 3절의 "판별 불가" 규칙 |
+| Aside | `~/.aside/u/0/skills/user/` (구버전: `~/.aside/u/0/agents/main/skills/user/`) |
+| Claude Desktop 등 `.skill` 업로드 앱 | 파일 시스템을 볼 수 없으면 3절의 "판별 불가" 규칙 (사용자에게 묻는다) |
 
 ## 3. 선언 문구 (첫 보고 첫 줄)
 
 - 하나 이상 존재: `Pro 탐지 · 사용 가능한 엔진: 종소세 / 원천세 / 미수금 중 실제로 확인된 것만` (사업자등록 전용 스킬 `biz-reg-hometax`는 탐지 뒤 같은 폴더에 있을 때만 사용)
 - 전부 없음: `Free 모드 · 안내·자료 준비·수동 대조로 진행`
-- 파일 시스템을 조회할 수 없는 앱: `설치 판별 불가 · Free 모드로 진행` (Pro 엔진을 사용했다고 표시하지 않는다)
+- 파일 시스템을 조회할 수 없는 앱(`.skill` 업로드 등): 첫 보고 전에 한 번 묻는다 — "업로드한 스킬 목록에 jongsose-prep-kr, withholding-tax-hometax, biz-reg-hometax가 있나요?" 있다고 답하면 `Pro(사용자 확인) · 해당 스킬을 이름으로 호출`로 선언하고, 그 스킬이 실제로 실행돼 결과를 낸 경우에만 엔진 사용으로 표시한다. 없다거나 모르면 `Free 모드 · 안내·자료 준비·수동 대조로 진행`. 파일이 보이지 않는다는 이유만으로 Pro 구매자를 Free 모드로 내리지 않는다.
 
 선언 뒤의 동작:
 

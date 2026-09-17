@@ -209,7 +209,9 @@
       "file": "skills/hometax-tax-hub/references/pro-detection.md",
       "must_contain": [
         "파일 존재로만 판정",
-        "Free 모드다"
+        "Free 모드다",
+        "두 곳을 모두 본다",
+        "Pro 구매자를 Free 모드로 내리지 않는다"
       ],
       "why": "사용자 진술이나 기억이 아니라 파일 존재로만 Pro를 판정한다는 원칙 (C-03)"
     }
