@@ -204,7 +204,7 @@ class FreeReleaseTests(unittest.TestCase):
     def test_release_zip_includes_windows_installers(self):
         with tempfile.TemporaryDirectory() as tmp:
             folder = Path(tmp)
-            package.build(folder)
+            package.build(folder, bundles=folder / 'bundles')
             version = package.version()
             archive = folder / f'hometax-doum-free-v{version}.zip'
             names = zipfile.ZipFile(archive).namelist()
@@ -219,6 +219,13 @@ class FreeReleaseTests(unittest.TestCase):
             prefix = '홈택스-도움-스킬-Free/2_CLI용_폴더스킬/'
             for name in ('install.sh', 'install.py', 'install.ps1'):
                 self.assertIn(prefix + name, delivery)
+
+    def test_release_build_never_touches_repository_bundles(self):
+        folder_before = {p.name: p.read_bytes() for p in (ROOT / '데스크탑용-skill파일').rglob('*.skill')}
+        with tempfile.TemporaryDirectory() as tmp:
+            package.build(Path(tmp), bundles=Path(tmp) / 'bundles')
+        folder_after = {p.name: p.read_bytes() for p in (ROOT / '데스크탑용-skill파일').rglob('*.skill')}
+        self.assertEqual(folder_before, folder_after)
 
     def test_bash_wrapper_requires_install_py(self):
         with tempfile.TemporaryDirectory() as tmp:

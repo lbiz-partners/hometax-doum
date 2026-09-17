@@ -87,10 +87,12 @@ def write_zip(output, expected):
             os.unlink(temporary)
 
 
-def build(directory):
+def build(directory, bundles=None):
+    """bundles: 데스크탑 .skill 출력 폴더. 기본은 저장소 폴더. 테스트는 임시 폴더를 넘겨 저장소 번들을 건드리지 않는다
+    (2026-09-17 리뷰 High-1: 테스트가 저장소 번들을 4.1.2 이름으로 덮어써 previous/에 가짜 이전 버전이 보관됐다)."""
     v = version()
     originals = skill_files()
-    bundles = ROOT / '데스크탑용-skill파일'
+    bundles = Path(bundles) if bundles else ROOT / '데스크탑용-skill파일'
     if bundles.is_symlink():
         raise ValueError('번들 출력 폴더 링크 금지')
     bundles.mkdir(exist_ok=True)

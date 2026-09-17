@@ -78,7 +78,7 @@ for (const s of skills) {
 // 7. 하드코딩 시크릿 0
 const secretRe = /(sk-[A-Za-z0-9]{20}|AIza[A-Za-z0-9_-]{20}|ghp_[A-Za-z0-9]{20}|xox[baprs]-)/;
 for (const fp of files) {
-  if (/\.(md|json|txt)$/.test(fp) && secretRe.test(fs.readFileSync(fp, 'utf8'))) fail(`하드코딩 시크릿 의심: ${path.relative(ROOT, fp)}`);
+  if (/\.(md|json|txt|csv)$/.test(fp) && secretRe.test(fs.readFileSync(fp, 'utf8'))) fail(`하드코딩 시크릿 의심: ${path.relative(ROOT, fp)}`);
 }
 n++;
 
