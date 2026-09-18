@@ -1,5 +1,22 @@
 {
   "name": "hometax-doum",
   "description": "개인사업자의 개업·매출·세금신고·납부·증명·정정·폐업까지 24개 업무 준비와 확인을 돕는 무료 스킬 6종",
-  "version": "4.1.2"
+  "version": "4.2.0",
+  "author": {
+    "name": "엘비즈파트너스",
+    "url": "https://lbiz-partners.com"
+  },
+  "homepage": "https://github.com/lbiz-partners/hometax-doum",
+  "repository": "https://github.com/lbiz-partners/hometax-doum",
+  "license": "SEE LICENSE IN LICENSE.md",
+  "keywords": [
+    "세무",
+    "홈택스",
+    "부가세",
+    "종합소득세",
+    "전자세금계산서",
+    "사업장현황신고",
+    "tax",
+    "korea"
+  ]
 }

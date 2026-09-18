@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "version": "4.1.2",
+  "version": "4.2.0",
   "checked_at": "2026-09-17",
   "scope": "개인사업자 업무 24개 묶음. 공식 전체 메뉴 수나 모든 세목의 자동 계산을 뜻하지 않음.",
   "services": [
@@ -502,5 +502,5 @@
       "live_ui_stage": "login_required"
     }
   ],
-  "live_ui_report": "live-ui-checks.json"
+  "live_ui_report": "docs/verification/live-ui-checks.json"
 }

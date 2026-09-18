@@ -18,11 +18,17 @@
 | 대조 규칙 동작 변경 시 회귀 테스트 갱신 | `scripts/test-receivables.mjs` (CI 필수 스텝) |
 | 유료(Pro) 스킬·엔진 파일 반입 금지, 면책 문구 유지 | `check.mjs` (기존 게이트) |
 
+## 공통 6종의 정본은 Pro 저장소 (2026-09-17)
+
+- `skills/` 여섯 스킬, `shared/blocks/`, `scripts/sync-blocks.py`는 비공개 Pro 저장소(`hometax-doum-vault`)의 `scripts/export-free.py`가 내보낸 산출물이다. **이 저장소에서 직접 고치지 않는다.** 고칠 것이 있으면 Pro 원본을 고치고 다시 내보낸다. 여기서만 고친 변경은 다음 내보내기에 덮인다.
+- 여러 SKILL.md에 같은 문장으로 들어가는 문단(면책·프로필 재사용·실화면 원칙)의 원본은 `shared/blocks/`다. `check.mjs` 9-1이 원본과 인라인 본문의 일치를 검사한다(`python3 scripts/sync-blocks.py --check`).
+- 무료판에는 `유료`라는 단어, 개인 계정 인증 후 관찰 기록(`authenticated-ui-*`), Pro 코드(`.py`·`.mjs`)가 들어오지 않는다. 내보내기와 게이트가 각각 검사한다.
+
 ## 무료판 배포 빌드
 
 - `VERSION`이 제품 버전의 기준이며 플러그인·마켓플레이스·README·시작 가이드가 일치해야 한다.
 - `bash scripts/build.sh`로 정합성·미수금 회귀·설치 검증 후 무료 6개 `.skill`과 ZIP 2개를 생성한다. 수동 ZIP 출고는 하지 않는다.
-- 무료판 `skills/`에는 Markdown 안내와 JSON 입력 템플릿만 허용한다. Pro 코드·전용 스킬은 포함하지 않는다.
+- 무료판 `skills/`에는 Markdown 안내와 JSON·CSV 입력 템플릿만 허용한다. Pro 코드·전용 스킬은 포함하지 않는다.
 - 고객 ZIP은 안내·라이선스·공식출처·설치기·여섯 스킬만 포함하며 개발용 훅을 배포하지 않는다.
 - 이번 제품의 기본 대상은 소규모 개인사업자·1인 대표다. 법인용 Ultra는 향후 별도 저장소에서 개발한다.
 

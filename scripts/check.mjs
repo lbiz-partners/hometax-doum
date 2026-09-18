@@ -24,7 +24,7 @@ const skills = fs.readdirSync(SKILL_DIR).filter((d) => fs.existsSync(path.join(S
 // 1. 유료 스킬 유출 방지 (제일 중요)
 for (const pro of PRO) check(!skills.includes(pro), `⛔ 유료(Pro) 스킬이 무료 레포에 섞임: ${pro} — 삭제 필요`);
 
-// 2. 엔진 파일 유출 방지 (무료는 마크다운만)
+// 2. 엔진 파일 유출 방지 (무료는 마크다운·JSON·CSV 템플릿만)
 const walk = (dir, acc = []) => {
   for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
     const fp = path.join(dir, e.name);
@@ -34,7 +34,7 @@ const walk = (dir, acc = []) => {
   return acc;
 };
 const files = walk(SKILL_DIR);
-const engines = files.filter((f) => !/\.(md|json)$/.test(f));
+const engines = files.filter((f) => !/\.(md|json|csv)$/.test(f));
 check(engines.length === 0, `⛔ 무료 레포에 계산 엔진 파일 유출: ${engines.map((f) => path.relative(ROOT, f)).join(', ')}`);
 
 const vPath = path.join(ROOT, 'VERSION');
@@ -78,7 +78,7 @@ for (const s of skills) {
 // 7. 하드코딩 시크릿 0
 const secretRe = /(sk-[A-Za-z0-9]{20}|AIza[A-Za-z0-9_-]{20}|ghp_[A-Za-z0-9]{20}|xox[baprs]-)/;
 for (const fp of files) {
-  if (/\.(md|json|txt)$/.test(fp) && secretRe.test(fs.readFileSync(fp, 'utf8'))) fail(`하드코딩 시크릿 의심: ${path.relative(ROOT, fp)}`);
+  if (/\.(md|json|txt|csv)$/.test(fp) && secretRe.test(fs.readFileSync(fp, 'utf8'))) fail(`하드코딩 시크릿 의심: ${path.relative(ROOT, fp)}`);
 }
 n++;
 
@@ -86,6 +86,21 @@ n++;
 const junk = files.filter((f) => /(\.pyc$|__pycache__|\.omc|\.DS_Store)/.test(f));
 check(junk.length === 0, `junk 파일 ${junk.length}건`);
 
+// 안전규칙 under_heading — 제목(접두 일치) 아래 절(같거나 상위 레벨 제목 전까지) 안에서만 must_contain을 찾는다 (C-10).
+const sectionUnder = (text, heading) => {
+  const lines = text.split('\n');
+  // 코드 펜스 안의 '#'은 제목이 아니다. 정확 일치 제목을 우선하고 없으면 접두 일치 (리뷰 L-5).
+  const heads = []; let fence = false;
+  lines.forEach((l, i) => {
+    if (/^\s*```/.test(l)) { fence = !fence; return; }
+    if (fence) return;
+    const m = l.match(/^(#{1,6})\s+(.*?)\s*$/); if (m) heads.push({ i, level: m[1].length, title: m[2] });
+  });
+  const hit = heads.find((h) => h.title === heading) || heads.find((h) => h.title.startsWith(heading));
+  if (!hit) return null;
+  const next = heads.find((h) => h.i > hit.i && h.level <= hit.level);
+  return lines.slice(hit.i, next ? next.i : lines.length).join('\n');
+};
 // 9. 안전규칙 lint — 문구↔규칙 대조표(scripts/skill-rules.json) 기반.
 // 마크다운 스킬의 회귀는 코드가 아니라 안전 문구 삭제로 일어난다 (2026-08-09 적대적 리뷰 13건의 회귀 방지).
 const rulesPath = path.join(ROOT, 'scripts', 'skill-rules.json');
@@ -95,11 +110,30 @@ if (fs.existsSync(rulesPath)) {
     const fp = path.join(ROOT, r.file);
     if (!fs.existsSync(fp)) { check(false, `안전규칙 [${r.id}] 대상 파일 없음: ${r.file}`); continue; }
     const t = fs.readFileSync(fp, 'utf8');
+    const scope = r.under_heading ? sectionUnder(t, r.under_heading) : t;
+    if (r.under_heading && scope === null) { check(false, `안전규칙 [${r.id}] 기준 제목 없음: "${r.under_heading}" (${r.file})`); continue; }
     for (const p of r.must_contain ?? [])
-      check(t.includes(p), `안전규칙 회귀 [${r.id}]: "${p}" 문구가 ${r.file}에서 사라짐 — ${r.why}`);
+      check(scope.includes(p), `안전규칙 회귀 [${r.id}]: "${p}" 문구가 ${r.file}${r.under_heading ? `의 "${r.under_heading}" 절` : ''}에서 사라짐 — ${r.why}`);
     for (const p of r.must_not_contain ?? [])
       check(!t.includes(p), `금지문구 재유입 [${r.id}]: "${p}" 이(가) ${r.file}에 다시 들어옴 — ${r.why}`);
   }
+}
+
+// 9-1. 공통 문단 단일 소스 — shared/blocks 원본(Pro에서 내보냄)과 SKILL.md 인라인 본문 일치.
+// 무료판에서 문단 하나만 고치면 다음 내보내기에 덮여 사라진다 — 원본은 Pro 저장소의 shared/blocks 이다.
+try {
+  const out = execFileSync('python3', ['-B', 'scripts/sync-blocks.py', '--check'], { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
+  check(/공통 문단 일치/.test(out), '공통 문단 검사 결과 판정 불가');
+} catch (error) {
+  check(false, '공통 문단 드리프트: ' + (error.stderr?.toString() || error.message).split('\n').slice(0, 4).join(' '));
+}
+
+// 9-2. 업무 목록 md = JSON 생성 결과 (F-02) — 행은 JSON, 산문은 scripts/service-catalog.template.md (Pro에서 내보냄)
+try {
+  const out = execFileSync('python3', ['-B', 'scripts/render-service-catalog.py', '--check'], { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
+  check(/생성 결과 일치/.test(out), '업무 목록 md 생성 검사 판정 불가');
+} catch (error) {
+  check(false, '업무 목록 md가 JSON 생성 결과와 다름: ' + (error.stderr?.toString() || error.message).split('\n').slice(0, 2).join(' '));
 }
 
 // 10. 하네스 무결성 — 훅 등록·설정이 무장해제되지 않았는지.

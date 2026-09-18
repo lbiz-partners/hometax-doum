@@ -185,7 +185,7 @@ def main(argv: list[str] | None = None) -> int:
     if {p.name for p in skills} != EXPECTED:
         fail(parser, f'무료 스킬 6종이 필요합니다. 발견: {len(skills)}종')
     for skill in skills:
-        if any(p.is_file() and p.suffix not in {'.md', '.json'} for p in skill.rglob('*')):
+        if any(p.is_file() and p.suffix not in {'.md', '.json', '.csv'} for p in skill.rglob('*')):
             fail(parser, '무료 스킬에는 안내와 입력 템플릿만 허용합니다.')
         if skill.is_symlink() or any(p.is_symlink() for p in skill.rglob('*')):
             fail(parser, f'원본에 심볼릭링크가 있습니다: {skill.name}. 설치 중단.')

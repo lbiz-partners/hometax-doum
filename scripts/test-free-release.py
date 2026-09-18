@@ -70,7 +70,7 @@ class FreeReleaseTests(unittest.TestCase):
     def test_free_source_has_exact_six_skills_and_no_code(self):
         files = package.skill_files()
         self.assertEqual({name.split('/')[0] for name in files}, package.FREE)
-        self.assertTrue(all(p.suffix in {'.md', '.json'} for p in files.values()))
+        self.assertTrue(all(p.suffix in {'.md', '.json', '.csv'} for p in files.values()))
 
     def test_current_desktop_bundles_match_sources(self):
         version = package.version()
@@ -110,6 +110,8 @@ class FreeReleaseTests(unittest.TestCase):
         for command in self._installers('--help') + self._installers('--check'):
             with tempfile.TemporaryDirectory() as tmp:
                 target = Path(tmp) / 'skills'
+                if '--check' in command:
+                    command = [*command, '--target-dir', str(target)]
                 result = subprocess.run(command, capture_output=True, text=True)
                 self.assertEqual(result.returncode, 0, result.stderr + result.stdout)
                 self.assertFalse(target.exists())
@@ -204,7 +206,7 @@ class FreeReleaseTests(unittest.TestCase):
     def test_release_zip_includes_windows_installers(self):
         with tempfile.TemporaryDirectory() as tmp:
             folder = Path(tmp)
-            package.build(folder)
+            package.build(folder, bundles=folder / 'bundles')
             version = package.version()
             archive = folder / f'hometax-doum-free-v{version}.zip'
             names = zipfile.ZipFile(archive).namelist()
@@ -219,6 +221,13 @@ class FreeReleaseTests(unittest.TestCase):
             prefix = '홈택스-도움-스킬-Free/2_CLI용_폴더스킬/'
             for name in ('install.sh', 'install.py', 'install.ps1'):
                 self.assertIn(prefix + name, delivery)
+
+    def test_release_build_never_touches_repository_bundles(self):
+        folder_before = {p.name: p.read_bytes() for p in (ROOT / '데스크탑용-skill파일').rglob('*.skill')}
+        with tempfile.TemporaryDirectory() as tmp:
+            package.build(Path(tmp), bundles=Path(tmp) / 'bundles')
+        folder_after = {p.name: p.read_bytes() for p in (ROOT / '데스크탑용-skill파일').rglob('*.skill')}
+        self.assertEqual(folder_before, folder_after)
 
     def test_bash_wrapper_requires_install_py(self):
         with tempfile.TemporaryDirectory() as tmp:
