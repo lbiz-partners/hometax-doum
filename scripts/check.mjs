@@ -109,17 +109,21 @@ const sectionUnder = (text, heading) => {
   // (11차 M-2 실측). 다만 코드펜스 안의 '<!--' 는 예시 텍스트라 주석이 아니다 —
   // 통째로 지우면 짝 없는 '<!--' 하나가 제목까지 삼켜 정상 문서를 FAIL 시킨다(12차 M-3).
   // 그래서 펜스 밖 줄에서만 주석을 지운다.
+  //   주석 안의 펜스는 펜스가 아니다 — 주석 판정을 먼저 하지 않으면 `<!--` + 펜스로
+  //   감싸는 것만으로 은닉이 되살아나고(13차 H-1 실측), 주석 안의 홀수 펜스가 문서
+  //   나머지를 통째로 '펜스 안'으로 만들어 정상 문서를 FAIL 시킨다(13차 M-1).
   {
     const out = []; let fence = false, inComment = false;
     for (const l of text.split('\n')) {
-      if (/^\s*```/.test(l)) { fence = !fence; out.push(l); continue; }
-      if (fence) { out.push(l); continue; }
       let s = l;
       if (inComment) {
         const end = s.indexOf('-->');
-        if (end < 0) { out.push(''); continue; }
+        if (end < 0) { out.push(''); continue; }   // 주석 안 — 펜스도 토글하지 않는다
         s = s.slice(end + 3); inComment = false;
+        // 주석이 닫힌 뒤 남은 조각은 아래 펜스·주석 판정을 그대로 탄다
       }
+      if (!inComment && /^\s*(```|~~~)/.test(s)) { fence = !fence; out.push(s); continue; }
+      if (fence) { out.push(s); continue; }
       for (;;) {
         const open = s.indexOf('<!--');
         if (open < 0) break;
@@ -135,7 +139,7 @@ const sectionUnder = (text, heading) => {
   // 코드 펜스 안의 '#'은 제목이 아니다. 정확 일치 제목을 우선하고 없으면 접두 일치 (리뷰 L-5).
   const heads = []; let fence = false;
   lines.forEach((l, i) => {
-    if (/^\s*```/.test(l)) { fence = !fence; return; }
+    if (/^\s*(```|~~~)/.test(l)) { fence = !fence; return; }
     if (fence) return;
     const m = l.match(/^(#{1,6})\s+(.*?)\s*$/); if (m) heads.push({ i, level: m[1].length, title: m[2] });
   });
@@ -155,6 +159,17 @@ if (fs.existsSync(rulesPath)) {
     const t = fs.readFileSync(fp, 'utf8');
     const scope = r.under_heading ? sectionUnder(t, r.under_heading) : t;
     if (r.under_heading && scope === null) { check(false, `안전규칙 [${r.id}] 기준 제목 없음: "${r.under_heading}" (${r.file})`); continue; }
+    // under_heading 이 문서 제목(레벨 1)이면 절 범위가 사실상 문서 전체라, 문구를 문서
+    //   끝 부록으로 옮겨도 통과한다 (13차 H-2 와 같은 계열 — 세 규칙에서 실측).
+    //   설정 단계에서 막는다.
+    if (r.under_heading) {
+      const head = t.split('\n').find((l) => {
+        const m = l.match(/^(#{1,6})\s+(.*?)\s*$/);
+        return m && (m[2] === r.under_heading || m[2].startsWith(r.under_heading));
+      });
+      check(!head || !/^#\s/.test(head),
+        `안전규칙 [${r.id}]: under_heading "${r.under_heading}" 이 문서 제목(레벨 1)이라 절 범위가 문서 전체입니다 — 하위 제목을 지정할 것`);
+    }
     for (const p of r.must_contain ?? [])
       check(scope.includes(p), `안전규칙 회귀 [${r.id}]: "${p}" 문구가 ${r.file}${r.under_heading ? `의 "${r.under_heading}" 절` : ''}에서 사라짐 — ${r.why}`);
     for (const p of r.must_not_contain ?? [])

@@ -38,15 +38,23 @@ while read -r local_ref local_sha remote_ref remote_sha; do
   # 낡은 베이스에서 만든 커밋(사람이든 동기화 자동화든)이 그대로 나가는 사고를 막는다
   # (2026-09-19 적대적 리뷰 10차 Critical: v4.2.0 원격에 v3.10.0 커밋이 대기 중이었다).
   if [ -n "$remote_sha" ] && [ "$remote_sha" != "$ZERO" ]; then
-    new_v="$(git show "$local_sha:VERSION" 2>/dev/null | sed -n 's/^version: *//p')"
-    old_v="$(git show "$remote_sha:VERSION" 2>/dev/null | sed -n 's/^version: *//p')"
+    strict() { printf '%s' "$1" | tr -d ' \t\r'; }
+    new_v="$(strict "$(git show "$local_sha:VERSION" 2>/dev/null | sed -n 's/^version: *//p')")"
+    old_v="$(strict "$(git show "$remote_sha:VERSION" 2>/dev/null | sed -n 's/^version: *//p')")"
     if [ -n "$old_v" ] && [ -z "$new_v" ]; then
       echo "[pre-push] 원격에는 VERSION 이 있는데 밀려는 커밋(${short})에는 없습니다 — push 거부" >&2
       rm -rf "$tmp"; fail=1; continue
     fi
-    case "$new_v$old_v" in
-      *[!0-9.]*) new_v=""; old_v="" ;;   # rc 등 비숫자 표기는 사전식 오판 위험 — 비교 생략
-    esac
+    # 비표준 표기는 "비교 생략"이 아니라 거부한다 — 끝 공백 한 칸이나 -rc1 로
+    # 버전 가드가 통째로 꺼지던 구멍(13차 M-2 실측).
+    for v in "$new_v" "$old_v"; do
+      [ -z "$v" ] && continue
+      case "$v" in
+        *[!0-9.]*|*..*|.*|*.)
+          echo "[pre-push] VERSION 표기가 X.Y.Z 가 아닙니다($v) — push 거부" >&2
+          rm -rf "$tmp"; fail=1; continue 2 ;;
+      esac
+    done
     if [ -n "$new_v" ] && [ -n "$old_v" ] && [ "$new_v" != "$old_v" ]; then
       lowest="$(printf '%s\n%s\n' "$new_v" "$old_v" | sort -t. -k1,1n -k2,2n -k3,3n | head -1)"
       if [ "$lowest" = "$new_v" ]; then

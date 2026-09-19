@@ -208,12 +208,37 @@
       "id": "pro-detection-file-based",
       "file": "skills/hometax-tax-hub/references/pro-detection.md",
       "must_contain": [
-        "파일 존재로만 판정",
-        "Free 모드다",
-        "두 곳을 모두 본다",
+        "파일 존재로만 판정"
+      ],
+      "under_heading": "0. 판정 원칙",
+      "why": "사용자 진술이나 기억이 아니라 파일 존재로만 Pro를 판정한다는 원칙 (C-03)"
+    },
+    {
+      "id": "pro-detection-both-paths",
+      "file": "skills/hometax-tax-hub/references/pro-detection.md",
+      "must_contain": [
+        "두 곳을 모두 본다"
+      ],
+      "under_heading": "2. 어디를 보는가",
+      "why": "사용자 진술이나 기억이 아니라 파일 존재로만 Pro를 판정한다는 원칙 (C-03) (설치 경로 한 곳만 보면 Pro 보유자를 미설치로 오판)"
+    },
+    {
+      "id": "pro-detection-no-downgrade",
+      "file": "skills/hometax-tax-hub/references/pro-detection.md",
+      "must_contain": [
         "Pro 구매자를 Free 모드로 내리지 않는다"
       ],
-      "why": "사용자 진술이나 기억이 아니라 파일 존재로만 Pro를 판정한다는 원칙 (C-03)"
+      "under_heading": "3. 선언 문구 (첫 보고 첫 줄)",
+      "why": "사용자 진술이나 기억이 아니라 파일 존재로만 Pro를 판정한다는 원칙 (C-03) (구매자 하향 판정 금지)"
+    },
+    {
+      "id": "pro-detection-free-declaration",
+      "file": "skills/hometax-tax-hub/references/pro-detection.md",
+      "must_contain": [
+        "Free 모드다"
+      ],
+      "under_heading": "4. 하지 않는 것",
+      "why": "사용자 진술이나 기억이 아니라 파일 존재로만 Pro를 판정한다는 원칙 (C-03) (Free 모드 선언 유지)"
     },
     {
       "id": "med-treatment-date-basis",
@@ -385,6 +410,127 @@
         "refusal_or_wrong_issue_cases"
       ],
       "why": "양식이 삭제되거나 채널별 차이조정·미매핑 수입·검토표 합계 칸이 빠지면 문서 지시를 옮겨 적을 곳이 없어진다. 과세기간별 배열을 단일 값으로 되돌리면 두 해에 걸친 미가입기간을 한 번에 계산하게 된다"
+    },
+    {
+      "id": "vet-penalty-scope",
+      "file": "skills/tax-prep-kr/references/exempt-status-veterinary.md",
+      "must_contain": [
+        "수입금액의 0.5%",
+        "의료업·수의업·약사업에만 적용",
+        "산출세액이 0원이어도 부과된다"
+      ],
+      "under_heading": "수의업만 다른 점",
+      "why": "수의업이 가산세 대상이라는 사실과 산출세액 무관 적용이 사라지면 적자 동물병원이 위험을 오인한다"
+    },
+    {
+      "id": "vet-exempt-scope",
+      "file": "skills/tax-prep-kr/references/exempt-status-veterinary.md",
+      "must_contain": [
+        "농림축산식품부장관 고시",
+        "별표에 없는 진료는 과세",
+        "완제품 형태의 제제를 동물병원 내에서 단순 구입하는 경우는 제외"
+      ],
+      "under_heading": "2단계 — 면세와 과세를 가르는 기준",
+      "why": "면세는 고시 별표에 열거된 진료용역뿐이다. 이 경계가 사라지면 동물병원 매출 전체를 면세로 넣는다"
+    },
+    {
+      "id": "vet-deemed-filing-not-immunity",
+      "file": "skills/tax-prep-kr/references/exempt-status-veterinary.md",
+      "must_contain": [
+        "신고 간주는 면책이 아니다"
+      ],
+      "under_heading": "1단계 — 세 갈래부터 가른다",
+      "why": "겸영 신고 간주여도 면세수입금액 미달신고는 가산세 대상이다"
+    },
+    {
+      "id": "vet-cash-receipt-numbers",
+      "file": "skills/tax-prep-kr/references/exempt-status-veterinary.md",
+      "must_contain": [
+        "60일 이내",
+        "미가입기간",
+        "윤년에는 366",
+        "10만원 이상",
+        "미발급금액의 20%",
+        "발급 거부 금액의 5%",
+        "5천원 미만이면 5천원"
+      ],
+      "under_heading": "5단계 — 현금영수증 자가점검",
+      "why": "현금영수증 의무가입 기한·미가입 가산세 산식과 의무발행 기준금액·가산세율은 어느 하나만 변조돼도 가산세로 직결된다"
+    },
+    {
+      "id": "vet-final-submit-by-user",
+      "file": "skills/tax-prep-kr/references/exempt-status-veterinary.md",
+      "must_contain": [
+        "최종 제출은 사용자가 한다",
+        "다음 해 2월 10일"
+      ],
+      "under_heading": "6단계 — 제출과 접수 확인",
+      "why": "자동 제출 금지와 법정 기한은 제품 전반의 안전 경계"
+    },
+    {
+      "id": "pharmacy-penalty-scope",
+      "file": "skills/tax-prep-kr/references/exempt-status-pharmacy.md",
+      "must_contain": [
+        "수입금액의 0.5%",
+        "의료업·수의업·약사업에만 적용",
+        "산출세액이 0원이어도 부과된다"
+      ],
+      "under_heading": "약사업만 다른 점",
+      "why": "약사업이 가산세 대상이라는 사실과 산출세액 무관 적용이 사라지면 적자 약국이 위험을 오인한다"
+    },
+    {
+      "id": "pharmacy-exempt-boundary",
+      "file": "skills/tax-prep-kr/references/exempt-status-pharmacy.md",
+      "must_contain": [
+        "조문만으로 확정되지 않으므로 반드시 확인한다",
+        "확인 전에는 임의로 전부 면세 또는 전부 과세로 넣지 않는다"
+      ],
+      "under_heading": "1단계 — 세 갈래부터 가른다",
+      "why": "면세는 조제용역이고 재화 판매의 취급은 조문 문언으로 갈리지 않는다. 이 경고가 빠지면 매출 전체를 한쪽으로 몰아 넣는다"
+    },
+    {
+      "id": "pharmacy-accrual-basis",
+      "file": "skills/tax-prep-kr/references/exempt-status-pharmacy.md",
+      "must_contain": [
+        "조제일) 기준으로 본다",
+        "12월 조제분이 통째로 빠지고"
+      ],
+      "under_heading": "2단계 — 수입을 모은다",
+      "why": "공단부담금은 나중에 들어온다. 입금 기준 집계를 막는 문장이 사라지면 연말 조제분이 통째로 누락된다"
+    },
+    {
+      "id": "pharmacy-cash-receipt-numbers",
+      "file": "skills/tax-prep-kr/references/exempt-status-pharmacy.md",
+      "must_contain": [
+        "60일 이내",
+        "미가입기간",
+        "윤년에는 366",
+        "10만원 이상",
+        "미발급금액의 20%",
+        "발급 거부 금액의 5%",
+        "5천원 미만이면 5천원"
+      ],
+      "under_heading": "4단계 — 현금영수증 자가점검",
+      "why": "현금영수증 의무가입 기한·미가입 가산세 산식과 의무발행 기준금액·가산세율은 어느 하나만 변조돼도 가산세로 직결된다"
+    },
+    {
+      "id": "pharmacy-final-submit-by-user",
+      "file": "skills/tax-prep-kr/references/exempt-status-pharmacy.md",
+      "must_contain": [
+        "최종 제출은 사용자가 한다",
+        "다음 해 2월 10일"
+      ],
+      "under_heading": "5단계 — 제출과 접수 확인",
+      "why": "자동 제출 금지와 법정 기한은 제품 전반의 안전 경계"
+    },
+    {
+      "id": "med-open-items",
+      "file": "skills/tax-prep-kr/references/exempt-status-medical.md",
+      "must_contain": [
+        "이 세 가지가 미해결인 채로 제출하지 않는다"
+      ],
+      "under_heading": "로그인 후 확인할 세 가지 (미해결)",
+      "why": "법령·서식만으로 확정되지 않는 3건을 확인 없이 제출하지 않도록 하는 경고. 사라지면 미확인 상태로 넘어간다"
     }
   ]
 }
