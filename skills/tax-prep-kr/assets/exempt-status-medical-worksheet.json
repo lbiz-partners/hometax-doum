@@ -25,47 +25,93 @@
   },
   "difference_adjustment_note": "검토표는 채널(열)마다 4행 구조이며 아래 3줄 칸이 각 열에 있습니다. 다만 열마다 채우는 방식이 다르니 바로 아래 difference_adjustment_scope를 먼저 읽으세요. 채널 합계 = received_in_period − prior_period_treatment_received + current_period_treatment_unreceived. 산출값은 반드시 원장의 진료일 기준 수입과 대조하고, 어긋나면 임의로 맞추지 말고 확인하세요.",
   "difference_adjustment_scope": "건강보험 열은 3줄 정의(서식 작성방법 사·아·자) 그대로 채웁니다. 의료급여 열은 명문이 없어 건강보험과 같은 방식으로 채우되 추론임을 기록합니다. 비보험·손해보험 열은 진료 기준 금액을 computed_total에 적고, 3줄은 자료가 있으면 같은 정의로 적고 없으면 비운 뒤 사유를 남깁니다. 사업용 유형자산 양도·그 밖의 수입 열은 해당 과세기간 금액만 적고 3줄을 억지로 채우지 않습니다.",
-  "unmapped_revenue_example": { "label": "예) 산재보험 진료비", "amount": null, "payer": null, "how_confirmed": null, "review_form_column": "unknown" },
+  "unmapped_revenue_example": {
+    "label": "예) 산재보험 진료비",
+    "amount": null,
+    "payer": null,
+    "how_confirmed": null,
+    "review_form_column": "unknown"
+  },
   "revenue_by_channel": {
     "uninsured": {
       "label": "비보험(비급여)",
-      "source_amount": null, "coverage": "unknown", "source": null,
-      "received_in_period": null, "prior_period_treatment_received": null, "current_period_treatment_unreceived": null, "computed_total": null
+      "source_amount": null,
+      "coverage": "unknown",
+      "source": null,
+      "received_in_period": null,
+      "prior_period_treatment_received": null,
+      "current_period_treatment_unreceived": null,
+      "computed_total": null
     },
     "nhi_patient_share": {
       "label": "건강보험 본인부담금",
-      "source_amount": null, "coverage": "unknown", "source": null,
-      "received_in_period": null, "prior_period_treatment_received": null, "current_period_treatment_unreceived": null, "computed_total": null
+      "source_amount": null,
+      "coverage": "unknown",
+      "source": null,
+      "received_in_period": null,
+      "prior_period_treatment_received": null,
+      "current_period_treatment_unreceived": null,
+      "computed_total": null
     },
     "nhi_insurer_share": {
       "label": "건강보험 공단부담금",
-      "source_amount": null, "coverage": "unknown", "source": null,
-      "received_in_period": null, "prior_period_treatment_received": null, "current_period_treatment_unreceived": null, "computed_total": null
+      "source_amount": null,
+      "coverage": "unknown",
+      "source": null,
+      "received_in_period": null,
+      "prior_period_treatment_received": null,
+      "current_period_treatment_unreceived": null,
+      "computed_total": null
     },
     "casualty_insurance_and_mutual_aid": {
       "label": "손해보험ㆍ공제조합 등",
-      "source_amount": null, "coverage": "unknown", "source": null,
-      "received_in_period": null, "prior_period_treatment_received": null, "current_period_treatment_unreceived": null, "computed_total": null
+      "source_amount": null,
+      "coverage": "unknown",
+      "source": null,
+      "received_in_period": null,
+      "prior_period_treatment_received": null,
+      "current_period_treatment_unreceived": null,
+      "computed_total": null
     },
     "medical_aid_patient_share": {
       "label": "의료급여 본인부담금",
-      "source_amount": null, "coverage": "unknown", "source": null,
-      "received_in_period": null, "prior_period_treatment_received": null, "current_period_treatment_unreceived": null, "computed_total": null
+      "source_amount": null,
+      "coverage": "unknown",
+      "source": null,
+      "received_in_period": null,
+      "prior_period_treatment_received": null,
+      "current_period_treatment_unreceived": null,
+      "computed_total": null
     },
     "medical_aid_insurer_share": {
       "label": "의료급여 공단부담금",
-      "source_amount": null, "coverage": "unknown", "source": null,
-      "received_in_period": null, "prior_period_treatment_received": null, "current_period_treatment_unreceived": null, "computed_total": null
+      "source_amount": null,
+      "coverage": "unknown",
+      "source": null,
+      "received_in_period": null,
+      "prior_period_treatment_received": null,
+      "current_period_treatment_unreceived": null,
+      "computed_total": null
     },
     "business_asset_disposal": {
       "label": "사업용 유형자산 양도(부동산 제외)",
-      "source_amount": null, "coverage": "unknown", "source": null,
-      "received_in_period": null, "prior_period_treatment_received": null, "current_period_treatment_unreceived": null, "computed_total": null
+      "source_amount": null,
+      "coverage": "unknown",
+      "source": null,
+      "received_in_period": null,
+      "prior_period_treatment_received": null,
+      "current_period_treatment_unreceived": null,
+      "computed_total": null
     },
     "other_revenue": {
       "label": "그 밖의 수입(보조금 등)",
-      "source_amount": null, "coverage": "unknown", "source": null,
-      "received_in_period": null, "prior_period_treatment_received": null, "current_period_treatment_unreceived": null, "computed_total": null
+      "source_amount": null,
+      "coverage": "unknown",
+      "source": null,
+      "received_in_period": null,
+      "prior_period_treatment_received": null,
+      "current_period_treatment_unreceived": null,
+      "computed_total": null
     },
     "unmapped_revenue": []
   },
@@ -91,14 +137,54 @@
     "other_staff": null
   },
   "supplies": {
-    "therapeutic_drugs": { "opening": null, "purchases": null, "used": null, "closing": null },
-    "medical_consumables": { "opening": null, "purchases": null, "used": null, "closing": null },
+    "therapeutic_drugs": {
+      "opening": null,
+      "purchases": null,
+      "used": null,
+      "closing": null
+    },
+    "medical_consumables": {
+      "opening": null,
+      "purchases": null,
+      "used": null,
+      "closing": null
+    },
     "year_end_stocktake_done": "unknown"
   },
   "anesthetics": {
-    "local": { "opening_volume_ml": null, "opening_amount": null, "purchase_volume_ml": null, "purchase_amount": null, "cases": null, "used_volume_ml": null, "used_amount": null, "closing_volume_ml": null, "closing_amount": null },
-    "general": { "opening_volume_ml": null, "opening_amount": null, "purchase_volume_ml": null, "purchase_amount": null, "cases": null, "used_volume_ml": null, "used_amount": null, "closing_volume_ml": null, "closing_amount": null },
-    "outcall": { "opening_volume_ml": null, "opening_amount": null, "purchase_volume_ml": null, "purchase_amount": null, "cases": null, "used_volume_ml": null, "used_amount": null, "closing_volume_ml": null, "closing_amount": null }
+    "local": {
+      "opening_volume_ml": null,
+      "opening_amount": null,
+      "purchase_volume_ml": null,
+      "purchase_amount": null,
+      "cases": null,
+      "used_volume_ml": null,
+      "used_amount": null,
+      "closing_volume_ml": null,
+      "closing_amount": null
+    },
+    "general": {
+      "opening_volume_ml": null,
+      "opening_amount": null,
+      "purchase_volume_ml": null,
+      "purchase_amount": null,
+      "cases": null,
+      "used_volume_ml": null,
+      "used_amount": null,
+      "closing_volume_ml": null,
+      "closing_amount": null
+    },
+    "outcall": {
+      "opening_volume_ml": null,
+      "opening_amount": null,
+      "purchase_volume_ml": null,
+      "purchase_amount": null,
+      "cases": null,
+      "used_volume_ml": null,
+      "used_amount": null,
+      "closing_volume_ml": null,
+      "closing_amount": null
+    }
   },
   "return_form_crosscheck": {
     "revenue_total": null,
@@ -144,7 +230,12 @@
     "enrolled_within_60days": "unknown",
     "by_tax_year_note": "미가입기간이 두 과세기간에 걸치면 by_tax_year 배열에 과세기간별로 한 줄씩 적습니다. 빈 배열은 확인된 0건이 아니라 미확인이며 by_tax_year_status로 구분하세요. by_tax_year_example은 형식 예시이므로 채우지 말고 그대로 둡니다.",
     "by_tax_year_status": "unknown",
-    "by_tax_year_example": { "tax_year": null, "unenrolled_days": null, "penalty_base_revenue": null, "invoice_issued_revenue_excluded": null },
+    "by_tax_year_example": {
+      "tax_year": null,
+      "unenrolled_days": null,
+      "penalty_base_revenue": null,
+      "invoice_issued_revenue_excluded": null
+    },
     "by_tax_year": [],
     "mandatory_issuance_industry": "unknown",
     "cash_over_100k_reviewed": "unknown",
