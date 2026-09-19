@@ -73,6 +73,12 @@ class FreeReleaseTests(unittest.TestCase):
         self.assertEqual({name.split('/')[0] for name in files}, package.FREE)
         self.assertTrue(all(p.suffix in {'.md', '.json', '.csv'} for p in files.values()))
 
+    # build.sh 사전 게이트 전용 — 번들을 만들기 전이라 번들↔원본 대조는 필연 실패한다(§14 순환 잠금).
+    # Pro 저장소의 --skip-zip-parity 와 같은 방식으로 **CLI 인자만** 인정한다(env 우회 금지).
+    # 사람이 직접 쓰지 않는다. build.sh 말미의 전체 실행이 이 검사를 다시 한다.
+    PREBUILD = '--prebuild' in sys.argv
+
+    @unittest.skipIf('--prebuild' in sys.argv, '사전 게이트 — 번들 생성 후 전체 실행이 재검사한다')
     def test_current_desktop_bundles_match_sources(self):
         version = package.version()
         folder = ROOT / '데스크탑용-skill파일'
@@ -276,4 +282,7 @@ class FreeReleaseTests(unittest.TestCase):
 
 
 if __name__ == '__main__':
+    if '--prebuild' in sys.argv:
+        print('⚠ 번들 대조 건너뜀 (--prebuild, build.sh 사전 게이트 전용) — 빌드 후 인자 없이 다시 실행할 것')
+        sys.argv = [a for a in sys.argv if a != '--prebuild']
     unittest.main(verbosity=2)
