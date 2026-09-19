@@ -13,6 +13,7 @@ from unittest import mock
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
+REPO_BLOB_PREFIX = 'https://github.com/lbiz-partners/hometax-doum/blob/main/'
 
 
 def load_module(name: str, path: Path) -> ModuleType:
@@ -87,6 +88,42 @@ class FreeReleaseTests(unittest.TestCase):
                 if path.startswith(skill + '/')
             }
             package.verify(bundle, expected)
+
+    def test_release_zip_links_resolve(self):
+        """두 배치 ZIP의 링크가 실제로 열리는가.
+        상대링크는 그 ZIP 안에서, GitHub 절대 URL은 리포 안에서 경로가 실재하는지 본다.
+        README 한 줄 추가가 고객이 받는 묶음에서 죽은 링크가 되는 것을 막고
+        (11차 M-1), 절대 URL 전환이 오타를 검사 밖으로 옮기는 것도 막는다(13차 M-3)."""
+        import posixpath, re
+        with tempfile.TemporaryDirectory() as tmp:
+            folder = Path(tmp)
+            package.build(folder, bundles=folder / 'bundles')
+            broken = []
+            for archive in [folder / f'hometax-doum-free-v{package.version()}.zip',
+                            folder / '홈택스-도움-스킬_Free_카톡전달용.zip']:
+                with zipfile.ZipFile(archive) as z:
+                    names = set(z.namelist())
+                    for name in names:
+                        if not name.endswith('.md'):
+                            continue
+                        body = z.read(name).decode('utf-8')
+                        for match in re.finditer(r'\]\(([^)]+)\)', body):
+                            raw = match.group(1).split('#')[0].split(' ')[0].strip('<>')
+                            if not raw or raw.startswith('mailto:'):
+                                continue
+                            if raw.startswith(REPO_BLOB_PREFIX):
+                                # 절대 URL 도 검사한다 — 오타가 게이트 밖으로 새지 않도록
+                                if not (ROOT / raw[len(REPO_BLOB_PREFIX):]).exists():
+                                    broken.append(f'{archive.name}: {name} → {match.group(1)} (리포에 없는 경로)')
+                                continue
+                            if raw.startswith(('http://', 'https://')):
+                                continue
+                            target = posixpath.normpath(posixpath.join(posixpath.dirname(name), raw))
+                            # 폴더 링크는 ZIP 에 디렉터리 엔트리가 없으므로 접두 일치로 본다
+                            if target in names or any(n.startswith(target + '/') for n in names):
+                                continue
+                            broken.append(f'{archive.name}: {name} → {match.group(1)}')
+            self.assertEqual(broken, [])
 
     def test_user_guides_do_not_use_paid_wording(self):
         guides = [ROOT / 'README.md', ROOT / '시작-가이드.md']

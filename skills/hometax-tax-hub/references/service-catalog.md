@@ -20,7 +20,7 @@ PC·손택스·인증 수준에 따른 실제 메뉴와 적용기간은 실행 �
 | H10 | 영세율·조기환급·공통매입·의제매입·매입자발행 | [부가세 심화](../../tax-prep-kr/references/advanced-and-linked.md)의 H10 | 자료·항목 대조와 전문가 확인사항 |
 | H11 | 종합소득세·종소세·모두채움·중간예납·근로 겸업 | [종합소득세](../../income-tax-hometax/SKILL.md) | 소득·기납부·공제 확인과 국세/지방세 완료 분리 |
 | H12 | 간편장부·복식부기·감가상각·공동사업·이월손실 | [장부·결산·공동사업](../../tax-prep-kr/references/advanced-and-linked.md)의 H12 | 본인 검토용 집계·원자료 차이·전문가 인계 |
-| H13 | 사업장현황·면세사업·학원·주택임대 | [면세사업장현황](../../tax-prep-kr/references/exempt-status-report.md) | 대상·예외·업종별 첨부·접수 확인 |
+| H13 | 사업장현황·면세사업·병의원·학원·주택임대 | [면세사업장현황](../../tax-prep-kr/references/exempt-status-report.md) | 대상·예외·업종별 첨부·접수 확인 |
 | H14 | 원천세·외주비·강사료·원천징수·일용직 | [원천세·외주비](../../tax-prep-kr/references/payroll-basic.md)의 H14 | 원천세 접수·국세·지방세·지급명세서 별도 확인 |
 | H15 | 지급명세서·간이지급명세서·일용근로·소득자료 | [지급명세서·소득자료](../../tax-prep-kr/references/payroll-basic.md)의 H15 | 대상자·귀속/지급기간·수정/중복·접수 확인 |
 | H16 | 직원 연말정산·중도퇴사·퇴직소득 | [직원 연말정산·퇴직](../../tax-prep-kr/references/payroll-basic.md)의 H16 | 연간 지급·공제자료·정산·지급명세서 준비 |

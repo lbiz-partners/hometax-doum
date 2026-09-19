@@ -9,3 +9,9 @@
 *.ps1 text eol=lf
 *.mjs text eol=lf
 *.json text eol=lf
+
+# 배포 번들은 ZIP 이다 — 줄끝 변환 금지. 번들 안 바이트는 LF 라 md·json 도 LF 로 고정한다
+*.skill binary
+*.zip binary
+*.md text eol=lf
+*.csv text eol=lf

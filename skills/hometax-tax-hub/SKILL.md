@@ -28,7 +28,7 @@ description: "홈택스 도움 스킬의 진입점. 개인사업자의 개업부
 | 부가세 | `vat-hometax`; 복잡한 영세율·겸영·임대·자산은 H10 준비 안내 병행 |
 | 음식점 의제매입·상가 보증금·주택 분리과세·재고원가·학원/프리랜서 수입 | [업종별 안내](../tax-prep-kr/references/industry-guide.md); 계산은 Pro 탐지 시 [Pro 연동](references/pro-integration.md) |
 | 종소세·모두채움·근로+사업 | `income-tax-hometax`; 예상세액 계산은 Pro 탐지 시 [Pro 연동](references/pro-integration.md); 장부·공동사업은 H12 준비 안내 병행 |
-| 면세사업장현황 | `tax-prep-kr`의 `references/exempt-status-report.md` |
+| 면세사업장현황 | `tax-prep-kr`의 `references/exempt-status-report.md`; 병의원·치과·한의원은 `references/exempt-status-medical.md`, 동물병원은 `references/exempt-status-veterinary.md`, 약국은 `references/exempt-status-pharmacy.md` |
 | 직원·외주비·원천세·지급명세서·연말정산 | `tax-prep-kr`의 `references/payroll-basic.md`로 진행; 원천징수 계산은 Pro 탐지 시 [Pro 연동](references/pro-integration.md) |
 | 기한후·수정·경정청구·기한연장·소명 | `tax-prep-kr`의 `references/corrections-and-relief.md`; 범위 밖 판단은 자료를 준비해 전문가에게 연결 |
 | 양도·상속·증여·특수세목·해외·4대보험·법인전환 | H24 조건부 안내·공식 기관 연결·자료 인계 |
