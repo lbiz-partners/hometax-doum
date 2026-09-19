@@ -542,6 +542,39 @@
       ],
       "under_heading": "3단계 — 입금액을 진료 기준으로 되돌린다 (차이조정)",
       "why": "전년 진료분의 삭감·환수를 올해 수입에 반영하면 두 해가 모두 틀어진다 (2026-09-19 적대적 리뷰 M-1)"
+    },
+    {
+      "id": "personal-service-statutory-exclusion",
+      "file": "skills/tax-prep-kr/SKILL.md",
+      "must_contain": [
+        "제141조제4항"
+      ],
+      "why": "인적용역 줄이 「신고 의무는 있다」로 닫히면 보험모집인·계약배달 판매용역자 등 소득세법 시행령 제141조제4항 법정 제외자에게 없는 의무를 안내한다(§78③은 신고하지 아니할 수 있다고 정함). 이 줄은 SKILL.md 본문이라 참조 문서를 열지 않아도 답이 완결돼 오안내가 그대로 나간다 (리뷰 High-1)",
+      "under_heading": "1인사업자 반복 업무",
+      "must_not_contain": [
+        "신고 의무는 있다",
+        "신고 의무는 그대로 있다"
+      ]
+    },
+    {
+      "id": "personal-service-payer-direction",
+      "file": "skills/tax-prep-kr/SKILL.md",
+      "must_contain": [
+        "「직원 없는 외주 지급·원천세」 줄이다"
+      ],
+      "why": "인적용역 줄에 「프리랜서」가 들어가면서 프리랜서에게 지급하고 원천징수한 사장님 문의까지 이 줄로 끌려온다(실측 0.97→0.50). 지급자가 놓치면 원천세 신고·납부와 지급명세서 제출 기한을 놓쳐 가산세가 붙는다 (리뷰 High-2)",
+      "under_heading": "1인사업자 반복 업무"
+    },
+    {
+      "id": "exempt-industry-dedicated-lines",
+      "file": "skills/tax-prep-kr/SKILL.md",
+      "must_contain": [
+        "- 학원:",
+        "- 주택임대:",
+        "- 인적용역(프리랜서):"
+      ],
+      "why": "업종을 한 줄에 뭉치면 그 업종 문의의 문서 라우팅이 무너진다(실측: 주택임대가 오답, 확신 0.38 → 분리 후 정답 0.86). 전용 줄을 다시 합치는 회귀를 막는다",
+      "under_heading": "1인사업자 반복 업무"
     }
   ]
 }
