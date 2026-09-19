@@ -14,7 +14,7 @@ FREE = {'hometax-tax-hub', 'tax-prep-kr', 'receipt-classify-kr',
         'tax-invoice-hometax', 'vat-hometax', 'income-tax-hometax'}
 DOCS = ['README.md', 'VERSION', 'LICENSE.md', '시작-가이드.md',
         'docs/sole-owner-sources-2026-09-12.md', 'docs/personal-business-sources-2026-09-17.md',
-        'docs/industry-ui-sources-2026-09-17.md']
+        'docs/industry-ui-sources-2026-09-17.md', 'docs/medical-status-sources-2026-09-19.md']
 
 
 def version():

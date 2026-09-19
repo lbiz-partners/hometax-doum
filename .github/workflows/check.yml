@@ -14,6 +14,46 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: 버전 역행 차단 (직전 커밋·base 브랜치보다 낮은 VERSION 거부)
+        env:
+          GH_EVENT: ${{ github.event_name }}
+          GH_BEFORE: ${{ github.event.before }}
+          GH_BASE: ${{ github.base_ref }}
+        run: |
+          set -eu
+          new_v="$(sed -n 's/^version: *//p' VERSION)"
+          [ -n "$new_v" ] || { echo "VERSION 을 읽지 못했습니다 — 거부"; exit 1; }
+          # push 이벤트에서는 checkout 시점의 origin/main 이 방금 민 커밋 자신이라 비교가
+          # 무의미하다(2026-09-19 적대적 리뷰 12차 High-1 실측). push 는 직전 커밋(before),
+          # PR 은 base 브랜치와 비교한다.
+          base=""
+          if [ "${GH_EVENT:-}" = "pull_request" ]; then
+            base="origin/${GH_BASE:-main}"
+          elif [ -n "${GH_BEFORE:-}" ] && [ "${GH_BEFORE}" != "0000000000000000000000000000000000000000" ]; then
+            base="${GH_BEFORE}"
+          fi
+          if [ -z "$base" ]; then
+            echo "비교 기준을 정하지 못했습니다(첫 push 이거나 before 없음) — 버전 비교 생략"; exit 0
+          fi
+          if ! git rev-parse --verify -q "$base^{commit}" >/dev/null; then
+            echo "비교 기준 $base 를 읽지 못했습니다 — 거부 (checkout 의 fetch-depth 확인)"; exit 1
+          fi
+          old_v="$(git show "$base:VERSION" 2>/dev/null | sed -n 's/^version: *//p' || true)"
+          if [ -z "$old_v" ]; then
+            echo "비교 기준 $base 에 VERSION 이 없습니다 — 버전 비교 생략"; exit 0
+          fi
+          case "$new_v$old_v" in
+            *[!0-9.]*) echo "버전 표기가 숫자·점이 아님($new_v / $old_v) — 비교 생략"; exit 0 ;;
+          esac
+          if [ "$new_v" != "$old_v" ]; then
+            lowest="$(printf '%s\n%s\n' "$new_v" "$old_v" | sort -t. -k1,1n -k2,2n -k3,3n | head -1)"
+            if [ "$lowest" = "$new_v" ]; then
+              echo "버전 역행 — $base 의 $old_v 보다 낮은 $new_v 는 배포를 되감습니다"; exit 1
+            fi
+          fi
+          echo "버전 확인 OK: $base $old_v → $new_v"
       - uses: actions/setup-node@v4
         with:
           node-version: 22

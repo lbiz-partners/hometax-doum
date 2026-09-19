@@ -33,6 +33,30 @@ while read -r local_ref local_sha remote_ref remote_sha; do
   fi
 
   short="$(printf %.8s "$local_sha")"
+
+  # 버전 역행 차단 — 원격에 이미 있는 버전보다 낮은 VERSION 을 밀면 배포가 되감긴다.
+  # 낡은 베이스에서 만든 커밋(사람이든 동기화 자동화든)이 그대로 나가는 사고를 막는다
+  # (2026-09-19 적대적 리뷰 10차 Critical: v4.2.0 원격에 v3.10.0 커밋이 대기 중이었다).
+  if [ -n "$remote_sha" ] && [ "$remote_sha" != "$ZERO" ]; then
+    new_v="$(git show "$local_sha:VERSION" 2>/dev/null | sed -n 's/^version: *//p')"
+    old_v="$(git show "$remote_sha:VERSION" 2>/dev/null | sed -n 's/^version: *//p')"
+    if [ -n "$old_v" ] && [ -z "$new_v" ]; then
+      echo "[pre-push] 원격에는 VERSION 이 있는데 밀려는 커밋(${short})에는 없습니다 — push 거부" >&2
+      rm -rf "$tmp"; fail=1; continue
+    fi
+    case "$new_v$old_v" in
+      *[!0-9.]*) new_v=""; old_v="" ;;   # rc 등 비숫자 표기는 사전식 오판 위험 — 비교 생략
+    esac
+    if [ -n "$new_v" ] && [ -n "$old_v" ] && [ "$new_v" != "$old_v" ]; then
+      lowest="$(printf '%s\n%s\n' "$new_v" "$old_v" | sort -t. -k1,1n -k2,2n -k3,3n | head -1)"
+      if [ "$lowest" = "$new_v" ]; then
+        echo "[pre-push] 버전 역행 — push 거부: 원격 ${old_v} → 밀려는 커밋 ${new_v} (${short})" >&2
+        echo "  낡은 베이스에서 만든 커밋일 수 있습니다. git fetch 후 origin/main 위로 다시 올리세요." >&2
+        rm -rf "$tmp"; fail=1; continue
+      fi
+    fi
+  fi
+
   echo "[pre-push] ${local_ref} (커밋 ${short}) 게이트 실행 중..." >&2
   if ! (cd "$tmp" && CI=1 node scripts/check.mjs >&2 \
         && CI=1 node scripts/test-receivables.mjs >&2 \

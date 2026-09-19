@@ -5,6 +5,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
+import zlib from 'node:zlib';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -48,6 +49,22 @@ for (const file of ['README.md', '시작-가이드.md']) {
   const value = (fs.readFileSync(path.join(ROOT, file), 'utf8').match(/\*\*버전:\*\*\s*([0-9.]+)/) || [])[1];
   check(value === version, '안내 버전 불일치: ' + file);
 }
+// 2-1. 배포물 파일명의 구버전 잔존 — `**버전:**` 한 줄만 고치고 본문의 ZIP·번들 파일명을
+//   그대로 두면 안내가 존재하지 않는 파일을 가리킨다 (2026-09-19 적대적 리뷰).
+//   대상은 `.zip`/`.skill` 로 끝나거나 폴더로 쓰인 파일명 꼴뿐이고, 업데이트 내역의 이력
+//   표기(앞에 - 나 _ 가 없다)는 걸리지 않는다. 구버전 파일명을 의도적으로 안내하는 줄에는
+//   `<!-- old-release -->` 마커를 직접 단다 — '이전' 같은 흔한 낱말로 면제하면 정작 막아야
+//   할 줄까지 통과한다(실측).
+const RELEASE_FILENAME_VERSION = /[-_]v(\d+\.\d+\.\d+)(?=\.(?:zip|skill)\b|\/)/g;
+const INTENTIONAL_OLD_VERSION = /<!--\s*old-release\s*-->/;
+for (const file of ['README.md', '시작-가이드.md']) {
+  const stale = [];
+  for (const line of fs.readFileSync(path.join(ROOT, file), 'utf8').split('\n')) {
+    if (INTENTIONAL_OLD_VERSION.test(line)) continue;
+    for (const m of line.matchAll(RELEASE_FILENAME_VERSION)) if (m[1] !== version) stale.push(m[1]);
+  }
+  check(stale.length === 0, `파일명 꼴 구버전 잔존: ${file} → ${[...new Set(stale)].join(', ')} (현재 ${version})`);
+}
 for (const name of skills) {
   const content = fs.readFileSync(path.join(SKILL_DIR, name, 'SKILL.md'), 'utf8');
   const desc = (content.match(/^description:\s*([^\n]*)/m) || [])[1] || '';
@@ -88,6 +105,32 @@ check(junk.length === 0, `junk 파일 ${junk.length}건`);
 
 // 안전규칙 under_heading — 제목(접두 일치) 아래 절(같거나 상위 레벨 제목 전까지) 안에서만 must_contain을 찾는다 (C-10).
 const sectionUnder = (text, heading) => {
+  // HTML 주석 안에 원문을 숨기고 옆에 반대 문장을 쓰면 통과하던 구멍을 닫는다
+  // (11차 M-2 실측). 다만 코드펜스 안의 '<!--' 는 예시 텍스트라 주석이 아니다 —
+  // 통째로 지우면 짝 없는 '<!--' 하나가 제목까지 삼켜 정상 문서를 FAIL 시킨다(12차 M-3).
+  // 그래서 펜스 밖 줄에서만 주석을 지운다.
+  {
+    const out = []; let fence = false, inComment = false;
+    for (const l of text.split('\n')) {
+      if (/^\s*```/.test(l)) { fence = !fence; out.push(l); continue; }
+      if (fence) { out.push(l); continue; }
+      let s = l;
+      if (inComment) {
+        const end = s.indexOf('-->');
+        if (end < 0) { out.push(''); continue; }
+        s = s.slice(end + 3); inComment = false;
+      }
+      for (;;) {
+        const open = s.indexOf('<!--');
+        if (open < 0) break;
+        const close = s.indexOf('-->', open + 4);
+        if (close < 0) { s = s.slice(0, open); inComment = true; break; }
+        s = s.slice(0, open) + s.slice(close + 3);
+      }
+      out.push(s);
+    }
+    text = out.join('\n');
+  }
   const lines = text.split('\n');
   // 코드 펜스 안의 '#'은 제목이 아니다. 정확 일치 제목을 우선하고 없으면 접두 일치 (리뷰 L-5).
   const heads = []; let fence = false;
@@ -136,6 +179,38 @@ try {
   check(false, '업무 목록 md가 JSON 생성 결과와 다름: ' + (error.stderr?.toString() || error.message).split('\n').slice(0, 2).join(' '));
 }
 
+// 9-3. 병의원 워크시트 구조 — 문자열 매칭은 들여쓰기 재포맷 한 번에 뚫린다(실측).
+//   구조는 JSON 으로 파싱해서 본다 (2026-09-19 적대적 리뷰 8차 M-3·M-4).
+const wsPath = path.join(SKILL_DIR, 'tax-prep-kr', 'assets', 'exempt-status-medical-worksheet.json');
+const MED_CHANNELS = ['uninsured', 'nhi_patient_share', 'nhi_insurer_share', 'casualty_insurance_and_mutual_aid',
+  'medical_aid_patient_share', 'medical_aid_insurer_share', 'business_asset_disposal', 'other_revenue'];
+check(fs.existsSync(wsPath), '병의원 워크시트 누락: ' + path.relative(ROOT, wsPath));
+if (fs.existsSync(wsPath)) {
+  let ws = null, parseError = '';
+  try { ws = JSON.parse(fs.readFileSync(wsPath, 'utf8')); } catch (e) { parseError = e.message; }
+  check(ws !== null, `병의원 워크시트 JSON 파싱 실패: ${parseError}`);
+  if (ws) {
+    const cr = ws.cash_receipt_selfcheck ?? {};
+    check(Array.isArray(cr.by_tax_year),
+      '병의원 워크시트: cash_receipt_selfcheck.by_tax_year 배열 없음 — 미가입기간을 과세기간별로 적을 곳이 사라진다');
+    const revived = ['unenrolled_days', 'penalty_base_revenue', 'unenrolled_days_by_tax_year', 'penalty_base_revenue_by_tax_year']
+      .filter((k) => Object.prototype.hasOwnProperty.call(cr, k));
+    check(revived.length === 0,
+      `병의원 워크시트: 과세기간별 배열을 단일 값으로 되돌린 키 [${revived.join(', ')}] — 두 해에 걸친 미가입기간을 한 번에 계산하게 된다`);
+    const ch = ws.revenue_by_channel ?? {};
+    // 개수만 세면 이름을 바꿔치기해도 통과한다 (9차 리뷰 M-1 실측) — 열 이름을 직접 본다.
+    const lost = MED_CHANNELS.filter((k) => !Object.prototype.hasOwnProperty.call(ch, k));
+    check(lost.length === 0, `병의원 워크시트: 검토표 열에 대응하는 채널이 빠짐 [${lost.join(', ')}]`);
+    check(Array.isArray(ch.unmapped_revenue), '병의원 워크시트: unmapped_revenue 배열 없음 — 검토표에 칸이 없는 수입을 적을 곳이 사라진다');
+    // 채널 안의 차이조정 칸까지 본다 (9차 리뷰 M-2 실측). 유형자산 양도·그 밖의 수입은
+    // 서식이 금액만 규정하므로 3줄 칸을 요구하지 않는다.
+    const needRows = MED_CHANNELS.filter((k) => !['business_asset_disposal', 'other_revenue'].includes(k));
+    const rowKeys = ['computed_total', 'received_in_period', 'prior_period_treatment_received', 'current_period_treatment_unreceived'];
+    const broken = needRows.filter((k) => rowKeys.some((r) => !Object.prototype.hasOwnProperty.call(ch[k] ?? {}, r)));
+    check(broken.length === 0, `병의원 워크시트: 채널의 차이조정 칸이 빠짐 [${broken.join(', ')}]`);
+  }
+}
+
 // 10. 하네스 무결성 — 훅 등록·설정이 무장해제되지 않았는지.
 // 주의: CI는 push 후에 도는 사후 감지라 배포를 막지 못한다. 로컬 skill-gate가 1차 방어선.
 const settingsPath = path.join(ROOT, '.claude', 'settings.json');
@@ -180,6 +255,69 @@ try {
   check(true, '실화면 부분 검증·완료 상태 변조 회귀');
 } catch (error) {
   check(false, '24개 업무 경로·문서·완료근거 검사 실패: ' + (error.stderr?.toString() || error.message));
+}
+
+// 12. 데스크탑 번들 정합성 — README·시작 가이드가 "데스크탑용 .skill 6개"를 약속한다.
+//   구버전 삭제만 커밋되고 신버전이 빠지면 배포 폴더가 빈 채로 main 에 올라간다.
+//   빌드 파이프라인 자신은 번들을 만들기 **전에** 이 게이트를 돌므로 build.sh 의 사전점검
+//   단계에서만 `--prebuild` 로 건너뛴다. 환경변수로 하면 pre-push·훅에 상속돼 조용히
+//   꺼지므로 인자로 받고, 건너뛸 때는 stderr 에 경고를 남긴다.
+const bundleDir = path.join(ROOT, '데스크탑용-skill파일');
+const skipBundle = process.argv.includes('--prebuild');
+if (skipBundle) console.error('⚠ 번들 검사 건너뜀 (--prebuild, 빌드 사전점검 전용) — 빌드 후 인자 없이 다시 실행할 것');
+if (!skipBundle) {
+  check(fs.existsSync(bundleDir), '데스크탑 번들 폴더 누락: 데스크탑용-skill파일/');
+  if (fs.existsSync(bundleDir) && version) {
+    const found = fs.readdirSync(bundleDir).filter((f) => f.endsWith('.skill')).sort();
+    const want = FREE.map((s) => `${s}_v${version}.skill`).sort();
+    check(found.join('|') === want.join('|'),
+      `데스크탑 번들 불일치 — 있음 [${found.join(', ') || '없음'}] / 기대 [${want.join(', ')}] · bash scripts/build.sh 로 재생성할 것`);
+
+    // 12-1. 번들 **내용**이 원본과 같은가. 존재만 보면 스킬 문서만 고치고 build.sh 없이
+    //   커밋했을 때 게이트가 초록인 채 구버전 내용이 출고된다(실측). 외부 의존성 없이
+    //   ZIP 중앙 디렉터리를 직접 읽어 바이트를 대조한다.
+    const unzip = (buf) => {
+      let eocd = -1;
+      for (let i = buf.length - 22; i >= 0 && i >= buf.length - 22 - 65536; i--)
+        if (buf.readUInt32LE(i) === 0x06054b50) { eocd = i; break; }
+      if (eocd < 0) throw new Error('ZIP 끝 레코드를 찾지 못함');
+      const count = buf.readUInt16LE(eocd + 10);
+      let off = buf.readUInt32LE(eocd + 16);
+      const entries = new Map();
+      for (let k = 0; k < count; k++) {
+        if (buf.readUInt32LE(off) !== 0x02014b50) throw new Error('중앙 디렉터리 손상');
+        const method = buf.readUInt16LE(off + 10);
+        const csize = buf.readUInt32LE(off + 20);
+        const nameLen = buf.readUInt16LE(off + 28);
+        const extraLen = buf.readUInt16LE(off + 30);
+        const cmtLen = buf.readUInt16LE(off + 32);
+        const localOff = buf.readUInt32LE(off + 42);
+        const name = buf.toString('utf8', off + 46, off + 46 + nameLen).normalize('NFC');
+        const dataStart = localOff + 30 + buf.readUInt16LE(localOff + 26) + buf.readUInt16LE(localOff + 28);
+        const raw = buf.subarray(dataStart, dataStart + csize);
+        entries.set(name, method === 8 ? zlib.inflateRawSync(raw) : Buffer.from(raw));
+        off += 46 + nameLen + extraLen + cmtLen;
+      }
+      return entries;
+    };
+    for (const name of FREE) {
+      const bundle = path.join(bundleDir, `${name}_v${version}.skill`);
+      if (!fs.existsSync(bundle)) continue;
+      const source = new Map();
+      for (const fp of walk(path.join(SKILL_DIR, name)))
+        source.set(path.relative(path.join(SKILL_DIR, name), fp).split(path.sep).join('/').normalize('NFC'), fs.readFileSync(fp));
+      let problem = '';
+      try {
+        const entries = unzip(fs.readFileSync(bundle));
+        const missing = [...source.keys()].filter((k) => !entries.has(k));
+        const extra = [...entries.keys()].filter((k) => !source.has(k));
+        const differ = [...source.entries()].filter(([k, v]) => entries.has(k) && !entries.get(k).equals(v)).map(([k]) => k);
+        if (missing.length || extra.length || differ.length)
+          problem = `누락 [${missing.join(', ')}] / 잉여 [${extra.join(', ')}] / 내용다름 [${differ.join(', ')}]`;
+      } catch (e) { problem = `번들을 읽지 못함: ${e.message}`; }
+      check(problem === '', `데스크탑 번들이 원본과 다름: ${name}_v${version}.skill — ${problem} · bash scripts/build.sh 로 재생성할 것`);
+    }
+  }
 }
 
 if (errors.length) {

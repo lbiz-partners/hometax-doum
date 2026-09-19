@@ -88,6 +88,35 @@ class FreeReleaseTests(unittest.TestCase):
             }
             package.verify(bundle, expected)
 
+    def test_snapshot_zip_has_no_broken_relative_links(self):
+        """스냅샷 ZIP 안의 상대링크가 그 ZIP 안에서 실제로 열리는가.
+        README 한 줄 추가가 고객이 받는 묶음에서 죽은 링크가 되는 것을 막는다
+        (2026-09-19 적대적 리뷰 11차 M-1). 카톡전달용 배치는 skills/ 위치가 달라
+        기존 결함이 남아 있으므로 여기서는 스냅샷 배치만 강제한다."""
+        import posixpath, re
+        with tempfile.TemporaryDirectory() as tmp:
+            folder = Path(tmp)
+            package.build(folder, bundles=folder / 'bundles')
+            broken = []
+            for archive in [folder / f'hometax-doum-free-v{package.version()}.zip',
+                            folder / '홈택스-도움-스킬_Free_카톡전달용.zip']:
+                with zipfile.ZipFile(archive) as z:
+                    names = set(z.namelist())
+                    for name in names:
+                        if not name.endswith('.md'):
+                            continue
+                        body = z.read(name).decode('utf-8')
+                        for match in re.finditer(r'\]\((?!https?:|#|mailto:)([^)]+)\)', body):
+                            raw = match.group(1).split('#')[0].split(' ')[0].strip('<>')
+                            if not raw:
+                                continue
+                            target = posixpath.normpath(posixpath.join(posixpath.dirname(name), raw))
+                            # 폴더 링크는 ZIP 에 디렉터리 엔트리가 없으므로 접두 일치로 본다
+                            if target in names or any(n.startswith(target + '/') for n in names):
+                                continue
+                            broken.append(f'{archive.name}: {name} → {match.group(1)}')
+            self.assertEqual(broken, [])
+
     def test_user_guides_do_not_use_paid_wording(self):
         guides = [ROOT / 'README.md', ROOT / '시작-가이드.md']
         guides.extend(ROOT.glob('skills/**/*.md'))

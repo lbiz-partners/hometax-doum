@@ -1,0 +1,161 @@
+{
+  "purpose": "무료 병의원(의료업) 사업장현황신고 수동 준비표. Pro 엔진 입력이 아니며 미확인 항목을 임의로 채우지 않습니다. 환자 인적사항·주민번호·계좌·인증정보는 넣지 않습니다.",
+  "how_to_use": "모르는 값은 null, 확인 상태는 unknown을 그대로 둡니다. 확인된 0원은 0으로 적고 미확보 자료와 구별합니다. 해당 진료과에 없는 칸은 coverage를 '해당없음'으로 적습니다. 금액은 원 단위입니다.",
+  "field_note": "source_amount는 출처 자료에 적힌 원금액(입금·지급 기준일 수 있음)이며 검토표에 그대로 옮겨 적는 값이 아닙니다. 검토표에 적을 값은 진료 기준으로 환산한 computed_total입니다. source_amount만 채우고 끝내지 마세요.",
+  "worksheet_scope": "사업장 1곳당 1부. 사업장이 둘 이상이면 파일을 사업장별로 따로 만듭니다.",
+  "business_alias": null,
+  "tax_year": null,
+  "entity_type": "unknown",
+  "clinic_type": null,
+  "industry_code": null,
+  "site_count": null,
+  "site_alias": null,
+  "period_start": null,
+  "period_end": null,
+  "closed_or_suspended": "unknown",
+  "eligibility": {
+    "status": "unknown",
+    "basis": null,
+    "mixed_taxable_supply": "unknown",
+    "vat_return_filed": "unknown",
+    "vat_return_exempt_revenue_field_checked": false,
+    "vat_return_exempt_revenue_amount": null,
+    "deemed_filing_claimed": false,
+    "deemed_filing_note": "신고 간주여도 면세사업등 수입금액을 미달신고하면 가산세 대상입니다. 위 금액이 연간 면세 수입과 맞는지 대조하세요."
+  },
+  "difference_adjustment_note": "검토표는 채널(열)마다 4행 구조이며 아래 3줄 칸이 각 열에 있습니다. 다만 열마다 채우는 방식이 다르니 바로 아래 difference_adjustment_scope를 먼저 읽으세요. 채널 합계 = received_in_period − prior_period_treatment_received + current_period_treatment_unreceived. 산출값은 반드시 원장의 진료일 기준 수입과 대조하고, 어긋나면 임의로 맞추지 말고 확인하세요.",
+  "difference_adjustment_scope": "건강보험 열은 3줄 정의(서식 작성방법 사·아·자) 그대로 채웁니다. 의료급여 열은 명문이 없어 건강보험과 같은 방식으로 채우되 추론임을 기록합니다. 비보험·손해보험 열은 진료 기준 금액을 computed_total에 적고, 3줄은 자료가 있으면 같은 정의로 적고 없으면 비운 뒤 사유를 남깁니다. 사업용 유형자산 양도·그 밖의 수입 열은 해당 과세기간 금액만 적고 3줄을 억지로 채우지 않습니다.",
+  "unmapped_revenue_example": { "label": "예) 산재보험 진료비", "amount": null, "payer": null, "how_confirmed": null, "review_form_column": "unknown" },
+  "revenue_by_channel": {
+    "uninsured": {
+      "label": "비보험(비급여)",
+      "source_amount": null, "coverage": "unknown", "source": null,
+      "received_in_period": null, "prior_period_treatment_received": null, "current_period_treatment_unreceived": null, "computed_total": null
+    },
+    "nhi_patient_share": {
+      "label": "건강보험 본인부담금",
+      "source_amount": null, "coverage": "unknown", "source": null,
+      "received_in_period": null, "prior_period_treatment_received": null, "current_period_treatment_unreceived": null, "computed_total": null
+    },
+    "nhi_insurer_share": {
+      "label": "건강보험 공단부담금",
+      "source_amount": null, "coverage": "unknown", "source": null,
+      "received_in_period": null, "prior_period_treatment_received": null, "current_period_treatment_unreceived": null, "computed_total": null
+    },
+    "casualty_insurance_and_mutual_aid": {
+      "label": "손해보험ㆍ공제조합 등",
+      "source_amount": null, "coverage": "unknown", "source": null,
+      "received_in_period": null, "prior_period_treatment_received": null, "current_period_treatment_unreceived": null, "computed_total": null
+    },
+    "medical_aid_patient_share": {
+      "label": "의료급여 본인부담금",
+      "source_amount": null, "coverage": "unknown", "source": null,
+      "received_in_period": null, "prior_period_treatment_received": null, "current_period_treatment_unreceived": null, "computed_total": null
+    },
+    "medical_aid_insurer_share": {
+      "label": "의료급여 공단부담금",
+      "source_amount": null, "coverage": "unknown", "source": null,
+      "received_in_period": null, "prior_period_treatment_received": null, "current_period_treatment_unreceived": null, "computed_total": null
+    },
+    "business_asset_disposal": {
+      "label": "사업용 유형자산 양도(부동산 제외)",
+      "source_amount": null, "coverage": "unknown", "source": null,
+      "received_in_period": null, "prior_period_treatment_received": null, "current_period_treatment_unreceived": null, "computed_total": null
+    },
+    "other_revenue": {
+      "label": "그 밖의 수입(보조금 등)",
+      "source_amount": null, "coverage": "unknown", "source": null,
+      "received_in_period": null, "prior_period_treatment_received": null, "current_period_treatment_unreceived": null, "computed_total": null
+    },
+    "unmapped_revenue": []
+  },
+  "review_form_total": {
+    "note": "검토표 2. 총수입금액 및 차이조정 명세의 합계. 신고서 ①의 수입금액 합계와 나란히 놓고 비교하되, 서식이 일치를 규정한 것은 ②=①입니다. 겸영 과세분 등으로 달라질 수 있으니 차이 사유를 적으세요.",
+    "amount": null,
+    "matches_channel_sum": "unknown",
+    "matches_return_form_revenue_total": "unknown",
+    "difference_reason": null,
+    "withholding_included_in_received": "unknown",
+    "adjustment_or_clawback_notes": []
+  },
+  "facility_and_staff": {
+    "as_of": null,
+    "exam_room_sqm": null,
+    "operating_room_sqm": null,
+    "ward_sqm": null,
+    "beds": null,
+    "other_area_sqm": null,
+    "employed_doctors": null,
+    "visiting_doctors": null,
+    "nurses": null,
+    "other_staff": null
+  },
+  "supplies": {
+    "therapeutic_drugs": { "opening": null, "purchases": null, "used": null, "closing": null },
+    "medical_consumables": { "opening": null, "purchases": null, "used": null, "closing": null },
+    "year_end_stocktake_done": "unknown"
+  },
+  "anesthetics": {
+    "local": { "opening_volume_ml": null, "opening_amount": null, "purchase_volume_ml": null, "purchase_amount": null, "cases": null, "used_volume_ml": null, "used_amount": null, "closing_volume_ml": null, "closing_amount": null },
+    "general": { "opening_volume_ml": null, "opening_amount": null, "purchase_volume_ml": null, "purchase_amount": null, "cases": null, "used_volume_ml": null, "used_amount": null, "closing_volume_ml": null, "closing_amount": null },
+    "outcall": { "opening_volume_ml": null, "opening_amount": null, "purchase_volume_ml": null, "purchase_amount": null, "cases": null, "used_volume_ml": null, "used_amount": null, "closing_volume_ml": null, "closing_amount": null }
+  },
+  "return_form_crosscheck": {
+    "revenue_total": null,
+    "revenue_excluded": null,
+    "invoice_issued": null,
+    "buyer_issued_invoice": null,
+    "card_sales": null,
+    "cash_receipt_sales": null,
+    "other_sales": null,
+    "duplicate_rule_applied": "unknown",
+    "composition_matches_revenue_total": "unknown",
+    "purchase_invoice_total": null,
+    "purchase_invoice_received_subtotal": null,
+    "purchase_invoice_electronic": null,
+    "purchase_invoice_non_electronic": null,
+    "purchase_invoice_buyer_issued": null,
+    "purchase_tax_invoice_total": null,
+    "purchase_tax_invoice_received_subtotal": null,
+    "purchase_tax_invoice_electronic": null,
+    "purchase_tax_invoice_non_electronic": null,
+    "purchase_tax_invoice_buyer_issued": null,
+    "card_and_cash_receipt_purchases": null
+  },
+  "attachments": {
+    "sales_invoice_summary": "unknown",
+    "purchase_invoice_summary": "unknown",
+    "buyer_issued_invoice_summary": "unknown",
+    "purchase_tax_invoice_summary": "unknown",
+    "buyer_issued_tax_invoice_summary": "unknown",
+    "medical_revenue_review_form": "unknown"
+  },
+  "joint_practice": {
+    "is_joint": "unknown",
+    "member_count": null,
+    "share_sum_is_100": "unknown",
+    "allocation_total_matches_revenue_total": "unknown",
+    "allocation_recorded": false
+  },
+  "cash_receipt_selfcheck": {
+    "mandatory_enrollment": "unknown",
+    "business_start_date": null,
+    "enrollment_date": null,
+    "enrolled_within_60days": "unknown",
+    "by_tax_year_note": "미가입기간이 두 과세기간에 걸치면 by_tax_year 배열에 과세기간별로 한 줄씩 적습니다. 빈 배열은 확인된 0건이 아니라 미확인이며 by_tax_year_status로 구분하세요. by_tax_year_example은 형식 예시이므로 채우지 말고 그대로 둡니다.",
+    "by_tax_year_status": "unknown",
+    "by_tax_year_example": { "tax_year": null, "unenrolled_days": null, "penalty_base_revenue": null, "invoice_issued_revenue_excluded": null },
+    "by_tax_year": [],
+    "mandatory_issuance_industry": "unknown",
+    "cash_over_100k_reviewed": "unknown",
+    "unissued_cases_found": null,
+    "refusal_or_wrong_issue_cases": null,
+    "refusal_notified_by_office": "unknown",
+    "voluntary_issue_within_10days": "unknown",
+    "notes": null
+  },
+  "official_source_url": null,
+  "checked_on": null,
+  "unresolved_items": [],
+  "receipt_checked": false
+}
