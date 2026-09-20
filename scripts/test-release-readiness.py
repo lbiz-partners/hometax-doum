@@ -57,6 +57,7 @@ class ReleaseReadinessTests(unittest.TestCase):
             self.assertEqual(data['edition'], 'free')
             self.assertEqual(data['version'], readiness.version())
             self.assertEqual(data['expected_tag'], f'v{readiness.version()}')
+            self.assertNotIn('source_commit', data)
             self.assertEqual([entry['name'] for entry in data['files']], sorted(entry['name'] for entry in data['files']))
             self.assertNotIn(str(directory), first_manifest.decode('utf-8'))
             self.assertNotIn('created_at', data)
@@ -122,10 +123,14 @@ class ReleaseReadinessTests(unittest.TestCase):
         before = subprocess.run(['git', 'status', '--porcelain'], cwd=ROOT, capture_output=True, check=True).stdout
         result = self.cli('--tag-readiness')
         after = subprocess.run(['git', 'status', '--porcelain'], cwd=ROOT, capture_output=True, check=True).stdout
-        self.assertEqual(result.returncode, 0, result.stderr)
-        self.assertIn(result.stdout.strip(), {
+        status = result.stdout.strip()
+        self.assertIn(status, {
             'READY_TO_TAG', 'ALREADY_TAGGED', 'BLOCKED_DIRTY', 'BLOCKED_TAG_CONFLICT',
         })
+        if status.startswith('BLOCKED_'):
+            self.assertNotEqual(result.returncode, 0, result.stderr)
+        else:
+            self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual(before, after)
 
 

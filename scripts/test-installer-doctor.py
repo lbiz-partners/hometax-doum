@@ -105,6 +105,21 @@ class InstallerDoctorTests(unittest.TestCase):
             self.assertNotEqual(result.returncode, 0, output)
             self.assertIn(f'MISMATCH {EXPECTED[0]} — 심볼릭링크 대상은 점검하지 않습니다', output)
 
+    def test_target_root_symlink_is_rejected_without_following(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            base = Path(tmp)
+            target = base / 'skills'
+            self.copy_healthy(target)
+            linked_target = base / 'linked-skills'
+            linked_target.symlink_to(target, target_is_directory=True)
+            before = snapshot(base)
+            result = self.doctor('--target-dir', str(linked_target))
+            after = snapshot(base)
+            output = self.text(result)
+            self.assertNotEqual(result.returncode, 0, output)
+            self.assertIn('MISMATCH TARGET', output)
+            self.assertEqual(after, before)
+
     def test_unrelated_sibling_is_ignored(self):
         with tempfile.TemporaryDirectory() as tmp:
             target = Path(tmp) / 'skills'

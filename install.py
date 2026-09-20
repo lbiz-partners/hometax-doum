@@ -122,14 +122,21 @@ def doctor_result(source: Path, destination: Path) -> tuple[str, str]:
 
 def run_doctor(targets: list[Path], skills: list[Path]) -> int:
     reports: list[tuple[str, str, str, Path]] = []
+    linked_targets: set[Path] = set()
     source_by_name = {skill.name: skill for skill in skills}
     for target in targets:
+        if target.is_symlink():
+            linked_targets.add(target)
+            continue
         for name in sorted(EXPECTED):
             state, detail = doctor_result(source_by_name[name], target / name)
             reports.append((state, name, detail, target))
 
     for target in targets:
         print(f'점검 대상: {target}')
+        if target in linked_targets:
+            print('MISMATCH TARGET — 스킬 루트 심볼릭링크 대상은 점검하지 않습니다')
+            continue
         for state in DOCTOR_STATES:
             for found_state, name, detail, found_target in reports:
                 if found_target != target or found_state != state:
@@ -137,7 +144,7 @@ def run_doctor(targets: list[Path], skills: list[Path]) -> int:
                 suffix = f' — {detail}' if detail else ''
                 print(f'{state} {name}{suffix}')
     print(DOCTOR_DISCLAIMER)
-    return 0 if all(state == 'HEALTHY' for state, _, _, _ in reports) else 1
+    return 0 if not linked_targets and all(state == 'HEALTHY' for state, _, _, _ in reports) else 1
 
 
 def prepare_operation(target: Path, skills: list[Path]) -> Operation:

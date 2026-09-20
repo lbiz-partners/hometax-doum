@@ -99,7 +99,6 @@ def manifest_data(directory):
         'edition': 'free',
         'expected_tag': f'v{product_version}',
         'files': release_files(directory, product_version),
-        'source_commit': git_text(['rev-parse', 'HEAD']),
         'version': product_version,
     }
 
@@ -189,7 +188,10 @@ def main(argv=None):
             data = check_manifest(args.directory)
             print(f"MANIFEST_OK {data['version']}")
         else:
-            print(tag_readiness())
+            status = tag_readiness()
+            print(status)
+            if status.startswith('BLOCKED_'):
+                return 1
     except (OSError, ReadinessError, zipfile.BadZipFile) as exc:
         print(f'릴리스 준비 실패: {exc}', file=sys.stderr)
         return 1

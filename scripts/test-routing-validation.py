@@ -1,6 +1,7 @@
 import importlib.util
 import json
 from pathlib import Path
+import shutil
 import tempfile
 import unittest
 
@@ -24,9 +25,16 @@ class RoutingValidationTests(unittest.TestCase):
             for row in rows:
                 output.write(json.dumps(row, ensure_ascii=False) + "\n")
 
+    def copy_skills(self) -> Path:
+        skills = Path(self.temp.name) / "skills"
+        shutil.copytree(validator.DEFAULT_SKILLS, skills)
+        return skills
+
     def test_current_contract_validates_for_all_editions(self):
         self.write_rows(self.rows)
-        for edition in ("free", "pro", "both"):
+        product = validator.load_schema(self.schema)["x-product-edition"]
+        editions = ("free", "pro", "both") if product == "pro" else ("free", "both")
+        for edition in editions:
             with self.subTest(edition=edition):
                 result = validator.validate_routing(self.routing, self.schema, edition)
                 self.assertEqual(result["rows"], len(self.rows))
@@ -58,6 +66,41 @@ class RoutingValidationTests(unittest.TestCase):
         rows[7]["expected_skill_free"] = "withholding-tax-hometax"
         self.write_rows(rows)
         with self.assertRaisesRegex(validator.RoutingValidationError, "expected_skill_free is not allowed for free"):
+            validator.validate_routing(self.routing, self.schema, "free")
+
+    def test_shipped_skill_target_must_exist(self):
+        self.write_rows(self.rows)
+        skills = self.copy_skills()
+        shutil.rmtree(skills / "vat-hometax")
+        with self.assertRaisesRegex(validator.RoutingValidationError, "shipped skill catalog mismatch"):
+            validator.validate_routing(self.routing, self.schema, "pro", skills)
+
+    def test_shipped_frontmatter_name_must_match_target(self):
+        self.write_rows(self.rows)
+        skills = self.copy_skills()
+        skill_file = skills / "vat-hometax" / "SKILL.md"
+        skill_file.write_text(
+            skill_file.read_text(encoding="utf-8").replace('name: "vat-hometax"', 'name: "wrong-route"', 1),
+            encoding="utf-8",
+        )
+        with self.assertRaisesRegex(validator.RoutingValidationError, "shipped skill declaration mismatch"):
+            validator.validate_routing(self.routing, self.schema, "pro", skills)
+
+    def test_generic_and_edition_specific_routes_cannot_conflict(self):
+        rows = [dict(row) for row in self.rows]
+        rows[0]["expected_skill_free"] = "hometax-tax-hub"
+        self.write_rows(rows)
+        with self.assertRaisesRegex(validator.RoutingValidationError, "cannot be mixed"):
+            validator.validate_routing(self.routing, self.schema, "free")
+
+    def test_required_coverage_must_be_applicable_to_requested_edition(self):
+        rows = [dict(row) for row in self.rows]
+        for row in rows:
+            if "pharmacy" in row.get("coverage", []):
+                row["edition"] = "pro"
+                row["expected_skill"] = "jongsose-prep-kr"
+        self.write_rows(rows)
+        with self.assertRaisesRegex(validator.RoutingValidationError, "missing required coverage: pharmacy"):
             validator.validate_routing(self.routing, self.schema, "free")
 
 
