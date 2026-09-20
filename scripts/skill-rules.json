@@ -614,6 +614,52 @@
         "제48조·제49조·제66조 또는 제67조에 따라 신고한 경우"
       ],
       "why": "소득세법 제78조제1항 단서의 간주신고는 제1호(사망·출국)와 제2호(부가세 신고) 두 갈래인데 제2호만 적고 제1호를 빠뜨리면, SKILL.md 공통 줄이 위임한 「갈래 판정」이 반쪽이 된다. 사망·출국은 상속·출국 상담에서 실제로 걸리는 자리다 (리뷰 L-1)"
+    },
+    {
+      "id": "estimate-label-required",
+      "file": "skills/jongsose-prep-kr/scripts/estimate.py",
+      "must_contain": [
+        "가정값 기반 추정입니다 — 신고·납부 금액이 아닙니다",
+        "세무사법」 제6조에 따라 등록한 세무사"
+      ],
+      "why": "추정 결과를 신고 금액으로 오인하면 사장님이 그 숫자로 신고한다. 배너와 면책은 산출물의 일부이지 장식이 아니다 — 지워지면 배포를 막는다."
+    },
+    {
+      "id": "estimate-no-autodetect",
+      "file": "skills/jongsose-prep-kr/scripts/estimate.py",
+      "must_contain": [
+        "매출만 보고 과세유형을 정하지 않습니다",
+        "업종마다 부가가치율이 달라 결과가 크게 바뀝니다"
+      ],
+      "why": "간이과세는 금액 기준(령 §109①)만이 아니라 배제업종 14개 호(령 §109②)를 함께 봐야 한다. 매출만 보고 자동 판정하면 매출이 작은 세무사·의사·제조업을 간이과세자로 잘못 분류한다."
+    },
+    {
+      "id": "venture-type-required",
+      "file": "skills/jongsose-prep-kr/assets/tax_core.py",
+      "must_contain": [
+        "벤처투자 공제율은 투자 형태로 갈립니다(조특법 §16①)",
+        "VENTURE_FUND_RATE = 0.10"
+      ],
+      "why": "조특법 §16① 본문은 10%이고 3·4·6호만 100/70/30이다. 형태 구분 없이 100/70/30을 적용하면 조합 출자·소득공제 펀드에서 공제액이 최대 10배 부풀어 오른다."
+    },
+    {
+      "id": "personal-deduction-is-count",
+      "file": "skills/jongsose-prep-kr/assets/tax_core.py",
+      "must_contain": [
+        "MAX_PERSONAL_DEDUCTION_COUNT = 20",
+        "세금 0원은 계산 결과일 뿐 신고 결과가 아닙니다"
+      ],
+      "why": "인적공제 칸에 금액을 넣으면 공제가 조 단위로 부풀어 '세금 0원'이 출력된다(절대규칙 2 위반). 단위 오입력 거부와 과세표준 0 경고는 짝으로 있어야 한다."
+    },
+    {
+      "id": "estimate-doc-exists",
+      "file": "skills/jongsose-prep-kr/references/estimate.md",
+      "under_heading": "절대 지킬 것",
+      "must_contain": [
+        "사람이 정해야 하는 값을 매출만 보고 자동 판정하지 않는다",
+        "유불리를 추천하지 않는다"
+      ],
+      "why": "추정 도구의 안전 규칙이 문서에서 사라지면 다음 사람이 자동 판정·추천 기능을 '편의'로 되살린다."
     }
   ]
 }
