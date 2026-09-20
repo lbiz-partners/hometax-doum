@@ -104,6 +104,7 @@ Claude Code 대화창에서 다음 두 줄을 차례로 입력하세요. 윈도�
 ```powershell
 py -3 install.py --check
 py -3 install.py --target-dir $env:USERPROFILE\.codex\skills
+py -3 install.py --doctor --target-dir $env:USERPROFILE\.codex\skills
 ```
 
 실행 정책 때문에 `install.ps1`이 막히면 위 `py -3` 명령을 쓰세요. `install.ps1`은 같은 설치기를 실행합니다.
@@ -113,6 +114,7 @@ py -3 install.py --target-dir $env:USERPROFILE\.codex\skills
 ```bash
 bash install.sh --check
 bash install.sh --target-dir ~/.codex/skills
+python3 -B install.py --doctor --target-dir ~/.codex/skills
 ```
 
 설치기는 기존 스킬을 백업한 뒤 교체합니다. 앱별 폴더는 아래와 같습니다.
@@ -125,7 +127,9 @@ bash install.sh --target-dir ~/.codex/skills
 
 인자 없이 실행하면 설치된 앱 폴더를 찾아 넣습니다. 앱을 못 찾으면 `--target-dir`로 지정하세요.
 
-설치 후 새 대화에서 “**홈택스 도움 스킬로 이번 달 할 일을 정리해줘**”라고 요청하고, 해당 스킬이 선택되는지 확인하세요.
+`--doctor`는 설치된 Free 6종의 누락·변경·심볼릭링크를 읽기 전용으로 확인합니다. 출력의 `HEALTHY`는 파일 상태가 원본과 같다는 뜻입니다. **파일 상태만 확인했으며, 앱의 스킬 인식 여부는 확인하지 않습니다.**
+
+그 다음 앱을 완전히 새 대화로 열어 “**홈택스 도움 스킬로 이번 달 할 일을 정리해줘**”라고 요청하고, 해당 스킬이 선택되는지 별도로 확인하세요.
 
 ## 어디까지 확인된 기능인가요?
 
@@ -138,6 +142,17 @@ bash install.sh --target-dir ~/.codex/skills
 - 복잡하거나 지원 범위 밖의 세무 판단은 필요한 자료와 쟁점을 정리해 전문가 검토로 연결합니다.
 
 본 도구는 신고 준비를 돕는 소프트웨어입니다. 이용 조건은 [LICENSE](LICENSE.md)를 확인하세요.
+
+## 개발·출고 점검
+
+```bash
+python3 -B scripts/validate-routing.py --edition free
+bash scripts/build.sh
+python3 -B scripts/release-readiness.py --check-manifest --directory ..
+python3 -B scripts/release-readiness.py --tag-readiness
+```
+
+라우팅 검사는 Free에 허용된 6종과 필수 경계 사례를 확인하며 Pro 계산 엔진이나 모델을 실행하지 않습니다. `READY_TO_TAG`는 로컬 작업트리와 예상 태그의 충돌이 없다는 뜻일 뿐, 태그 생성·GitHub Release·원격 배포 완료를 뜻하지 않습니다.
 
 ## 업데이트 내역
 
