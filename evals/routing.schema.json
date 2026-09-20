@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Hometax skill routing evaluation",
+  "type": "object",
+  "required": [
+    "id",
+    "utterance",
+    "edition",
+    "note"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "utterance": {
+      "type": "string",
+      "minLength": 1
+    },
+    "edition": {
+      "enum": [
+        "free",
+        "pro",
+        "both"
+      ]
+    },
+    "note": {
+      "type": "string",
+      "minLength": 1
+    },
+    "coverage": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "expected_skill": {
+      "type": "string",
+      "minLength": 1
+    },
+    "expected_skill_free": {
+      "type": "string",
+      "minLength": 1
+    },
+    "expected_skill_pro": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "x-expected-skill-allowlists": {
+    "free": [
+      "hometax-tax-hub",
+      "tax-prep-kr",
+      "receipt-classify-kr",
+      "tax-invoice-hometax",
+      "vat-hometax",
+      "income-tax-hometax"
+    ],
+    "pro": [
+      "hometax-tax-hub",
+      "tax-prep-kr",
+      "receipt-classify-kr",
+      "tax-invoice-hometax",
+      "vat-hometax",
+      "income-tax-hometax"
+    ]
+  },
+  "x-product-edition": "free",
+  "x-required-coverage": [
+    "medical",
+    "veterinary",
+    "pharmacy",
+    "ambiguous-payroll-payer",
+    "ambiguous-payroll-recipient"
+  ]
+}

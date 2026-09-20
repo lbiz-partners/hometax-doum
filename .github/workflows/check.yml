@@ -95,3 +95,5 @@ jobs:
           if ($installed.Count -ne 6) {
             throw "Expected 6 installed skills, found $($installed.Count)."
           }
+          py -3 install.py --doctor --target-dir $target
+          if ($LASTEXITCODE -ne 0) { throw "Installer doctor failed with exit code $LASTEXITCODE." }

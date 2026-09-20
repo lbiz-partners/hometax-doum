@@ -1,0 +1,46 @@
+{"id":"R01","utterance":"이번 달 세금 업무 정리해줘.","expected_skill":"hometax-tax-hub","edition":"free","note":"README 표 1행 — 무엇부터 할지 모름 → 허브"}
+{"id":"R02","utterance":"부가세 신고 준비부터 도와줘.","expected_skill":"vat-hometax","edition":"free","note":"README 표 2행. 허브 라우팅 '부가세 → vat-hometax'"}
+{"id":"R03","utterance":"종합소득세 신고 도와줘.","expected_skill":"income-tax-hometax","edition":"free","note":"README 표 3행. 허브 '종소세·모두채움 → income-tax-hometax'"}
+{"id":"R04","utterance":"세금계산서 발급 전에 점검해줘.","expected_skill":"tax-invoice-hometax","edition":"free","note":"README 표 4행"}
+{"id":"R05","utterance":"사업 관련 지출을 분류해줘.","expected_skill":"receipt-classify-kr","edition":"free","note":"README 표 5행. 허브 '카드·지출·공제/불공제 → receipt-classify-kr'"}
+{"id":"R06","utterance":"계산서와 입금내역을 확인해줘. 아직 못 받은 돈이 있어.","expected_skill":"tax-invoice-hometax","edition":"free","note":"README 표 6행 — 미수금 모드 E"}
+{"id":"R07","utterance":"면세사업자예요. 사업장현황신고 준비해줘.","expected_skill":"tax-prep-kr","edition":"free","note":"README 표 7행. 허브 '면세사업장현황 → tax-prep-kr exempt-status-report'"}
+{"id":"R08","utterance":"외주비를 지급했어요. 어떤 자료와 신고가 필요한지 알려줘.","edition":"free","note":"README 표 8행. 무료는 payroll-basic, Pro는 원천세 스킬","expected_skill":"tax-prep-kr"}
+{"id":"R09","utterance":"대출에 필요한 세무서류를 점검해줘.","expected_skill":"tax-prep-kr","edition":"free","note":"README 표 9행. H17 국세증명 → tax-prep-kr documents-and-payments"}
+{"id":"R10","utterance":"신고·납부·환급 상태를 나눠 확인해줘.","expected_skill":"hometax-tax-hub","edition":"free","note":"README 표 10행. 허브 filing-status. H18·H19가 tax-prep-kr이므로 tax-prep-kr도 허용 가능 — 결과 판정 시 주석 참고"}
+{"id":"R11","utterance":"음식점 일반과세자야. 반기 과세매출과 면세 식재료 자료가 있어. 의제매입 계산에 필요한 요건부터 확인해줘.","expected_skill":"tax-prep-kr","edition":"free","note":"industry-guide 질문 예시 1. 허브 '음식점 의제매입 → 업종별 안내(tax-prep-kr industry-guide)'"}
+{"id":"R12","utterance":"쇼핑몰 정산액과 매출액이 달라. 환불·수수료를 구별하고 재고까지 넣어 원가를 확인해줘.","expected_skill":"tax-invoice-hometax","edition":"free","note":"industry-guide 질문 예시 2. H08 매출·정산·입금 → tax-invoice sales-settlement-review. 재고원가 언급으로 tax-prep-kr(industry-guide)도 방어 가능"}
+{"id":"R13","utterance":"상가 보증금이 중간에 바뀌었어. 날짜별로 어떤 자료를 준비해야 하는지 알려줘.","expected_skill":"tax-prep-kr","edition":"free","note":"industry-guide 질문 예시 3. 허브 '상가 보증금 → 업종별 안내'"}
+{"id":"R14","utterance":"학원 수강료에 선수금과 환불이 있어. 올해 수입금액을 확인할 표를 준비해줘.","expected_skill":"tax-prep-kr","edition":"free","note":"industry-guide 질문 예시 4. 학원 면세 → exempt-status-report / industry-guide"}
+{"id":"R15","utterance":"화면에 넣은 값과 계산값이 달라. 같은 사업장·기간·항목인지 먼저 확인해줘.","expected_skill":"hometax-tax-hub","edition":"free","note":"industry-guide 질문 예시 5. 세목 미지정 → 허브가 세목부터 구별"}
+{"id":"R16","utterance":"올해 종합소득세 얼마 나올까?","edition":"free","note":"시작 가이드 표. 계산 요청은 Pro 엔진, 무료는 준비 안내로 진행","expected_skill":"income-tax-hometax"}
+{"id":"R17","utterance":"직장 총급여 4,000만이고 부업 매출 2,000만인데 5월에 얼마 내?","edition":"free","note":"시작 가이드 표 — 근로 겸업 예상세액","expected_skill":"income-tax-hometax"}
+{"id":"R18","utterance":"작년에 3.3%로 200만 떼였는데 환급 되나 봐줘.","edition":"free","note":"시작 가이드 표 — 기납부 환산","expected_skill":"income-tax-hometax"}
+{"id":"R19","utterance":"카드 내역 분류해줘.","expected_skill":"receipt-classify-kr","edition":"free","note":"시작 가이드 표"}
+{"id":"R20","utterance":"세금계산서 끊어줘.","expected_skill":"tax-invoice-hometax","edition":"free","note":"시작 가이드 표 — 신규 발급 (자동 발급 금지 안내 포함)"}
+{"id":"R21","utterance":"전자세금계산서 발급 도와줘.","expected_skill":"tax-invoice-hometax","edition":"free","note":"시작 가이드 표"}
+{"id":"R22","utterance":"세무 도와줘.","expected_skill":"hometax-tax-hub","edition":"free","note":"시작 가이드 표 — 전체 안내"}
+{"id":"R23","utterance":"홈택스 도움 스킬로 이번 달 할 일 알려줘.","expected_skill":"hometax-tax-hub","edition":"free","note":"README 호출어 포함 — 허브 description에 '홈택스 도움 스킬'이 있어야 함(C-05)"}
+{"id":"R24","utterance":"현금영수증 발급해야 하는데 어떻게 해?","expected_skill":"tax-invoice-hometax","edition":"free","note":"경계: 허브 '현금영수증 발급·취소·매입 → tax-invoice-hometax cash-receipts.md'"}
+{"id":"R25","utterance":"손님이 현금영수증 취소해 달래. 환불은 아직 안 했어.","expected_skill":"tax-invoice-hometax","edition":"free","note":"경계: 현금영수증 취소 → cash-receipts (승인·취소·실제 환불 분리)"}
+{"id":"R26","utterance":"사업자등록 정정하고 업종 추가하고 싶어.","edition":"free","note":"경계: 무료는 business-lifecycle H02, Pro는 전용 스킬","expected_skill":"tax-prep-kr"}
+{"id":"R27","utterance":"가게를 닫으려고 해. 폐업하면 뭐 해야 해?","expected_skill":"tax-prep-kr","edition":"free","note":"H03 휴업·재개업·폐업 → business-lifecycle"}
+{"id":"R28","utterance":"직원은 없는데 강사료를 몇 번 줬어. 원천세 신고해야 해?","edition":"free","note":"경계: 직원 0명 + 외주 지급 — payroll-basic / occasional-payments","coverage":["ambiguous-payroll-payer"],"expected_skill":"tax-prep-kr"}
+{"id":"R29","utterance":"일급 18만 원 5일분을 한 번에 지급하면 원천세 얼마 떼?","edition":"free","note":"Pro 모드 P 계산. 무료는 계산하지 않고 준비·공식 절차 안내","expected_skill":"tax-prep-kr"}
+{"id":"R30","utterance":"청구로 발행한 세금계산서 중에 입금 안 된 것만 추려줘.","expected_skill":"tax-invoice-hometax","edition":"free","note":"미수금 모드 E 직접 요청"}
+{"id":"R31","utterance":"간이과세자인데 1월에 부가세 신고 뭐부터 봐야 해?","expected_skill":"vat-hometax","edition":"free","note":"간이과세 흐름 — vat-hometax"}
+{"id":"R32","utterance":"5월 신고 기한 놓쳤어. 종소세 기한후신고 어떻게 해?","expected_skill":"income-tax-hometax","edition":"free","note":"기한후신고 절 — income-tax-hometax (corrections-and-relief H20 병행)"}
+{"id":"R33","utterance":"부가세 신고를 잘못 넣은 것 같아. 경정청구 준비해줘.","expected_skill":"tax-prep-kr","edition":"free","note":"허브 '기한후·수정·경정청구 → tax-prep-kr corrections-and-relief'"}
+{"id":"R34","utterance":"환급금이 들어왔는지 확인하고 싶어.","expected_skill":"tax-prep-kr","edition":"free","note":"H19 환급 → documents-and-payments. 허브 filing-status도 허용 가능"}
+{"id":"R35","utterance":"이 거래처는 처음이야. 세금계산서 발행하려면 뭐가 필요해?","expected_skill":"tax-invoice-hometax","edition":"free","note":"신규 거래처 필수 7가지"}
+{"id":"R36","utterance":"카드값 중에 거래처 접대한 식사비가 있는데 부가세 공제돼?","expected_skill":"receipt-classify-kr","edition":"free","note":"공제/불공제 후보 판정 — receipt-classify (vat-hometax nondeductible과 경계)"}
+{"id":"R37","utterance":"수출 매출이 있는데 영세율 부가세 신고 자료 뭐 준비해?","expected_skill":"tax-prep-kr","edition":"free","note":"허브 '부가세 심화 영세율·겸영 → H10 준비 안내(tax-prep-kr advanced-and-linked)'. vat-hometax 병행 허용"}
+{"id":"R38","utterance":"주택 임대 소득이 있는데 분리과세가 나은지 자료부터 챙겨줘.","expected_skill":"tax-prep-kr","edition":"free","note":"허브 '주택 분리과세 → 업종별 안내(industry-guide)'"}
+{"id":"R39","utterance":"작년 신고 접수증이랑 납부 결과를 각각 확인해서 정리해줘.","expected_skill":"hometax-tax-hub","edition":"free","note":"filing-status — 접수·국세납부·지방·환급 분리"}
+{"id":"R40","utterance":"양도소득세 신고도 여기서 할 수 있어?","expected_skill":"hometax-tax-hub","edition":"free","note":"H24 조건부 세목 — 허브가 범위 밖·전문가 연결로 안내"}
+{"id":"R41","utterance":"내과 개원의입니다. 사업장현황신고 준비해줘.","expected_skill":"tax-prep-kr","edition":"free","note":"v4.3.0 병의원 전용 안내 — 가산세 대상 3업종","coverage":["medical"]}
+{"id":"R42","utterance":"치과의원인데 올해 수입금액 검토표를 어떻게 채우는지 알려줘.","expected_skill":"tax-prep-kr","edition":"free","note":"v4.3.0 병의원 — 의료업자 수입금액 검토표","coverage":["medical"]}
+{"id":"R43","utterance":"한의원인데 공단 입금일과 진료일이 달라. 수입 귀속을 정리해줘.","expected_skill":"tax-prep-kr","edition":"free","note":"v4.3.0 병의원 — 입금액의 진료 기준 환산","coverage":["medical"]}
+{"id":"R44","utterance":"동물병원입니다. 중성화 수술이 면세인지부터 확인하고 신고 준비해줘.","expected_skill":"tax-prep-kr","edition":"free","note":"v4.3.0 동물병원 — 농식품부 고시 별표로 면세 판정","coverage":["veterinary"]}
+{"id":"R45","utterance":"약국인데 조제료와 일반 판매를 나눠서 사업장현황신고 준비해줘.","expected_skill":"tax-prep-kr","edition":"free","note":"v4.3.0 약국 — 조제용역과 재화 판매의 경계","coverage":["pharmacy"]}
+{"id":"R46","utterance":"프리랜서 강사인데 3.3% 떼고 받아요. 사업장현황신고 대상인가요?","expected_skill":"tax-prep-kr","edition":"free","note":"인적용역 수취인 — 받는 쪽. 지급한 쪽(payroll-basic)과 구별","coverage":["ambiguous-payroll-recipient"]}

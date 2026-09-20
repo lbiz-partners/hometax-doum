@@ -20,16 +20,19 @@ EXPECTED = {
     'hometax-tax-hub', 'tax-prep-kr', 'receipt-classify-kr',
     'tax-invoice-hometax', 'vat-hometax', 'income-tax-hometax',
 }
-HELP = '''사용: python install.py [--check] [--target-dir PATH]
-  Windows:  py -3 install.py [--check] [--target-dir PATH]
+HELP = '''사용: python install.py [--check | --doctor] [--target-dir PATH]
+  Windows:  py -3 install.py [--check | --doctor] [--target-dir PATH]
   macOS/Linux:  python3 install.py  또는  bash install.sh
   인자 없음        감지한 Aside / Claude Code / Codex 스킬 폴더에 설치
   --check          Python·스킬 원본 검사만 수행 (파일 변경 없음)
+  --doctor         설치된 무료 스킬 6종의 파일 상태만 점검 (파일 변경 없음)
   --target-dir     지정한 스킬 폴더 하나에만 설치 (격리 시험에도 사용)
 설치 스크립트: Python 3.10 이상. 무료 스킬 사용에는 계산 엔진이 필요하지 않습니다.
 기존 같은 이름의 스킬은 대상 폴더 상위 .hometax-doum-backups/에 보존합니다.
 Claude Code 플러그인 설치와 .skill 업로드는 Python이 없어도 됩니다. README.md를 보세요.
 '''
+DOCTOR_DISCLAIMER = '파일 상태만 확인했습니다. 앱의 스킬 인식 여부는 확인하지 않았습니다.'
+DOCTOR_STATES = ('HEALTHY', 'MISSING', 'MISMATCH')
 
 
 def ensure_unicode_output() -> None:
@@ -97,6 +100,51 @@ def no_target_message() -> str:
 
 def path_exists(path: Path) -> bool:
     return path.exists() or path.is_symlink()
+
+
+def doctor_targets(home: Path) -> list[Path]:
+    return [target for target in default_targets(home) if target.is_dir()]
+
+
+def doctor_result(source: Path, destination: Path) -> tuple[str, str]:
+    if destination.is_symlink():
+        return 'MISMATCH', '심볼릭링크 대상은 점검하지 않습니다'
+    if not destination.exists():
+        return 'MISSING', ''
+    if not destination.is_dir():
+        return 'MISMATCH', '스킬 폴더가 아닙니다'
+    if any(path.is_symlink() for path in destination.rglob('*')):
+        return 'MISMATCH', '스킬 내부 심볼릭링크는 허용하지 않습니다'
+    if hashes(destination) == hashes(source):
+        return 'HEALTHY', ''
+    return 'MISMATCH', '원본과 파일 해시가 다릅니다'
+
+
+def run_doctor(targets: list[Path], skills: list[Path]) -> int:
+    reports: list[tuple[str, str, str, Path]] = []
+    linked_targets: set[Path] = set()
+    source_by_name = {skill.name: skill for skill in skills}
+    for target in targets:
+        if target.is_symlink():
+            linked_targets.add(target)
+            continue
+        for name in sorted(EXPECTED):
+            state, detail = doctor_result(source_by_name[name], target / name)
+            reports.append((state, name, detail, target))
+
+    for target in targets:
+        print(f'점검 대상: {target}')
+        if target in linked_targets:
+            print('MISMATCH TARGET — 스킬 루트 심볼릭링크 대상은 점검하지 않습니다')
+            continue
+        for state in DOCTOR_STATES:
+            for found_state, name, detail, found_target in reports:
+                if found_target != target or found_state != state:
+                    continue
+                suffix = f' — {detail}' if detail else ''
+                print(f'{state} {name}{suffix}')
+    print(DOCTOR_DISCLAIMER)
+    return 0 if not linked_targets and all(state == 'HEALTHY' for state, _, _, _ in reports) else 1
 
 
 def prepare_operation(target: Path, skills: list[Path]) -> Operation:
@@ -168,7 +216,9 @@ def main(argv: list[str] | None = None) -> int:
         add_help=False,
     )
     parser.add_argument('-h', '--help', action='store_true')
-    parser.add_argument('--check', action='store_true')
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument('--check', action='store_true')
+    mode.add_argument('--doctor', action='store_true')
     parser.add_argument('--target-dir', type=Path)
     args = parser.parse_args(argv)
     if args.help:
@@ -193,6 +243,12 @@ def main(argv: list[str] | None = None) -> int:
     if args.check:
         print('검사 완료 — 설치 파일을 변경하지 않았습니다.')
         return 0
+    if args.doctor:
+        targets = [args.target_dir] if args.target_dir else doctor_targets(Path.home())
+        targets = list(dict.fromkeys(p.expanduser() for p in targets))
+        if not targets:
+            fail(parser, no_target_message())
+        return run_doctor(targets, skills)
     targets = [args.target_dir] if args.target_dir else default_targets(Path.home())
     targets = list(dict.fromkeys(p.expanduser().resolve() for p in targets))
     if not targets:
