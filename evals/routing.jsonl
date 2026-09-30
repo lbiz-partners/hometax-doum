@@ -44,3 +44,7 @@
 {"id":"R44","utterance":"동물병원입니다. 중성화 수술이 면세인지부터 확인하고 신고 준비해줘.","expected_skill":"tax-prep-kr","edition":"free","note":"v4.3.0 동물병원 — 농식품부 고시 별표로 면세 판정","coverage":["veterinary"]}
 {"id":"R45","utterance":"약국인데 조제료와 일반 판매를 나눠서 사업장현황신고 준비해줘.","expected_skill":"tax-prep-kr","edition":"free","note":"v4.3.0 약국 — 조제용역과 재화 판매의 경계","coverage":["pharmacy"]}
 {"id":"R46","utterance":"프리랜서 강사인데 3.3% 떼고 받아요. 사업장현황신고 대상인가요?","expected_skill":"tax-prep-kr","edition":"free","note":"인적용역 수취인 — 받는 쪽. 지급한 쪽(payroll-basic)과 구별","coverage":["ambiguous-payroll-recipient"]}
+{"id":"R47","utterance":"사업용 신용카드를 홈택스에 등록하려고 해. 순서 알려줘.","expected_skill":"tax-prep-kr","edition":"free","note":"v4.4.0 H04 카드 등록 — card-account-delivery.md","coverage":["business-card"]}
+{"id":"R48","utterance":"내가 사업용 계좌 신고 대상인지 확인하고 신고까지 도와줘.","expected_skill":"tax-prep-kr","edition":"free","note":"v4.4.0 H04 사업용계좌 판정·신고","coverage":["business-account"]}
+{"id":"R49","utterance":"미용실인데 현금영수증 가맹점 가입해야 하나요? 가입 방법도요.","expected_skill":"tax-invoice-hometax","edition":"free","note":"v4.4.0 H06 가맹점 가입 판정·신청","coverage":["cash-receipt-merchant"]}
+{"id":"R50","utterance":"사업자등록 새로 신청하려고 해. 준비물이랑 신청 순서 알려줘.","edition":"free","note":"v4.4.0 H02 신규 신청 — 무료는 business-registration.md, Pro는 전용 스킬","coverage":["business-registration-new"],"expected_skill":"tax-prep-kr"}

@@ -9,11 +9,11 @@ PC·손택스·인증 수준에 따른 실제 메뉴와 적용기간은 실행 �
 | ID | 요청 신호 | 진행 문서 | 확인할 완료 증거 |
 |---|---|---|---|
 | H01 | 처음·로그인·사업장 전환·사업 프로필 | [처음 설정·사업장 전환](../../tax-prep-kr/references/business-lifecycle.md)의 H01 | 사업장·기간·과세유형·자료 보유 확인 |
-| H02 | 사업자등록·업종 추가·상호 변경·소재지 변경·재발급 | [사업자등록 신청·정정](../../tax-prep-kr/references/business-lifecycle.md)의 H02 | 신청 접수·등록/정정 결과·등록증 내용 확인 |
+| H02 | 사업자등록·업종 추가·상호 변경·소재지 변경·재발급·사업자등록 신청·업종코드·통신판매업 | [사업자등록 신청·정정](../../tax-prep-kr/references/business-registration.md)의 H02 | 신청 접수·등록/정정 결과·등록증 내용 확인 |
 | H03 | 휴업·재개업·폐업·가게를 닫 | [휴업·재개업·폐업](../../tax-prep-kr/references/business-lifecycle.md)의 H03 | 처리결과와 마지막 신고·납부·인건비 후속 확인 |
-| H04 | 사업용계좌·사업용카드·전자송달·환급계좌 | [계좌·카드·전자송달](../../tax-prep-kr/references/business-lifecycle.md)의 H04 | 등록/변경 결과·조회 공백·공제 확인 |
+| H04 | 사업용계좌·사업용카드·전자송달·환급계좌·사업용 신용카드 등록·사업용 계좌 신고·복식부기의무자 | [계좌·카드·전자송달](../../tax-prep-kr/references/card-account-delivery.md)의 H04 | 등록/변경 결과·조회 공백·공제 확인 |
 | H05 | 세금계산서·계산서 발급·미수금·수금 | [전자세금계산서·전자계산서](../../tax-invoice-hometax/SKILL.md) | 실제 승인·전송·수정 연결과 수금 상태 분리 |
-| H06 | 현금영수증·현금매출·지출증빙·발급거부 | [현금영수증](../../tax-invoice-hometax/references/cash-receipts.md)의 H06 | 승인·취소·실제 환불 확인 |
+| H06 | 현금영수증·현금매출·지출증빙·발급거부·현금영수증 가맹점·가맹점 가입·의무발행 | [현금영수증](../../tax-invoice-hometax/references/cash-receipts.md)의 H06 | 승인·취소·실제 환불 확인 |
 | H07 | 영수증 분류·카드 내역·공제 불공제·중복 지출 | [지출·매입증빙](../../receipt-classify-kr/SKILL.md) | 분류 근거·중복·누락·검토결정 확인 |
 | H08 | 월마감·정산·PG·매출 대조·수수료·플랫폼 | [매출·정산·입금](../../tax-invoice-hometax/references/sales-settlement-review.md) | 자료 범위·매출/증빙/정산/입금의 차이 확인 |
 | H09 | 부가세·일반과세·간이과세·무실적 | [부가세 기본](../../vat-hometax/SKILL.md) | 신고 접수·국세 납부·환급 구별 |

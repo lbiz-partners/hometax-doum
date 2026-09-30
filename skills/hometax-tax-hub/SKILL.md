@@ -24,7 +24,7 @@ description: "홈택스 도움 스킬의 진입점. 개인사업자의 개업부
 | 요청 | 진행 |
 |---|---|
 | 처음 시작·이번 달 할 일·사업자등록·휴폐업·계좌·증명·납부환급·지원 | `tax-prep-kr`; [업무 목록](references/service-catalog.md)의 H01~H04·H17~H24 중 선택 |
-| 현금영수증 발급·취소·매입 확인 | `tax-invoice-hometax`의 `references/cash-receipts.md` |
+| 현금영수증 가맹점 가입·발급·취소·매입 확인 | `tax-invoice-hometax`의 `references/cash-receipts.md` |
 | 세금계산서·계산서·미수금 | `tax-invoice-hometax` |
 | 카드·지출·공제/불공제 검토 | `receipt-classify-kr` |
 | 부가세 | `vat-hometax`; 복잡한 영세율·겸영·임대·자산은 H10 준비 안내 병행 |
