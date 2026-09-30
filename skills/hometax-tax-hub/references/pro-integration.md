@@ -12,7 +12,7 @@
 | 미수금 | `tax-invoice-hometax`의 `assets/receivables-engine.mjs` | 없으면 원자료·건별 질문·수동 대조 |
 | 여러 CSV/XLSX·월마감·신고값 차이·서류 묶음 | `jongsose-prep-kr`의 `references/business-desk.md` | 파일 변환·합계 대조는 세무 판단이나 신고 완료가 아님 |
 | 면세 연간 수입·매입 | `jongsose-prep-kr`의 `scripts/business_status.py` | 간주임대료·세액 계산은 포함하지 않음 |
-| 사업자등록 상세 | `biz-reg-hometax` | 미설치여도 `tax-prep-kr`의 기본 안내로 계속 |
+| 사업자등록 상세 | `biz-reg-hometax` | 미설치여도 `tax-prep-kr`의 사업자등록 신청·정정 안내로 끝까지 진행 |
 
 ## 허브 작업 연결표의 Pro 보강
 
@@ -21,7 +21,7 @@
 | 음식점 의제매입·상가 보증금·주택 분리과세·재고원가·학원/프리랜서 수입 | `industry_review.py`의 해당 모드. 지원 조건은 `references/industry-review.md`에서 먼저 확인 |
 | 직원·외주비·원천세·지급명세서·연말정산 | `withholding-tax-hometax`의 지원 소득유형만 계산. 준비·지급명세서 안내는 `tax-prep-kr`의 `references/payroll-basic.md` 그대로 |
 | 종소세·모두채움·근로+사업 | 계산 요청은 `jongsose-prep-kr`로, 홈택스 화면 절차는 `income-tax-hometax`로. 인계 표는 반복 질문 없이 그대로 사용 |
-| 사업자등록·정정 | `biz-reg-hometax`의 화면 기준 절차 |
+| 사업자등록·정정 | `tax-prep-kr` 사업자등록 신청·정정 안내(무료와 같은 절차) + `biz-reg-hometax`의 프로필 인계 |
 
 ## 공통 규칙
 
@@ -38,7 +38,7 @@
 | 업무 | 추가 작업 | 도구 |
 |---|---|---|
 | H01 처음 설정·사업장 전환 | 가명 사업장 프로필·확인일 검증 | `owner_workspace.py` |
-| H02 사업자등록 신청·정정 | 신청·정정의 상세 준비 안내 | `biz-reg-hometax` |
+| H02 사업자등록 신청·정정 | 무료와 같은 절차 + 공통 프로필 변경 인계 | `biz-reg-hometax` |
 | H03 휴업·재개업·폐업 | 마지막 영업기간의 매출·정산·준비금 대조 | `monthly_review.py` |
 | H04 계좌·카드·전자송달 | 등록 관련 제출서류 조건 대조 | `document_review.py` |
 | H05 전자세금계산서·전자계산서 | 청구와 입금의 미수 후보 대조 | `receivables-engine.mjs` |

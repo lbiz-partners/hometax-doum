@@ -8,7 +8,7 @@
 
 **혼자 챙기기 어려운 홈택스 업무를 AI와 함께 준비하세요.** 소상공인·개인사업자·프리랜서를 위한 스킬 모음입니다. 사용하는 AI 앱에 설치하면, 평소 말하듯 요청해 필요한 자료와 다음 할 일을 안내받을 수 있습니다.
 
-**버전:** 4.3.0 · **무료 스킬 6종** · [처음 시작 가이드](시작-가이드.md)
+**버전:** 4.4.0 · **무료 스킬 6종** · [처음 시작 가이드](시작-가이드.md)
 
 ## 이런 일을 도와드려요
 
@@ -155,6 +155,13 @@ python3 -B scripts/release-readiness.py --tag-readiness
 라우팅 검사는 Free에 허용된 6종과 필수 경계 사례를 확인하며 Pro 계산 엔진이나 모델을 실행하지 않습니다. `READY_TO_TAG`는 로컬 작업트리와 예상 태그의 충돌이 없다는 뜻일 뿐, 태그 생성·GitHub Release·원격 배포 완료를 뜻하지 않습니다.
 
 ## 업데이트 내역
+
+### v4.4.0 (2026-09-30) — 사업자등록·사업용 카드·계좌·현금영수증 가맹점
+
+- **사업자등록 신청·정정을 끝까지** 진행합니다. [사업자등록 신청·정정](https://github.com/lbiz-partners/hometax-doum/blob/main/skills/tax-prep-kr/references/business-registration.md)에서 신청 기한(개업 20일 이내)·첨부서류·업종 찾기·제출 직전 점검·결과조회·등록증 재발급까지, 업종 추가·상호·사업장 이전 정정과 통신판매업 신고 연결까지 안내합니다.
+- **사업용 신용카드 등록, 사업용 계좌 신고**를 새로 안내합니다. [카드·계좌·환급계좌·전자송달](https://github.com/lbiz-partners/hometax-doum/blob/main/skills/tax-prep-kr/references/card-account-delivery.md)에서 내가 사업용 계좌 신고 대상인지(복식부기의무자) 판정하고, 등록·신고 화면 순서와 늦었을 때의 가산세, 결과 재조회까지 확인합니다.
+- **현금영수증 가맹점 가입**을 모든 업종으로 넓혔습니다. [현금영수증 안내](https://github.com/lbiz-partners/hometax-doum/blob/main/skills/tax-invoice-hometax/references/cash-receipts.md)에서 가입 의무·기한(3월 31일 또는 60일)·가입 방법과 10만원 이상 의무발행, 가산세를 확인합니다.
+- 숫자와 기한은 법령·국세청 원문으로 확인했습니다([근거 기록](https://github.com/lbiz-partners/hometax-doum/blob/main/docs/registration-card-account-cashreceipt-sources-2026-09-30.md)). 로그인·인증과 최종 제출·등록·발급 버튼은 본인이 누릅니다.
 
 ### v4.3.0 (2026-09-19) — 가산세가 있는 세 업종: 병의원·동물병원·약국
 

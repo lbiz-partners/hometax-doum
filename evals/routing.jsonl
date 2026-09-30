@@ -23,7 +23,7 @@
 {"id":"R23","utterance":"홈택스 도움 스킬로 이번 달 할 일 알려줘.","expected_skill":"hometax-tax-hub","edition":"free","note":"README 호출어 포함 — 허브 description에 '홈택스 도움 스킬'이 있어야 함(C-05)"}
 {"id":"R24","utterance":"현금영수증 발급해야 하는데 어떻게 해?","expected_skill":"tax-invoice-hometax","edition":"free","note":"경계: 허브 '현금영수증 발급·취소·매입 → tax-invoice-hometax cash-receipts.md'"}
 {"id":"R25","utterance":"손님이 현금영수증 취소해 달래. 환불은 아직 안 했어.","expected_skill":"tax-invoice-hometax","edition":"free","note":"경계: 현금영수증 취소 → cash-receipts (승인·취소·실제 환불 분리)"}
-{"id":"R26","utterance":"사업자등록 정정하고 업종 추가하고 싶어.","edition":"free","note":"경계: 무료는 business-lifecycle H02, Pro는 전용 스킬","expected_skill":"tax-prep-kr"}
+{"id":"R26","utterance":"사업자등록 정정하고 업종 추가하고 싶어.","edition":"free","note":"경계: 무료는 tax-prep-kr business-registration.md, Pro는 전용 스킬","expected_skill":"tax-prep-kr"}
 {"id":"R27","utterance":"가게를 닫으려고 해. 폐업하면 뭐 해야 해?","expected_skill":"tax-prep-kr","edition":"free","note":"H03 휴업·재개업·폐업 → business-lifecycle"}
 {"id":"R28","utterance":"직원은 없는데 강사료를 몇 번 줬어. 원천세 신고해야 해?","edition":"free","note":"경계: 직원 0명 + 외주 지급 — payroll-basic / occasional-payments","coverage":["ambiguous-payroll-payer"],"expected_skill":"tax-prep-kr"}
 {"id":"R29","utterance":"일급 18만 원 5일분을 한 번에 지급하면 원천세 얼마 떼?","edition":"free","note":"Pro 모드 P 계산. 무료는 계산하지 않고 준비·공식 절차 안내","expected_skill":"tax-prep-kr"}
@@ -44,3 +44,7 @@
 {"id":"R44","utterance":"동물병원입니다. 중성화 수술이 면세인지부터 확인하고 신고 준비해줘.","expected_skill":"tax-prep-kr","edition":"free","note":"v4.3.0 동물병원 — 농식품부 고시 별표로 면세 판정","coverage":["veterinary"]}
 {"id":"R45","utterance":"약국인데 조제료와 일반 판매를 나눠서 사업장현황신고 준비해줘.","expected_skill":"tax-prep-kr","edition":"free","note":"v4.3.0 약국 — 조제용역과 재화 판매의 경계","coverage":["pharmacy"]}
 {"id":"R46","utterance":"프리랜서 강사인데 3.3% 떼고 받아요. 사업장현황신고 대상인가요?","expected_skill":"tax-prep-kr","edition":"free","note":"인적용역 수취인 — 받는 쪽. 지급한 쪽(payroll-basic)과 구별","coverage":["ambiguous-payroll-recipient"]}
+{"id":"R47","utterance":"사업용 신용카드를 홈택스에 등록하려고 해. 순서 알려줘.","expected_skill":"tax-prep-kr","edition":"free","note":"v4.4.0 H04 카드 등록 — card-account-delivery.md","coverage":["business-card"]}
+{"id":"R48","utterance":"내가 사업용 계좌 신고 대상인지 확인하고 신고까지 도와줘.","expected_skill":"tax-prep-kr","edition":"free","note":"v4.4.0 H04 사업용계좌 판정·신고","coverage":["business-account"]}
+{"id":"R49","utterance":"미용실인데 현금영수증 가맹점 가입해야 하나요? 가입 방법도요.","expected_skill":"tax-invoice-hometax","edition":"free","note":"v4.4.0 H06 가맹점 가입 판정·신청","coverage":["cash-receipt-merchant"]}
+{"id":"R50","utterance":"사업자등록 새로 신청하려고 해. 준비물이랑 신청 순서 알려줘.","edition":"free","note":"v4.4.0 H02 신규 신청 — 무료는 business-registration.md, Pro는 전용 스킬","coverage":["business-registration-new"],"expected_skill":"tax-prep-kr"}

@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "version": "4.3.0",
+  "version": "4.4.0",
   "checked_at": "2026-09-17",
   "scope": "개인사업자 업무 24개 묶음. 공식 전체 메뉴 수나 모든 세목의 자동 계산을 뜻하지 않음.",
   "services": [
@@ -32,17 +32,20 @@
         "업종 추가",
         "상호 변경",
         "소재지 변경",
-        "재발급"
+        "재발급",
+        "사업자등록 신청",
+        "업종코드",
+        "통신판매업"
       ],
       "skill": "tax-prep-kr",
-      "guide": "../../tax-prep-kr/references/business-lifecycle.md",
+      "guide": "../../tax-prep-kr/references/business-registration.md",
       "section": "H02",
-      "free": "안내·자료준비·수동 대조·결과 확인",
+      "free": "신청 기한·첨부서류·업종 찾기·제출 직전 점검·결과조회까지 단계별 진행",
       "pro": "biz-reg-hometax",
       "completion_evidence": "신청 접수·등록/정정 결과·등록증 내용 확인",
       "level": "guided_workflow",
       "live_ui_verified": false,
-      "pro_role": "신청·정정의 상세 준비 안내",
+      "pro_role": "무료와 같은 절차 + 공통 프로필 변경 인계",
       "live_ui_stage": "login_required"
     },
     {
@@ -72,12 +75,15 @@
         "사업용계좌",
         "사업용카드",
         "전자송달",
-        "환급계좌"
+        "환급계좌",
+        "사업용 신용카드 등록",
+        "사업용 계좌 신고",
+        "복식부기의무자"
       ],
       "skill": "tax-prep-kr",
-      "guide": "../../tax-prep-kr/references/business-lifecycle.md",
+      "guide": "../../tax-prep-kr/references/card-account-delivery.md",
       "section": "H04",
-      "free": "안내·자료준비·수동 대조·결과 확인",
+      "free": "대상 판정·등록/신고 화면 순서·가산세 안내·결과 재조회",
       "pro": "document_review.py",
       "completion_evidence": "등록/변경 결과·조회 공백·공제 확인",
       "level": "guided_workflow",
@@ -112,12 +118,15 @@
         "현금영수증",
         "현금매출",
         "지출증빙",
-        "발급거부"
+        "발급거부",
+        "현금영수증 가맹점",
+        "가맹점 가입",
+        "의무발행"
       ],
       "skill": "tax-invoice-hometax",
       "guide": "../../tax-invoice-hometax/references/cash-receipts.md",
       "section": "H06",
-      "free": "안내·자료준비·수동 대조·결과 확인",
+      "free": "가맹점 가입 판정·가입 방법·기한, 건별 발급·취소·결과 확인",
       "pro": "monthly_review.py",
       "completion_evidence": "승인·취소·실제 환불 확인",
       "level": "guided_workflow",
