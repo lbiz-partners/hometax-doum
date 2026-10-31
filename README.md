@@ -241,6 +241,12 @@ python3 -B scripts/release-readiness.py --tag-readiness
 - 홈페이지: **[lbiz-partners.com](https://lbiz-partners.com)**
 - 문의: **[엘비즈파트너스 카카오톡 채널](http://pf.kakao.com/_ixgJjX)**
 
+### 사업에 도움이 되는 활용법도 만나보세요
+
+홈택스 업무 준비 외에도 사업 운영에 AI를 활용하고 싶으신가요? 유튜브 **이상수의 사장님 브리핑**에서 소상공인·개인사업자를 위한 사업 운영과 AI 활용 콘텐츠를 시청해 보세요.
+
+**[이상수의 사장님 브리핑 유튜브 보러 가기](https://www.youtube.com/@leesangsu-briefing)**
+
 ## 이용 안내
 
 본 스킬은 신고 준비와 화면 안내를 돕는 참고용 소프트웨어이며 「세무사법」 제2조의 세무대리를 수행하지 않습니다. 최종 세무 판단·신고·납부의 책임은 이용자 본인 또는 위임받은 세무 전문가에게 있습니다.
